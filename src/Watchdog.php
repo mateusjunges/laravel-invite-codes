@@ -32,7 +32,8 @@ class Watchdog
     public function redeem(string $code) : Watchdog
     {
         try {
-            $invite = Invite::where('code', Str::upper($code))->firstOrFail();
+            $model = app(config('watchdog.models.invite_model'));
+            $invite = $model->where('code', Str::upper($code))->firstOrFail();
         } catch (ModelNotFoundException $exception) {
             throw new InvalidInviteException('Your invite code is invalid');
         }
