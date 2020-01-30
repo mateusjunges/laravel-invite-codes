@@ -1,6 +1,6 @@
 {
     "name": "mateusjunges/laravel-invites",
-    "description": "Limit access to private resources by using laravel invites",
+    "description": "This package allows you to easily manage invite codes for your Laravel application.",
     "type": "library",
     "license": "MIT",
     "authors": [
