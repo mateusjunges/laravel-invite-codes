@@ -115,6 +115,9 @@ return [
 ];
 ```
 
+## Usage
+
+
 # Tests
 Run `composer test` to test this package.
 
