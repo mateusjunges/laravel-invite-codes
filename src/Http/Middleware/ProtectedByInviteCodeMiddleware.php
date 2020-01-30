@@ -38,11 +38,11 @@ class ProtectedByInviteCodeMiddleware
                 throw new InvalidInviteException('Your invite code is invalid');
             }
 
-            if ($invite->isForSpecificUser()) {
+            if ($invite->hasRestrictedUsage()) {
                 if (! Auth::check()) {
                     throw new UserLoggedOut('You must be logged in to use this invite code');
                 }
-                if ($invite->createdTo(Auth::user()->{config('watchdog.user.email_column')})) {
+                if ($invite->usageRestrictedToEmail(Auth::user()->{config('watchdog.user.email_column')})) {
                     Watchdog::redeem($invite_code);
                     return $next($request);
                 } else {

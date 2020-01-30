@@ -45,7 +45,7 @@ class Invite extends Model
      */
     public function canBeRedeemed()
     {
-        return ! $this->isExpired() and ! $this->isSoldOut() and ! $this->isForSpecificUser();
+        return ! $this->isExpired() and ! $this->isSoldOut() and ! $this->hasRestrictedUsage();
     }
 
     /**
@@ -53,7 +53,7 @@ class Invite extends Model
      * @param $email
      * @return bool
      */
-    public function createdTo($email)
+    public function usageRestrictedToEmail($email)
     {
         return $this->to === $email;
     }
@@ -62,7 +62,7 @@ class Invite extends Model
      * Check if an invite is usable for only one person.
      * @return bool
      */
-    public function isForSpecificUser()
+    public function hasRestrictedUsage()
     {
         return ! is_null($this->to);
     }
