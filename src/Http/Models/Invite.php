@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Junges\Watchdog\Events\InviteCreatedEvent;
 
+/**
+ * Class Invite
+ * @method static Builder usedOnce() All invites used once.
+ * @method static Builder neverUsed() All never used invites.
+ * @method static Builder mostUsed() The most used invite.
+ * @method static Builder expired() All expired invites.
+ * @method static Builder soldOut() All sold out invites.
+ */
 class Invite extends Model
 {
     protected $table;
@@ -98,7 +106,7 @@ class Invite extends Model
      * @param Builder $query
      * @return Builder
      */
-    public function scopeNotUsed(Builder $query) : Builder
+    public function scopeNeverUsed(Builder $query) : Builder
     {
         return $query->where('uses', '=', 0);
     }
@@ -110,7 +118,7 @@ class Invite extends Model
      */
     public function scopeMostUsed(Builder $query) : Builder
     {
-        return $query->max('uses');
+        return $query->orderBy('uses','desc')->limit(1);
     }
 
     /**
