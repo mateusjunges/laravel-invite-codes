@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Junges\Watchdog\Contracts\WatchdogContract;
 use Junges\Watchdog\Exceptions\DuplicateInviteException;
 use Junges\Watchdog\Exceptions\ExpiredInviteException;
 use Junges\Watchdog\Exceptions\InvalidInviteException;
@@ -22,14 +21,32 @@ class Watchdog
     protected Carbon $expires_at;
 
     /**
+     * @param $name
+     * @param $arguments
+     * @return Watchdog
+     * @throws InviteMustBeAbleToBeRedeemedException
+     */
+    public function __call($name, $arguments) : Watchdog
+    {
+        if (method_exists($this, $name)) {
+            $this->{$name}($arguments);
+        } else {
+            if (preg_match("/canBeUsed[0-9]*Times/", $name)){
+                preg_match("/\d+/", $name, $max_usages);
+               return $this->maxUsages($max_usages[0]);
+            }
+        }
+    }
+
+    /**
      * @param $code
-     * @return Watchdog|void
+     * @return bool
      * @throws ExpiredInviteException
      * @throws InvalidInviteException
      * @throws InviteForAnotherPersonException
      * @throws SoldOutException
      */
-    public function redeem(string $code) : Watchdog
+    public function redeem(string $code) : bool
     {
         try {
             $model = app(config('watchdog.models.invite_model'));
@@ -41,7 +58,7 @@ class Watchdog
         if ($this->inviteCanBeRedeemed($invite)) {
             /*** @var Invite $invite */
             $invite->increment('uses');
-            return $this;
+            return true;
         }
     }
 
@@ -72,11 +89,21 @@ class Watchdog
     }
 
     /**
+     * @throws InviteMustBeAbleToBeRedeemedException
+     */
+    public function canBeUsedOnce() : Watchdog
+    {
+        $this->maxUsages(1);
+
+        return $this;
+    }
+
+    /**
      * Set the user who can use this invite.
      * @param string $email
      * @return $this
      */
-    public function to(string $email) : Watchdog
+    public function restrictUsageTo(string $email) : Watchdog
     {
         $this->to = $email;
         return $this;
@@ -124,7 +151,7 @@ class Watchdog
             'code' => Str::upper(Str::random(16)),
             'to' => $this->to,
             'expires_at' => $this->expires_at,
-            'max_usages' => $this->max_usages,
+            'max_usages' => $this->max_usages ?? null,
         ]);
     }
 
@@ -160,7 +187,7 @@ class Watchdog
      */
     private function inviteCanBeRedeemed(Invite $invite, string $email = null)
     {
-        if ($invite->isForSpecificUser() and $invite->createdTo($email)) {
+        if ($invite->hasRestrictedUsage() and $invite->usageRestrictedToEmail($email)) {
             throw new InviteForAnotherPersonException('This invite is not for you.');
         }
 
