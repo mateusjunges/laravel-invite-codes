@@ -17,10 +17,10 @@ use Junges\Watchdog\Http\Models\Invite;
 
 class Watchdog
 {
-    private int $allowed_redemptions;
-    private string $to;
-    private Carbon $expires_at;
-    private string $code;
+    protected int $allowed_redemptions;
+    protected $to = null;
+    protected Carbon $expires_at;
+
 
     /**
      * @param $code
@@ -55,16 +55,16 @@ class Watchdog
 
     /**
      * Set the number of allowed redemptions.
-     * @param int $number
+     * @param int $usages
      * @return Watchdog
      * @throws InviteMustBeAbleToBeRedeemedException
      */
-    public function maxUsages(int $number  = 1) : Watchdog
+    public function maxUsages(int $usages  = 1) : Watchdog
     {
-        if ($number < 1) {
+        if ($usages < 1) {
             throw new InviteMustBeAbleToBeRedeemedException();
         } else {
-            $this->allowed_redemptions = $number;
+            $this->allowed_redemptions = $usages;
         }
 
         return $this;
@@ -75,7 +75,7 @@ class Watchdog
      * @param string $email
      * @return $this
      */
-    public function to(string $email)
+    public function to(string $email) : Watchdog
     {
         $this->to = $email;
         return $this;
@@ -84,7 +84,7 @@ class Watchdog
     /**
      * Set the invite expiration date.
      */
-    public function expiresAt($date)
+    public function expiresAt($date) : Watchdog
     {
         if (is_string($date)) {
             $this->expires_at = Carbon::parse($date);
@@ -100,7 +100,7 @@ class Watchdog
      * @param int $days
      * @return $this
      */
-    public function expiresIn(int $days)
+    public function expiresIn(int $days) : Watchdog
     {
         $expires_at = Carbon::now(config('app.timezone'))->addDays($days)->endOfDay();
 
@@ -115,7 +115,9 @@ class Watchdog
      */
     public function save() : Invite
     {
-        $invite = Invite::create([
+        $model = app(config('watchdog.models.invite_model'));
+
+        $invite = $model->create([
             'code' => Str::upper(Str::random(16)),
             'to' => $this->to,
             'expires_at' => $this->expires_at,
@@ -134,7 +136,7 @@ class Watchdog
     {
         $invites = collect();
 
-        if (! is_null($quantity) and $quantity > 1) {
+        if (! empty($this->to) and $quantity > 1) {
             throw DuplicateInviteException::forEmail();
         }
 
@@ -157,15 +159,18 @@ class Watchdog
      */
     private function inviteCanBeRedeemed(Invite $invite, string $email = null)
     {
-        if ($invite->isForSpecificUser() and $invite->createdFor($email)) {
+        if ($invite->isForSpecificUser() and $invite->createdTo($email)) {
             throw new InviteForAnotherPersonException('This invite is not for you.');
         }
+
         if ($invite->isSoldOut()) {
             throw new SoldOutException('This invite can\'t be used anymore');
         }
+
         if ($invite->isExpired()) {
             throw new ExpiredInviteException('This invite has been expired.');
         }
+
         return true;
     }
 }

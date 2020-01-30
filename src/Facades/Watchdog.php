@@ -10,14 +10,14 @@ use Junges\Watchdog\Http\Models\Invite;
 /**
  * Class Watchdog
  * @package Junges\Watchdog\Facades
- * @method static $this redeem(string $code)
- * @method static $this create()
- * @method static $this maxUsages(int $number = null)
- * @method static $this to(string $email)
- * @method static $this expiresAt($date)
- * @method static $this expiresIn(int $days)
- * @method static Invite save()
- * @method static Collection make(int $quantity)
+ * @method static $this redeem(string $code) Redeem an invite code.
+ * @method static $this create() Create a invite code.
+ * @method static $this maxUsages(int $usages = null) Set the max allowed usages for invite codes.
+ * @method static $this to(string $email) Set the user who can use the invite code.
+ * @method static $this expiresAt($date) Set the invite code expiration date.
+ * @method static $this expiresIn(int $days) Set the invite code expiration date to $days from now.
+ * @method static Invite save() Save the invite code.
+ * @method static Collection make(int $quantity) Save $quantity invite codes.
  */
 class Watchdog extends Facade
 {
