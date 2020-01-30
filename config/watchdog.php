@@ -30,5 +30,18 @@ return [
      */
     "tables" => [
         "invites_table" => "invites"
+    ],
+
+    /*
+   |--------------------------------------------------------------------------
+   | User
+   |--------------------------------------------------------------------------
+   | To use the ProtectedByInviteCode middleware provided by this package, you need to
+   | specify the email column you use in the model you use for authentication.
+   | If not specified, only invite code with no use restrictions can be used in this middleware.
+   |
+    */
+    "user" => [
+        "email_column" => "email"
     ]
 ];
