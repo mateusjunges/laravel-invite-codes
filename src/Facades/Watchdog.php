@@ -2,7 +2,6 @@
 
 namespace Junges\Watchdog\Facades;
 
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
 use Junges\Watchdog\Http\Models\Invite;
