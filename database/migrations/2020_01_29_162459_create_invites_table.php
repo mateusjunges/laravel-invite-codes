@@ -16,7 +16,7 @@ class CreateInvitesTable extends Migration
         Schema::create('invites', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code')->unique();
-            $table->string('max_usages')->default(1);
+            $table->integer('max_usages')->nullable();
             $table->string('to')->nullable();
             $table->integer('uses')->default(0);
             $table->timestamp('expires_at')->nullable();
