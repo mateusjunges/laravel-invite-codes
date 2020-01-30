@@ -4,11 +4,14 @@ namespace Junges\Watchdog;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Junges\Watchdog\Contracts\WatchdogContract;
+use Junges\Watchdog\Exceptions\DuplicateInviteException;
 use Junges\Watchdog\Exceptions\ExpiredInviteException;
 use Junges\Watchdog\Exceptions\InvalidInviteException;
 use Junges\Watchdog\Exceptions\InviteForAnotherPersonException;
+use Junges\Watchdog\Exceptions\InviteMustBeAbleToBeRedeemedException;
 use Junges\Watchdog\Exceptions\SoldOutException;
 use Junges\Watchdog\Http\Models\Invite;
 
@@ -27,7 +30,7 @@ class Watchdog
      * @throws InviteForAnotherPersonException
      * @throws SoldOutException
      */
-    public function redeem($code) : Watchdog
+    public function redeem(string $code) : Watchdog
     {
         try {
             $invite = Invite::where('code', Str::upper($code))->firstOrFail();
@@ -43,24 +46,23 @@ class Watchdog
 
     /**
      * Create a new invite.
-     * @param string|null $code
      * @return Watchdog
      */
-    public function create(string $code = null) : Watchdog
+    public function create() : Watchdog
     {
-        $this->code = $code ?? Str::random(16);
         return $this;
     }
 
     /**
      * Set the number of allowed redemptions.
-     * @param int|null $number
+     * @param int $number
      * @return Watchdog
+     * @throws InviteMustBeAbleToBeRedeemedException
      */
-    public function allowRedemption(int $number = null) : Watchdog
+    public function maxUsages(int $number  = 1) : Watchdog
     {
-        if (is_null($number)) {
-            $this->allowed_redemptions = 1;
+        if ($number < 1) {
+            throw new InviteMustBeAbleToBeRedeemedException();
         } else {
             $this->allowed_redemptions = $number;
         }
@@ -94,19 +96,55 @@ class Watchdog
     }
 
     /**
+     * Set the expiration date to $days from now.
+     * @param int $days
+     * @return $this
+     */
+    public function expiresIn(int $days)
+    {
+        $expires_at = Carbon::now(config('app.timezone'))->addDays($days)->endOfDay();
+
+        $this->expiresAt($expires_at);
+
+        return $this;
+    }
+
+    /**
      * Save the created invite.
      * @return Invite
      */
     public function save() : Invite
     {
         $invite = Invite::create([
-            'code' => $this->code,
+            'code' => Str::upper(Str::random(16)),
             'to' => $this->to,
             'expires_at' => $this->expires_at,
             'max_usages' => $this->allowed_redemptions,
         ]);
 
         return $invite;
+    }
+
+    /**
+     * @param int $quantity
+     * @return \Illuminate\Support\Collection
+     * @throws DuplicateInviteException
+     */
+    public function make(int $quantity) : Collection
+    {
+        $invites = collect();
+
+        if (! is_null($quantity) and $quantity > 1) {
+            throw DuplicateInviteException::forEmail();
+        }
+
+        while ($quantity > 0) {
+            $invite = $this->save();
+            $invites->push($invite);
+            $quantity--;
+        }
+
+        return $invites;
     }
 
     /**
@@ -117,7 +155,7 @@ class Watchdog
      * @throws InviteForAnotherPersonException
      * @throws SoldOutException
      */
-    public function inviteCanBeRedeemed(Invite $invite, string $email = null)
+    private function inviteCanBeRedeemed(Invite $invite, string $email = null)
     {
         if ($invite->isForSpecificUser() and $invite->createdFor($email)) {
             throw new InviteForAnotherPersonException('This invite is not for you.');

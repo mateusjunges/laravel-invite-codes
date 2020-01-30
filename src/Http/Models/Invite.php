@@ -23,7 +23,7 @@ class Invite extends Model
 
     protected $dispatchesEvents = array(
         'creating' => InviteCreatedEvent::class,
-    ); 
+    );
 
     public function __construct(array $attributes = [])
     {

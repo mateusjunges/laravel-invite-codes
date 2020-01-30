@@ -13,8 +13,6 @@ class WatchdogServiceProvider extends ServiceProvider
      */
     public function boot() : void
     {
-        parent::boot();
-
         $this->publishesConfig();
 
         $this->loadMigrations();
