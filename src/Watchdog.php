@@ -17,10 +17,9 @@ use Junges\Watchdog\Http\Models\Invite;
 
 class Watchdog
 {
-    protected int $allowed_redemptions;
+    protected int $max_usages;
     protected $to = null;
     protected Carbon $expires_at;
-
 
     /**
      * @param $code
@@ -39,6 +38,7 @@ class Watchdog
         }
 
         if ($this->inviteCanBeRedeemed($invite)) {
+            /*** @var Invite $invite */
             $invite->increment('uses');
             return $this;
         }
@@ -64,7 +64,7 @@ class Watchdog
         if ($usages < 1) {
             throw new InviteMustBeAbleToBeRedeemedException();
         } else {
-            $this->allowed_redemptions = $usages;
+            $this->max_usages = $usages;
         }
 
         return $this;
@@ -83,6 +83,8 @@ class Watchdog
 
     /**
      * Set the invite expiration date.
+     * @param $date
+     * @return Watchdog
      */
     public function expiresAt($date) : Watchdog
     {
@@ -117,14 +119,12 @@ class Watchdog
     {
         $model = app(config('watchdog.models.invite_model'));
 
-        $invite = $model->create([
+        return $model->create([
             'code' => Str::upper(Str::random(16)),
             'to' => $this->to,
             'expires_at' => $this->expires_at,
-            'max_usages' => $this->allowed_redemptions,
+            'max_usages' => $this->max_usages,
         ]);
-
-        return $invite;
     }
 
     /**
