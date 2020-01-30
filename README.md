@@ -11,6 +11,33 @@ This package allows you to easily manage invite codes for your Laravel applicati
 
 # Documentation
 
+## Installation
+
+To get started with Laravel Watchdog, use Composer to add the package to your project's dependencies:
+
+```bash
+composer require mateusjunges/laravel-watchdog
+```
+Or add this line in your composer.json, inside of the require section:
+```bash
+{
+    "require": {
+        "mateusjunges/laravel-watchdog": "^1.0",
+    }
+}
+```
+then run `composer install`.
+
+After installing the laravel watchdog package, register the service provider in your `config/app.php` file:
+
+> Optional in Laravel 5.5 or above
+
+```php
+'providers' => [
+    Junges\Watchdog\WatchdogEventServiceProvider::class,
+    Junges\Watchdog\WatchdogEventServiceProvider::class,
+];
+```
 
 # Tests
 Run `composer test` to test this package.
