@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Junges\Watchdog\Events\InviteRedeemedEvent;
-use Junges\Watchdog\Exceptions\DuplicateInviteException;
-use Junges\Watchdog\Exceptions\ExpiredInviteException;
-use Junges\Watchdog\Exceptions\InvalidInviteException;
-use Junges\Watchdog\Exceptions\InviteForAnotherPersonException;
+use Junges\Watchdog\Exceptions\DuplicateInviteCodeException;
+use Junges\Watchdog\Exceptions\ExpiredInviteCodeException;
+use Junges\Watchdog\Exceptions\InvalidInviteCodeException;
+use Junges\Watchdog\Exceptions\InviteWithRestrictedUsageException;
 use Junges\Watchdog\Exceptions\InviteMustBeAbleToBeRedeemedException;
 use Junges\Watchdog\Exceptions\SoldOutException;
 use Junges\Watchdog\Http\Models\Invite;
+use Symfony\Component\HttpFoundation\Response;
 
 class Watchdog
 {
@@ -42,9 +43,9 @@ class Watchdog
     /**
      * @param $code
      * @return bool
-     * @throws ExpiredInviteException
-     * @throws InvalidInviteException
-     * @throws InviteForAnotherPersonException
+     * @throws ExpiredInviteCodeException
+     * @throws InvalidInviteCodeException
+     * @throws InviteWithRestrictedUsageException
      * @throws SoldOutException
      */
     public function redeem(string $code) : bool
@@ -53,7 +54,7 @@ class Watchdog
             $model = app(config('watchdog.models.invite_model'));
             $invite = $model->where('code', Str::upper($code))->firstOrFail();
         } catch (ModelNotFoundException $exception) {
-            throw new InvalidInviteException('Your invite code is invalid');
+            throw new InvalidInviteCodeException('Your invite code is invalid');
         }
 
         if ($this->inviteCanBeRedeemed($invite)) {
@@ -161,14 +162,14 @@ class Watchdog
     /**
      * @param int $quantity
      * @return \Illuminate\Support\Collection
-     * @throws DuplicateInviteException
+     * @throws DuplicateInviteCodeException
      */
     public function make(int $quantity) : Collection
     {
         $invites = collect();
 
         if (! empty($this->to) and $quantity > 1) {
-            throw DuplicateInviteException::forEmail();
+            throw DuplicateInviteCodeException::forEmail();
         }
 
         while ($quantity > 0) {
@@ -184,22 +185,22 @@ class Watchdog
      * @param Invite $invite
      * @param string|null $email
      * @return bool
-     * @throws ExpiredInviteException
-     * @throws InviteForAnotherPersonException
+     * @throws ExpiredInviteCodeException
+     * @throws InviteWithRestrictedUsageException
      * @throws SoldOutException
      */
     private function inviteCanBeRedeemed(Invite $invite, string $email = null)
     {
         if ($invite->hasRestrictedUsage() and $invite->usageRestrictedToEmail($email)) {
-            throw new InviteForAnotherPersonException('This invite is not for you.');
+            throw new InviteWithRestrictedUsageException('This invite is not for you.', Response::HTTP_FORBIDDEN);
         }
 
         if ($invite->isSoldOut()) {
-            throw new SoldOutException('This invite can\'t be used anymore');
+            throw new SoldOutException('This invite can\'t be used anymore', Response::HTTP_FORBIDDEN);
         }
 
         if ($invite->isExpired()) {
-            throw new ExpiredInviteException('This invite has been expired.');
+            throw new ExpiredInviteCodeException('This invite has been expired.', Response::HTTP_FORBIDDEN);
         }
 
         return true;

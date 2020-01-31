@@ -195,8 +195,41 @@ This method generate the specified amount of invite codes. For example:
 
 The code above will create 10 new invite codes which can be used 10 times each, and will expire in 30 days from now.
 
+# Handling watchdog exceptions
 
+If you want to override the default `403` response, you can catch the exceptions using the laravel exception handler:
 
+```php
+public function render($request, Exception $exception)
+{
+    if ($exception instanceof \Junges\Watchdog\Exceptions\InviteWithRestrictedUsageException) {
+        //
+    }
+    if ($exception instanceof \Junges\Watchdog\Exceptions\ExpiredInviteCodeException) {
+            //
+    }
+    if ($exception instanceof \Junges\Watchdog\Exceptions\DuplicateInviteCodeException) {
+        //
+    }
+    if ($exception instanceof \Junges\Watchdog\Exceptions\InvalidInviteCodeException) {
+            //
+    }
+    if ($exception instanceof \Junges\Watchdog\Exceptions\UserLoggedOutException) {
+        //
+    }
+    if ($exception instanceof \Junges\Watchdog\Exceptions\InviteMustBeAbleToBeRedeemedException) {
+        //
+    }
+    if ($exception instanceof \Junges\Watchdog\Exceptions\SoldOutException) {
+        //
+    }
+    if ($exception instanceof \Junges\Watchdog\Exceptions\RouteProtectedByInviteCodeException) {
+        //
+    }
+    
+    return parent::render($request, $exception);
+}
+```
 
 
 

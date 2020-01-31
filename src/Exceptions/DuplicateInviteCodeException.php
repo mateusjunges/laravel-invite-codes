@@ -2,7 +2,7 @@
 
 namespace Junges\Watchdog\Exceptions;
 
-class DuplicateInviteException extends WatchdogException
+class DuplicateInviteCodeException extends WatchdogException
 {
     public static function forEmail(string $email = null)
     {
