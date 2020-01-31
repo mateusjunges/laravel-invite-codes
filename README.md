@@ -116,6 +116,88 @@ return [
 ```
 
 ## Usage
+This package provides a middleware called `ProtectedByInviteCodeMiddleware`. If you want to use it to protect your routes, you need to register it in
+your `$routeMiddleware` array, into `app/Http/Kernel.php` file:
+
+
+```php
+$routeMiddleware = [
+    'protected_by_invite_codes' => ProtectedByInviteCodeMiddleware::class,
+];
+```
+
+Now you can protect your routes using middleware rules:
+
+```php
+Route::get('some-route', function() {
+    //
+})->middleware('protected_by_invite_codes');
+```
+You can also add it to the `__construct()`, in your controllers:
+
+```php
+public function __construct()
+{
+    $this->middleware('protected_by_invite_codes');
+}
+```
+
+# Creating invite codes
+To create a new invite code, you must use the `Watchdog` facade. Here is a simple example:
+
+```php
+$invite_code = \Junges\Watchdog\Facades\Watchdog::create()
+    ->expiresAt('2020-02-01')
+    ->maxUsages(10)
+    ->restrictUsageTo('contato@mateusjunges.com')
+    ->save();
+```
+
+The code above will create a new invite code, which can be used 10 times only by a logged in user who has the specified email `contato@mateusjunges.com`.
+
+The methods you can use with the `Watchdog` facade are listed below:
+
+### Set the expiration date of your invite code
+
+To set the expiration date of your invite code you can use one of the following methods:
+
+- `expiresAt()`: This method accept a date string in `yyyy-mm-dd` format or a `Carbon` instance, and set the expiration date to the specified date.
+- `expiresIn()`: This method accept an integer, and set the expiration date to now plus the specified amount of days.
+
+### Restrict usage to some specific user:
+
+To restrict the usage of an invite code you can use the `restrictUsageTo()` method, and pass in the `email` of the user who will be able to use this invite code.
+
+### Set the maximum allowed usages for an invite code:
+
+If you want that your invite code be used a limited amount of times, you can set the max usages limit with the `maxUsages()` method, and pass an integer with the amount
+of allowed usages.
+
+Also, you can use the declarative syntax, and use the `canBeUsedXTimes()` method, where `X` is the amount of times your invite code will be usable.
+For example:
+
+- `->canBeUsed10Times()`: This invite code can be used 10 times.
+- `->canBeUsed50Times()`: This invite code can be used 50 times.
+
+> You can use any integer number you want with this method.
+
+### Create multiple invite codes
+
+If you want to create more than one invite code with the same configs, you can use the `make()` method.
+This method generate the specified amount of invite codes. For example:
+
+```php
+\Junges\Watchdog\Facades\Watchdog::create()
+    ->maxUsages(10)
+    ->expiresIn(30)
+    ->make(10);
+```
+
+The code above will create 10 new invite codes which can be used 10 times each, and will expire in 30 days from now.
+
+
+
+
 
 
 # Tests
