@@ -5,7 +5,9 @@ namespace Junges\Watchdog;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Junges\Watchdog\Contracts\WatchdogContract;
 use Junges\Watchdog\Events\InviteRedeemedEvent;
 use Junges\Watchdog\Exceptions\DuplicateInviteCodeException;
 use Junges\Watchdog\Exceptions\ExpiredInviteCodeException;
@@ -13,10 +15,11 @@ use Junges\Watchdog\Exceptions\InvalidInviteCodeException;
 use Junges\Watchdog\Exceptions\InviteWithRestrictedUsageException;
 use Junges\Watchdog\Exceptions\InviteMustBeAbleToBeRedeemedException;
 use Junges\Watchdog\Exceptions\SoldOutException;
+use Junges\Watchdog\Exceptions\UserLoggedOutException;
 use Junges\Watchdog\Http\Models\Invite;
 use Symfony\Component\HttpFoundation\Response;
 
-class Watchdog
+class Watchdog implements WatchdogContract
 {
     protected int $max_usages;
     protected $to = null;
@@ -41,12 +44,13 @@ class Watchdog
     }
 
     /**
-     * @param $code
+     * @param string $code
      * @return bool
      * @throws ExpiredInviteCodeException
      * @throws InvalidInviteCodeException
      * @throws InviteWithRestrictedUsageException
      * @throws SoldOutException
+     * @throws UserLoggedOutException
      */
     public function redeem(string $code) : bool
     {
@@ -93,6 +97,7 @@ class Watchdog
     }
 
     /**
+     * Set the max usages amount to one.
      * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function canBeUsedOnce() : Watchdog
@@ -188,9 +193,14 @@ class Watchdog
      * @throws ExpiredInviteCodeException
      * @throws InviteWithRestrictedUsageException
      * @throws SoldOutException
+     * @throws UserLoggedOutException
      */
     private function inviteCanBeRedeemed(Invite $invite, string $email = null)
     {
+        if ($invite->hasRestrictedUsage() and ! Auth::check()) {
+            throw new UserLoggedOutException('You must be logged in to use this invite code.');
+        }
+
         if ($invite->hasRestrictedUsage() and $invite->usageRestrictedToEmail($email)) {
             throw new InviteWithRestrictedUsageException('This invite is not for you.', Response::HTTP_FORBIDDEN);
         }

@@ -195,6 +195,14 @@ This method generate the specified amount of invite codes. For example:
 
 The code above will create 10 new invite codes which can be used 10 times each, and will expire in 30 days from now.
 
+# Redeeming invite codes
+To redeem a invite code, you can use the `redeem` method:
+
+```php
+\Junges\Watchdog\Facades\Watchdog::redeem('YOUR-INVITE-CODE');
+```
+When any invite is redeemed, the `InviteRedeemedEvent` will be dispatched.
+
 # Handling watchdog exceptions
 
 If you want to override the default `403` response, you can catch the exceptions using the laravel exception handler:
@@ -230,7 +238,6 @@ public function render($request, Exception $exception)
     return parent::render($request, $exception);
 }
 ```
-
 
 
 # Tests

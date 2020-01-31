@@ -5,6 +5,7 @@ namespace Junges\Watchdog\Http\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Junges\Watchdog\Contracts\InviteContract;
 use Junges\Watchdog\Events\InviteCreatedEvent;
 
 /**
@@ -15,7 +16,7 @@ use Junges\Watchdog\Events\InviteCreatedEvent;
  * @method static Builder expired() All expired invites.
  * @method static Builder soldOut() All sold out invites.
  */
-class Invite extends Model
+class Invite extends Model implements InviteContract
 {
     protected $table;
 
@@ -43,7 +44,7 @@ class Invite extends Model
      * Check if an invite code can be used redeemed.
      * @return bool
      */
-    public function canBeRedeemed()
+    public function canBeRedeemed() : bool
     {
         return ! $this->isExpired() and ! $this->isSoldOut() and ! $this->hasRestrictedUsage();
     }
@@ -53,7 +54,7 @@ class Invite extends Model
      * @param $email
      * @return bool
      */
-    public function usageRestrictedToEmail($email)
+    public function usageRestrictedToEmail($email) : bool
     {
         return $this->to === $email;
     }
@@ -62,7 +63,7 @@ class Invite extends Model
      * Check if an invite is usable for only one person.
      * @return bool
      */
-    public function hasRestrictedUsage()
+    public function hasRestrictedUsage() : bool
     {
         return ! is_null($this->to);
     }
