@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Junges\Watchdog\Events\InviteRedeemedEvent;
 use Junges\Watchdog\Exceptions\DuplicateInviteException;
 use Junges\Watchdog\Exceptions\ExpiredInviteException;
 use Junges\Watchdog\Exceptions\InvalidInviteException;
@@ -58,6 +59,8 @@ class Watchdog
         if ($this->inviteCanBeRedeemed($invite)) {
             /*** @var Invite $invite */
             $invite->increment('uses');
+            event(new InviteRedeemedEvent($invite));
+
             return true;
         }
     }
