@@ -1,6 +1,6 @@
 <?php
 
-namespace Junges\Watchdog\Http\Middleware;
+namespace Junges\Watchdog\Http\Middlewares;
 
 use Closure;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -11,6 +11,7 @@ use Junges\Watchdog\Exceptions\RouteProtectedByInviteCodeException;
 use Junges\Watchdog\Exceptions\UserLoggedOutException;
 use Junges\Watchdog\Facades\Watchdog;
 use Junges\Watchdog\Http\Models\Invite;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProtectedByInviteCodeMiddleware
 {
@@ -35,22 +36,22 @@ class ProtectedByInviteCodeMiddleware
                 /*** @var Invite $invite */
                 $invite = $invite_model->where('code', $invite_code)->firstOrFail();
             } catch (ModelNotFoundException $exception) {
-                throw new InvalidInviteCodeException('Your invite code is invalid');
+                throw new InvalidInviteCodeException('Your invite code is invalid', Response::HTTP_FORBIDDEN);
             }
 
             if ($invite->hasRestrictedUsage()) {
                 if (! Auth::check()) {
-                    throw new UserLoggedOutException('You must be logged in to use this invite code');
+                    throw new UserLoggedOutException('You must be logged in to use this invite code', Response::HTTP_FORBIDDEN);
                 }
                 if ($invite->usageRestrictedToEmail(Auth::user()->{config('watchdog.user.email_column')})) {
                     Watchdog::redeem($invite_code);
                     return $next($request);
                 } else {
-                    throw new InviteWithRestrictedUsageException('This invite code is not for you.');
+                    throw new InviteWithRestrictedUsageException('This invite code is not for you.', Response::HTTP_FORBIDDEN);
                 }
             }
         } else {
-            throw new RouteProtectedByInviteCodeException('This route is accessible only by using invite codes');
+            throw new RouteProtectedByInviteCodeException('This route is accessible only by using invite codes', Response::HTTP_FORBIDDEN);
         }
         return $next($request);
     }

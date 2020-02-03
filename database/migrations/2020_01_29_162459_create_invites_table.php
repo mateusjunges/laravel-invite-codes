@@ -13,7 +13,8 @@ class CreateInvitesTable extends Migration
      */
     public function up()
     {
-        Schema::create('invites', function (Blueprint $table) {
+        $table_name = config('watchdog.tables.invites_table') ?? 'invites';
+        Schema::create($table_name, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code')->unique();
             $table->integer('max_usages')->nullable();
@@ -32,6 +33,7 @@ class CreateInvitesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invites');
+        $table_name = config('watchdog.tables.invites_table') ?? 'invites';
+        Schema::dropIfExists($table_name);
     }
 }

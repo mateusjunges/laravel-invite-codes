@@ -36,7 +36,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Junges\\Invites\\InviteServiceProvider"
+                "Junges\\Watchdog\\WatchdogServiceProvider"
             ]
         }
     },
