@@ -24,7 +24,7 @@ class Watchdog implements WatchdogContract
 {
     protected int $max_usages;
     protected $to = null;
-    protected Carbon $expires_at;
+    protected $expires_at = null;
     protected $dispatch_events = true;
 
     /**
@@ -77,14 +77,15 @@ class Watchdog implements WatchdogContract
 
         if ($this->inviteCanBeRedeemed($invite)) {
             /*** @var Invite $invite */
-            $invite->increment('uses');
-
+            $invite->increment('uses', 1);
+            $invite->save();
             if ($this->shouldDispatchEvents()) {
                 event(new InviteRedeemedEvent($invite));
             }
 
             return true;
         }
+
     }
 
     /**
@@ -176,7 +177,8 @@ class Watchdog implements WatchdogContract
         return $model->create([
             'code' => Str::upper(Str::random(16)),
             'to' => $this->to,
-            'expires_at' => $this->expires_at,
+            'uses' => 0,
+            'expires_at' => $this->expires_at ?? null,
             'max_usages' => $this->max_usages ?? null,
         ]);
     }
@@ -216,18 +218,18 @@ class Watchdog implements WatchdogContract
     private function inviteCanBeRedeemed(Invite $invite, string $email = null) : bool
     {
         if ($invite->hasRestrictedUsage() and ! Auth::check()) {
-            throw new UserLoggedOutException('You must be logged in to use this invite code.');
+            throw new UserLoggedOutException('You must be logged in to use this invite code.', Response::HTTP_FORBIDDEN);
         }
 
-        if ($invite->hasRestrictedUsage() and $invite->usageRestrictedToEmail($email)) {
+        if ($invite->hasRestrictedUsage() and ! $invite->usageRestrictedToEmail(Auth::user()->{config('watchdog.user.email_column')})) {
             throw new InviteWithRestrictedUsageException('This invite is not for you.', Response::HTTP_FORBIDDEN);
         }
 
         if ($invite->hasRestrictedUsage()
             and Auth::check()
-            and $invite->usageRestrictedToEmail(Auth::user()->email)
+            and $invite->usageRestrictedToEmail(Auth::user()->{config('watchdog.user.email_column')})
             and $invite->isSoldOut()) {
-            throw new InviteAlreadyRedeemedException('This invite has been redeemed');
+            throw new InviteAlreadyRedeemedException('This invite has already been redeemed', Response::HTTP_FORBIDDEN);
         }
 
         if ($invite->isSoldOut()) {
@@ -237,7 +239,6 @@ class Watchdog implements WatchdogContract
         if ($invite->isExpired()) {
             throw new ExpiredInviteCodeException('This invite has been expired.', Response::HTTP_FORBIDDEN);
         }
-
         return true;
     }
 

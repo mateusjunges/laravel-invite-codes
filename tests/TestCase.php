@@ -2,6 +2,7 @@
 
 namespace Junges\Watchdog\Tests;
 
+use Illuminate\Database\Schema\Blueprint;
 use Junges\Watchdog\Http\Models\Invite;
 use Junges\Watchdog\WatchdogEventServiceProvider;
 use Junges\Watchdog\WatchdogServiceProvider;
@@ -34,8 +35,13 @@ class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+        $app['config']->set('watchdog.user.email_column', 'email');
 
         $app['config']->set('views.path', [__DIR__.'/resources/views']);
+
+        // Use test model for users provider
+        $app['config']->set('auth.providers.users.model', TestUser::class);
+
     }
 
     private function setUpDatabase($app)
@@ -49,6 +55,14 @@ class TestCase extends Orchestra
         include_once __DIR__.'/../database/migrations/2020_01_29_162459_create_invites_table.php';
 
         (new \CreateInvitesTable())->up();
+
+        $app['db']->connection()->getSchemaBuilder()->create('test_users', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('email');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
 }

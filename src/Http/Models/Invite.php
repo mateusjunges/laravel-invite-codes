@@ -54,7 +54,7 @@ class Invite extends Model implements InviteContract
      * @param $email
      * @return bool
      */
-    public function usageRestrictedToEmail($email): bool
+    public function usageRestrictedToEmail($email) : bool
     {
         return $this->to === $email;
     }
@@ -75,7 +75,7 @@ class Invite extends Model implements InviteContract
     public function isExpired(): bool
     {
         if (empty($this->expires_at)) {
-            return true;
+            return false;
         }
         return $this->expires_at->isPast();
     }
@@ -86,7 +86,7 @@ class Invite extends Model implements InviteContract
      */
     public function isSoldOut(): bool
     {
-        if ($this->max_usages === 0) {
+        if (is_null($this->max_usages)) {
             return false;
         }
         return $this->uses >= $this->max_usages;

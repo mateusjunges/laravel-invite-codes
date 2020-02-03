@@ -5,7 +5,9 @@ namespace Junges\Watchdog\Tests\Middlewares;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Junges\Watchdog\Facades\Watchdog;
+use Junges\Watchdog\Tests\TestUser;
 
 class WatchdogMiddlewareTest extends MiddlewareTestCase
 {
@@ -57,6 +59,53 @@ class WatchdogMiddlewareTest extends MiddlewareTestCase
         $request->merge([
             'invite_code' => $invite->code,
         ]);
+
+        $this->assertEquals(
+            $this->execMiddleware($this->protected_by_invite_codes, null, $request),
+            Response::HTTP_FORBIDDEN
+        );
+    }
+
+    public function test_if_logged_in_users_can_use_restricted_invite_codes()
+    {
+        $invite = Watchdog::create()
+            ->expiresAt(Carbon::now()->addDay(10))
+            ->restrictUsageTo('contato@mateusjunges.com')
+            ->save();
+
+        $request = new Request();
+
+        $request->merge([
+            'invite_code' => $invite->code,
+        ]);
+
+        $user = TestUser::create([
+            'email' => 'contato@mateusjunges.com',
+            'name' => 'Mateus Junges',
+        ]);
+
+        Auth::login($user);
+
+        $this->assertEquals(
+            $this->execMiddleware($this->protected_by_invite_codes, null, $request),
+            Response::HTTP_OK
+        );
+    }
+
+    public function test_if_a_logged_in_user_with_invalid_invite_code_can_not_access_protected_routes()
+    {
+        $request = new Request();
+
+        $request->merge([
+            'invite_code' => 'INVALID-INVITE-CODE',
+        ]);
+
+        $user = TestUser::create([
+            'email' => 'contato@mateusjunges.com',
+            'name' => 'Mateus Junges',
+        ]);
+
+        Auth::login($user);
 
         $this->assertEquals(
             $this->execMiddleware($this->protected_by_invite_codes, null, $request),
