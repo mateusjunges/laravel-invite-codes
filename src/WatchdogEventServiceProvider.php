@@ -2,17 +2,20 @@
 
 namespace Junges\Watchdog;
 
-use App\Listeners\InviteCreatedEventListener;
 use Illuminate\Support\ServiceProvider;
 use Junges\Watchdog\Events\InviteCreatedEvent;
+use Junges\Watchdog\Events\InviteRedeemedEvent;
 
 class WatchdogEventServiceProvider extends ServiceProvider
 {
 
     public array $listen = array(
-        InviteCreatedEvent::class => array(
-            InviteCreatedEventListener::class,
-        ),
+        InviteCreatedEvent::class => [
+
+        ],
+        InviteRedeemedEvent::class => [
+
+        ]
     );
 
     /**

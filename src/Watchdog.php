@@ -58,7 +58,7 @@ class Watchdog implements WatchdogContract
 
     /**
      * @param string $code
-     * @return bool
+     * @return Invite
      * @throws ExpiredInviteCodeException
      * @throws InvalidInviteCodeException
      * @throws InviteWithRestrictedUsageException
@@ -66,7 +66,7 @@ class Watchdog implements WatchdogContract
      * @throws UserLoggedOutException
      * @throws InviteAlreadyRedeemedException
      */
-    public function redeem(string $code) : bool
+    public function redeem(string $code) : Invite
     {
         try {
             $model = app(config('watchdog.models.invite_model'));
@@ -79,13 +79,13 @@ class Watchdog implements WatchdogContract
             /*** @var Invite $invite */
             $invite->increment('uses', 1);
             $invite->save();
+
             if ($this->shouldDispatchEvents()) {
                 event(new InviteRedeemedEvent($invite));
             }
 
-            return true;
+            return $invite;
         }
-
     }
 
     /**

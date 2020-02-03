@@ -89,7 +89,7 @@ class Invite extends Model implements InviteContract
         if (is_null($this->max_usages)) {
             return false;
         }
-        return $this->uses >= $this->max_usages;
+        return (int)$this->uses >= $this->max_usages;
     }
 
     /**

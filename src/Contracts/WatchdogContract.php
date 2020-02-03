@@ -24,14 +24,14 @@ interface WatchdogContract
 
     /**
      * @param string $code
-     * @return bool
+     * @return Invite
      * @throws ExpiredInviteCodeException
      * @throws InvalidInviteCodeException
      * @throws InviteWithRestrictedUsageException
      * @throws SoldOutException
      * @throws UserLoggedOutException
      */
-    public function redeem(string $code) : bool;
+    public function redeem(string $code) : Invite;
 
     /**
      * Create a new invite.
