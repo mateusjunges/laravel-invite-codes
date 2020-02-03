@@ -8,7 +8,7 @@ use Junges\Watchdog\Http\Models\Invite;
 
 /**
  * Class Watchdog
- * @package Junges\Watchdog\Facades
+ * @method static $this withoutEvents() Will dispatch no events.
  * @method static $this redeem(string $code) Redeem an invite code.
  * @method static $this create() Create a invite code.
  * @method static $this maxUsages(int $usages = null) Set the max allowed usages for invite codes.

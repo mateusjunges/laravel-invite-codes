@@ -15,6 +15,13 @@ use Junges\Watchdog\Watchdog;
 
 interface WatchdogContract
 {
+
+    /**
+     * If used, no events will be dispatched.
+     * @return Watchdog
+     */
+    public function withoutEvents() : Watchdog;
+
     /**
      * @param string $code
      * @return bool
@@ -24,7 +31,7 @@ interface WatchdogContract
      * @throws SoldOutException
      * @throws UserLoggedOutException
      */
-    public function redeem($code) : bool;
+    public function redeem(string $code) : bool;
 
     /**
      * Create a new invite.

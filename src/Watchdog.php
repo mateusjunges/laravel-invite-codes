@@ -12,6 +12,7 @@ use Junges\Watchdog\Events\InviteRedeemedEvent;
 use Junges\Watchdog\Exceptions\DuplicateInviteCodeException;
 use Junges\Watchdog\Exceptions\ExpiredInviteCodeException;
 use Junges\Watchdog\Exceptions\InvalidInviteCodeException;
+use Junges\Watchdog\Exceptions\InviteAlreadyRedeemedException;
 use Junges\Watchdog\Exceptions\InviteWithRestrictedUsageException;
 use Junges\Watchdog\Exceptions\InviteMustBeAbleToBeRedeemedException;
 use Junges\Watchdog\Exceptions\SoldOutException;
@@ -24,6 +25,7 @@ class Watchdog implements WatchdogContract
     protected int $max_usages;
     protected $to = null;
     protected Carbon $expires_at;
+    protected $dispatch_events = true;
 
     /**
      * @param $name
@@ -44,6 +46,17 @@ class Watchdog implements WatchdogContract
     }
 
     /**
+     * If used, no events will be dispatched.
+     * @return Watchdog
+     */
+    public function withoutEvents() : Watchdog
+    {
+        $this->dispatch_events = false;
+
+        return $this;
+    }
+
+    /**
      * @param string $code
      * @return bool
      * @throws ExpiredInviteCodeException
@@ -51,6 +64,7 @@ class Watchdog implements WatchdogContract
      * @throws InviteWithRestrictedUsageException
      * @throws SoldOutException
      * @throws UserLoggedOutException
+     * @throws InviteAlreadyRedeemedException
      */
     public function redeem(string $code) : bool
     {
@@ -64,7 +78,10 @@ class Watchdog implements WatchdogContract
         if ($this->inviteCanBeRedeemed($invite)) {
             /*** @var Invite $invite */
             $invite->increment('uses');
-            event(new InviteRedeemedEvent($invite));
+
+            if ($this->shouldDispatchEvents()) {
+                event(new InviteRedeemedEvent($invite));
+            }
 
             return true;
         }
@@ -194,8 +211,9 @@ class Watchdog implements WatchdogContract
      * @throws InviteWithRestrictedUsageException
      * @throws SoldOutException
      * @throws UserLoggedOutException
+     * @throws InviteAlreadyRedeemedException
      */
-    private function inviteCanBeRedeemed(Invite $invite, string $email = null)
+    private function inviteCanBeRedeemed(Invite $invite, string $email = null) : bool
     {
         if ($invite->hasRestrictedUsage() and ! Auth::check()) {
             throw new UserLoggedOutException('You must be logged in to use this invite code.');
@@ -203,6 +221,13 @@ class Watchdog implements WatchdogContract
 
         if ($invite->hasRestrictedUsage() and $invite->usageRestrictedToEmail($email)) {
             throw new InviteWithRestrictedUsageException('This invite is not for you.', Response::HTTP_FORBIDDEN);
+        }
+
+        if ($invite->hasRestrictedUsage()
+            and Auth::check()
+            and $invite->usageRestrictedToEmail(Auth::user()->email)
+            and $invite->isSoldOut()) {
+            throw new InviteAlreadyRedeemedException('This invite has been redeemed');
         }
 
         if ($invite->isSoldOut()) {
@@ -214,5 +239,13 @@ class Watchdog implements WatchdogContract
         }
 
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    private function shouldDispatchEvents() : bool
+    {
+        return $this->dispatch_events;
     }
 }

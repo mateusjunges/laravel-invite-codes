@@ -203,6 +203,14 @@ To redeem a invite code, you can use the `redeem` method:
 ```
 When any invite is redeemed, the `InviteRedeemedEvent` will be dispatched.
 
+## Redeeming invite codes without dispatching events
+If you want to redeem an invite codes without dispatch the `InviteRedeemedEvent`, 
+you can use the `withoutEvents()` method:
+
+```php
+\Junges\Watchdog\Facades\Watchdog::withoutEvents()->redeem('YOUR-INVITE-CODE');
+```
+
 # Handling watchdog exceptions
 
 If you want to override the default `403` response, you can catch the exceptions using the laravel exception handler:

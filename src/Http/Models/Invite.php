@@ -44,9 +44,9 @@ class Invite extends Model implements InviteContract
      * Check if an invite code can be used redeemed.
      * @return bool
      */
-    public function canBeRedeemed() : bool
+    public function canBeRedeemed(): bool
     {
-        return ! $this->isExpired() and ! $this->isSoldOut() and ! $this->hasRestrictedUsage();
+        return !$this->isExpired() and !$this->isSoldOut() and !$this->hasRestrictedUsage();
     }
 
     /**
@@ -54,7 +54,7 @@ class Invite extends Model implements InviteContract
      * @param $email
      * @return bool
      */
-    public function usageRestrictedToEmail($email) : bool
+    public function usageRestrictedToEmail($email): bool
     {
         return $this->to === $email;
     }
@@ -63,16 +63,16 @@ class Invite extends Model implements InviteContract
      * Check if an invite is usable for only one person.
      * @return bool
      */
-    public function hasRestrictedUsage() : bool
+    public function hasRestrictedUsage(): bool
     {
-        return ! is_null($this->to);
+        return !is_null($this->to);
     }
 
     /**
      * Checks if the invite code is expired.
      * @return bool
      */
-    public function isExpired() : bool
+    public function isExpired(): bool
     {
         if (empty($this->expires_at)) {
             return true;
@@ -84,7 +84,7 @@ class Invite extends Model implements InviteContract
      * Check if the invite code has been sold out.
      * @return bool
      */
-    public function isSoldOut() : bool
+    public function isSoldOut(): bool
     {
         if ($this->max_usages === 0) {
             return false;
@@ -97,7 +97,7 @@ class Invite extends Model implements InviteContract
      * @param Builder $query
      * @return Builder
      */
-    public function scopeUsedOnce(Builder $query) : Builder
+    public function scopeUsedOnce(Builder $query): Builder
     {
         return $query->where('uses', '=', 1);
     }
@@ -107,7 +107,7 @@ class Invite extends Model implements InviteContract
      * @param Builder $query
      * @return Builder
      */
-    public function scopeNeverUsed(Builder $query) : Builder
+    public function scopeNeverUsed(Builder $query): Builder
     {
         return $query->where('uses', '=', 0);
     }
@@ -117,9 +117,9 @@ class Invite extends Model implements InviteContract
      * @param Builder $query
      * @return Builder
      */
-    public function scopeMostUsed(Builder $query) : Builder
+    public function scopeMostUsed(Builder $query): Builder
     {
-        return $query->orderBy('uses','desc')->limit(1);
+        return $query->orderBy('uses', 'desc')->limit(1);
     }
 
     /**
@@ -127,7 +127,7 @@ class Invite extends Model implements InviteContract
      * @param Builder $query
      * @return Builder
      */
-    public function scopeExpired(Builder $query) : Builder
+    public function scopeExpired(Builder $query): Builder
     {
         return $query->where('expires_at', '<', Carbon::now(config('app.timezone')));
     }
@@ -136,11 +136,9 @@ class Invite extends Model implements InviteContract
      * @param Builder $query
      * @return Builder
      */
-    public function scopeSoldOut(Builder $query) : Builder
+    public function scopeSoldOut(Builder $query): Builder
     {
         return $query->whereNotNull('max_usages')
             ->whereColumn('uses', '=', 'max_usages');
     }
-
-
 }
