@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Facade;
 use Junges\Watchdog\Http\Models\Invite;
 
 /**
- * Class Watchdog
+ * Class Watchdog.
  * @method static $this withoutEvents() Will dispatch no events.
  * @method static $this redeem(string $code) Redeem an invite code.
  * @method static $this create() Create a invite code.
@@ -18,11 +18,10 @@ use Junges\Watchdog\Http\Models\Invite;
  * @method static Invite save() Save the invite code.
  * @method static Collection make(int $quantity) Save $quantity invite codes.
  * @method static $this canBeUsedOnce()
- *
  */
 class Watchdog extends Facade
 {
-    public static function getFacadeAccessor() : string
+    public static function getFacadeAccessor(): string
     {
         return 'watchdog';
     }

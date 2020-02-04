@@ -20,7 +20,7 @@ class DeleteExpiredInvitesCommand extends Command
      *
      * @var string
      */
-    protected $description = "Delete all expired invites from your database";
+    protected $description = 'Delete all expired invites from your database';
 
     /**
      * Create a new command instance.

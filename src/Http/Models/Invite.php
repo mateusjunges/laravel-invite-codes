@@ -9,7 +9,7 @@ use Junges\Watchdog\Contracts\InviteContract;
 use Junges\Watchdog\Events\InviteCreatedEvent;
 
 /**
- * Class Invite
+ * Class Invite.
  * @method static Builder usedOnce() All invites used once.
  * @method static Builder neverUsed() All never used invites.
  * @method static Builder mostUsed() The most used invite.
@@ -20,19 +20,19 @@ class Invite extends Model implements InviteContract
 {
     protected $table;
 
-    protected $dates = array('deleted_at', 'expires_at');
+    protected $dates = ['deleted_at', 'expires_at'];
 
-    protected $fillable = array(
+    protected $fillable = [
         'code',
         'uses',
         'max_usages',
         'to',
-        'expires_at'
-    );
+        'expires_at',
+    ];
 
-    protected $dispatchesEvents = array(
+    protected $dispatchesEvents = [
         'creating' => InviteCreatedEvent::class,
-    );
+    ];
 
     public function __construct(array $attributes = [])
     {
@@ -46,7 +46,7 @@ class Invite extends Model implements InviteContract
      */
     public function canBeRedeemed(): bool
     {
-        return !$this->isExpired() and !$this->isSoldOut() and !$this->hasRestrictedUsage();
+        return ! $this->isExpired() and ! $this->isSoldOut() and ! $this->hasRestrictedUsage();
     }
 
     /**
@@ -54,7 +54,7 @@ class Invite extends Model implements InviteContract
      * @param $email
      * @return bool
      */
-    public function usageRestrictedToEmail($email) : bool
+    public function usageRestrictedToEmail($email): bool
     {
         return $this->to === $email;
     }
@@ -65,7 +65,7 @@ class Invite extends Model implements InviteContract
      */
     public function hasRestrictedUsage(): bool
     {
-        return !is_null($this->to);
+        return ! is_null($this->to);
     }
 
     /**
@@ -77,6 +77,7 @@ class Invite extends Model implements InviteContract
         if (empty($this->expires_at)) {
             return false;
         }
+
         return $this->expires_at->isPast();
     }
 
@@ -89,7 +90,8 @@ class Invite extends Model implements InviteContract
         if (is_null($this->max_usages)) {
             return false;
         }
-        return (int)$this->uses >= $this->max_usages;
+
+        return (int) $this->uses >= $this->max_usages;
     }
 
     /**
