@@ -1,5 +1,5 @@
 {
-    "name": "mateusjunges/laravel-invites",
+    "name": "mateusjunges/laravel-watchdog",
     "description": "This package allows you to easily manage invite codes for your Laravel application.",
     "type": "library",
     "license": "MIT",
