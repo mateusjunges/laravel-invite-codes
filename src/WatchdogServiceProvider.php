@@ -3,6 +3,7 @@
 namespace Junges\Watchdog;
 
 use Illuminate\Support\ServiceProvider;
+use Junges\Watchdog\Console\Commands\DeleteExpiredInvitesCommand;
 
 class WatchdogServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,8 @@ class WatchdogServiceProvider extends ServiceProvider
         $this->publishesConfig();
 
         $this->loadMigrations();
+
+        $this->loadCommands();
     }
 
     /**
@@ -43,6 +46,15 @@ class WatchdogServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../database/migrations' => database_path('migrations/vendor/junges/watchdog'),
         ], 'watchdog-migrations');
+    }
+
+    private function loadCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                DeleteExpiredInvitesCommand::class
+            ]);
+        }
     }
 
     /**

@@ -11,6 +11,22 @@ This package allows you to easily manage invite codes for your Laravel applicati
 
 # Documentation
 
+- [Installation](#installation)
+- [Usage](#usage)
+    - [Creating invite codes](#creating-invite-codes)
+        - [Set the expiration date of your invite code](#set-the-expiration-date-of-your-invite-code)
+        - [Restrict usage to some specific user](#restrict-usage-to-some-specific-user)
+        - [Set the maximum allowed usages for an invite code](#set-the-maximum-allowed-usages-for-an-invite-code)
+    - [Create multiple invite codes](#create-multiple-invite-codes)
+    - [Redeeming invite codes](#redeeming-invite-codes)
+    - [Redeeming invite codes without dispatching events](#redeeming-invite-codes-without-dispatching-events)
+- [Handling watchdog exceptions](#handling-watchdog-exceptions)
+- [Using artisan commands](#using-artisan-commands)
+- [Tests](#tests)
+- [Contributing](#contributing)
+- [Changelog](#changelog)
+- [License](#license)
+
 ## Installation
 
 To get started with Laravel Watchdog, use Composer to add the package to your project's dependencies:
@@ -115,7 +131,7 @@ return [
 ];
 ```
 
-## Usage
+# Usage
 This package provides a middleware called `ProtectedByInviteCodeMiddleware`. If you want to use it to protect your routes, you need to register it in
 your `$routeMiddleware` array, into `app/Http/Kernel.php` file:
 
@@ -142,7 +158,7 @@ public function __construct()
 }
 ```
 
-# Creating invite codes
+## Creating invite codes
 To create a new invite code, you must use the `Watchdog` facade. Here is a simple example:
 
 ```php
@@ -181,7 +197,7 @@ For example:
 
 > You can use any integer number you want with this method.
 
-### Create multiple invite codes
+## Create multiple invite codes
 
 If you want to create more than one invite code with the same configs, you can use the `make()` method.
 This method generate the specified amount of invite codes. For example:
@@ -195,7 +211,7 @@ This method generate the specified amount of invite codes. For example:
 
 The code above will create 10 new invite codes which can be used 10 times each, and will expire in 30 days from now.
 
-# Redeeming invite codes
+## Redeeming invite codes
 To redeem a invite code, you can use the `redeem` method:
 
 ```php
@@ -246,6 +262,16 @@ public function render($request, Exception $exception)
     return parent::render($request, $exception);
 }
 ```
+
+# Using artisan commands
+
+This package also provides a command to delete all expired invites from your database. You can use it like this:
+
+```php
+\Illuminate\Support\Facades\Artisan::call('watchdog:clear');
+```
+
+After all expired invites has been deleted, it will dispatch the `DeletedExpiredInvitesEvent`.
 
 
 # Tests
