@@ -4,7 +4,6 @@ namespace Junges\Watchdog\Tests\Middlewares;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Junges\Watchdog\Exceptions\RouteProtectedByInviteCodeException;
 use Junges\Watchdog\Exceptions\WatchdogException;
 use Junges\Watchdog\Http\Middlewares\ProtectedByInviteCodeMiddleware;
 use Junges\Watchdog\Tests\TestCase;

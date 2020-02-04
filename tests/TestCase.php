@@ -41,7 +41,6 @@ class TestCase extends Orchestra
 
         // Use test model for users provider
         $app['config']->set('auth.providers.users.model', TestUser::class);
-
     }
 
     private function setUpDatabase($app)
@@ -64,5 +63,4 @@ class TestCase extends Orchestra
             $table->softDeletes();
         });
     }
-
 }

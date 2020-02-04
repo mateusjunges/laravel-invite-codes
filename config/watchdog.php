@@ -11,8 +11,8 @@ return [
     | needed, but you can use whatever you like.
     |
      */
-    "models" => [
-        "invite_model" => \Junges\Watchdog\Http\Models\Invite::class,
+    'models' => [
+        'invite_model' => \Junges\Watchdog\Http\Models\Invite::class,
     ],
 
     /*
@@ -28,8 +28,8 @@ return [
     | If you want to change this tables, please keep the basic structure unchanged.
     |
      */
-    "tables" => [
-        "invites_table" => "invites"
+    'tables' => [
+        'invites_table' => 'invites',
     ],
 
     /*
@@ -41,7 +41,7 @@ return [
    | If not specified, only invite code with no use restrictions can be used in this middleware.
    |
     */
-    "user" => [
-        "email_column" => "email"
-    ]
+    'user' => [
+        'email_column' => 'email',
+    ],
 ];

@@ -11,7 +11,6 @@ class DeletedExpiredInvitesEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-
     /**
      * Create a new event instance.
      *
@@ -19,6 +18,5 @@ class DeletedExpiredInvitesEvent
      */
     public function __construct()
     {
-
     }
 }

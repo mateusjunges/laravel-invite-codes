@@ -7,12 +7,10 @@ use Junges\Watchdog\Console\Commands\DeleteExpiredInvitesCommand;
 
 class WatchdogServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap services.
-     *
      */
-    public function boot() : void
+    public function boot(): void
     {
         $this->publishesConfig();
 
@@ -24,17 +22,17 @@ class WatchdogServiceProvider extends ServiceProvider
     /**
      * Load and publishes the package configuration file.
      */
-    private function publishesConfig() : void
+    private function publishesConfig(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/watchdog.php' => config_path('watchdog.php')
+            __DIR__.'/../config/watchdog.php' => config_path('watchdog.php'),
         ], 'watchdog-config');
     }
 
     /**
      * Load the package migrations.
      */
-    private function loadMigrations() : void
+    private function loadMigrations(): void
     {
         $custom_migrations = config('watchdog.custom_migrations') ?? false;
 
@@ -52,16 +50,15 @@ class WatchdogServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                DeleteExpiredInvitesCommand::class
+                DeleteExpiredInvitesCommand::class,
             ]);
         }
     }
 
     /**
      * Register any application services.
-     *
      */
-    public function register() : void
+    public function register(): void
     {
         $this->app->bind('watchdog', Watchdog::class);
     }

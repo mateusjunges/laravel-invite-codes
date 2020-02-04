@@ -15,12 +15,11 @@ use Junges\Watchdog\Watchdog;
 
 interface WatchdogContract
 {
-
     /**
      * If used, no events will be dispatched.
      * @return Watchdog
      */
-    public function withoutEvents() : Watchdog;
+    public function withoutEvents(): Watchdog;
 
     /**
      * @param string $code
@@ -31,13 +30,13 @@ interface WatchdogContract
      * @throws SoldOutException
      * @throws UserLoggedOutException
      */
-    public function redeem(string $code) : Invite;
+    public function redeem(string $code): Invite;
 
     /**
      * Create a new invite.
      * @return Watchdog
      */
-    public function create() : Watchdog;
+    public function create(): Watchdog;
 
     /**
      * Set the number of allowed redemptions.
@@ -45,31 +44,31 @@ interface WatchdogContract
      * @return Watchdog
      * @throws InviteMustBeAbleToBeRedeemedException
      */
-    public function maxUsages(int $usages = 1) : Watchdog;
+    public function maxUsages(int $usages = 1): Watchdog;
 
     /**
      * Set the max usages amount to one.
      * @throws InviteMustBeAbleToBeRedeemedException
      */
-    public function canBeUsedOnce() : Watchdog;
+    public function canBeUsedOnce(): Watchdog;
 
     /**
      * Set the user who can use this invite.
      * @param string $email
      * @return Watchdog
      */
-    public function restrictUsageTo(string $email) : Watchdog;
+    public function restrictUsageTo(string $email): Watchdog;
 
     /**
      * Save the created invite.
      * @return Invite
      */
-    public function save() : Invite;
+    public function save(): Invite;
 
     /**
      * @param int $quantity
      * @return \Illuminate\Support\Collection
      * @throws DuplicateInviteCodeException
      */
-    public function make(int $quantity) : Collection;
+    public function make(int $quantity): Collection;
 }

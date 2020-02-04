@@ -13,8 +13,8 @@ use Junges\Watchdog\Exceptions\DuplicateInviteCodeException;
 use Junges\Watchdog\Exceptions\ExpiredInviteCodeException;
 use Junges\Watchdog\Exceptions\InvalidInviteCodeException;
 use Junges\Watchdog\Exceptions\InviteAlreadyRedeemedException;
-use Junges\Watchdog\Exceptions\InviteWithRestrictedUsageException;
 use Junges\Watchdog\Exceptions\InviteMustBeAbleToBeRedeemedException;
+use Junges\Watchdog\Exceptions\InviteWithRestrictedUsageException;
 use Junges\Watchdog\Exceptions\SoldOutException;
 use Junges\Watchdog\Exceptions\UserLoggedOutException;
 use Junges\Watchdog\Http\Models\Invite;
@@ -33,14 +33,15 @@ class Watchdog implements WatchdogContract
      * @return Watchdog
      * @throws InviteMustBeAbleToBeRedeemedException
      */
-    public function __call($name, $arguments) : Watchdog
+    public function __call($name, $arguments): self
     {
         if (method_exists($this, $name)) {
             $this->{$name}($arguments);
         } else {
-            if (preg_match("/canBeUsed[0-9]*Times/", $name)){
+            if (preg_match('/canBeUsed[0-9]*Times/', $name)) {
                 preg_match("/\d+/", $name, $max_usages);
-               return $this->maxUsages($max_usages[0]);
+
+                return $this->maxUsages($max_usages[0]);
             }
         }
     }
@@ -49,7 +50,7 @@ class Watchdog implements WatchdogContract
      * If used, no events will be dispatched.
      * @return Watchdog
      */
-    public function withoutEvents() : Watchdog
+    public function withoutEvents(): self
     {
         $this->dispatch_events = false;
 
@@ -66,7 +67,7 @@ class Watchdog implements WatchdogContract
      * @throws UserLoggedOutException
      * @throws InviteAlreadyRedeemedException
      */
-    public function redeem(string $code) : Invite
+    public function redeem(string $code): Invite
     {
         try {
             $model = app(config('watchdog.models.invite_model'));
@@ -92,7 +93,7 @@ class Watchdog implements WatchdogContract
      * Create a new invite.
      * @return Watchdog
      */
-    public function create() : Watchdog
+    public function create(): self
     {
         return $this;
     }
@@ -103,7 +104,7 @@ class Watchdog implements WatchdogContract
      * @return Watchdog
      * @throws InviteMustBeAbleToBeRedeemedException
      */
-    public function maxUsages(int $usages  = 1) : Watchdog
+    public function maxUsages(int $usages = 1): self
     {
         if ($usages < 1) {
             throw new InviteMustBeAbleToBeRedeemedException();
@@ -118,7 +119,7 @@ class Watchdog implements WatchdogContract
      * Set the max usages amount to one.
      * @throws InviteMustBeAbleToBeRedeemedException
      */
-    public function canBeUsedOnce() : Watchdog
+    public function canBeUsedOnce(): self
     {
         $this->maxUsages(1);
 
@@ -130,9 +131,10 @@ class Watchdog implements WatchdogContract
      * @param string $email
      * @return $this
      */
-    public function restrictUsageTo(string $email) : Watchdog
+    public function restrictUsageTo(string $email): self
     {
         $this->to = $email;
+
         return $this;
     }
 
@@ -141,11 +143,11 @@ class Watchdog implements WatchdogContract
      * @param $date
      * @return Watchdog
      */
-    public function expiresAt($date) : Watchdog
+    public function expiresAt($date): self
     {
         if (is_string($date)) {
             $this->expires_at = Carbon::parse($date);
-        }else if ($date instanceof Carbon) {
+        } elseif ($date instanceof Carbon) {
             $this->expires_at = $date;
         }
 
@@ -157,7 +159,7 @@ class Watchdog implements WatchdogContract
      * @param int $days
      * @return $this
      */
-    public function expiresIn(int $days) : Watchdog
+    public function expiresIn(int $days): self
     {
         $expires_at = Carbon::now(config('app.timezone'))->addDays($days)->endOfDay();
 
@@ -170,7 +172,7 @@ class Watchdog implements WatchdogContract
      * Save the created invite.
      * @return Invite
      */
-    public function save() : Invite
+    public function save(): Invite
     {
         $model = app(config('watchdog.models.invite_model'));
 
@@ -188,7 +190,7 @@ class Watchdog implements WatchdogContract
      * @return \Illuminate\Support\Collection
      * @throws DuplicateInviteCodeException
      */
-    public function make(int $quantity) : Collection
+    public function make(int $quantity): Collection
     {
         $invites = collect();
 
@@ -215,7 +217,7 @@ class Watchdog implements WatchdogContract
      * @throws UserLoggedOutException
      * @throws InviteAlreadyRedeemedException
      */
-    private function inviteCanBeRedeemed(Invite $invite, string $email = null) : bool
+    private function inviteCanBeRedeemed(Invite $invite, string $email = null): bool
     {
         if ($invite->hasRestrictedUsage() and ! Auth::check()) {
             throw new UserLoggedOutException('You must be logged in to use this invite code.', Response::HTTP_FORBIDDEN);
@@ -239,13 +241,14 @@ class Watchdog implements WatchdogContract
         if ($invite->isExpired()) {
             throw new ExpiredInviteCodeException('This invite has been expired.', Response::HTTP_FORBIDDEN);
         }
+
         return true;
     }
 
     /**
      * @return bool
      */
-    private function shouldDispatchEvents() : bool
+    private function shouldDispatchEvents(): bool
     {
         return $this->dispatch_events;
     }

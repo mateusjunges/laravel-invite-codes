@@ -32,7 +32,7 @@ class ProtectedByInviteCodeMiddleware
             $invite_code = $request->input('invite_code');
             $invite_model = app(config('watchdog.models.invite_model'));
 
-            try{
+            try {
                 /*** @var Invite $invite */
                 $invite = $invite_model->where('code', $invite_code)->firstOrFail();
             } catch (ModelNotFoundException $exception) {
@@ -45,6 +45,7 @@ class ProtectedByInviteCodeMiddleware
                 }
                 if ($invite->usageRestrictedToEmail(Auth::user()->{config('watchdog.user.email_column')})) {
                     Watchdog::redeem($invite_code);
+
                     return $next($request);
                 } else {
                     throw new InviteWithRestrictedUsageException('This invite code is not for you.', Response::HTTP_FORBIDDEN);
@@ -53,6 +54,7 @@ class ProtectedByInviteCodeMiddleware
         } else {
             throw new RouteProtectedByInviteCodeException('This route is accessible only by using invite codes', Response::HTTP_FORBIDDEN);
         }
+
         return $next($request);
     }
 }

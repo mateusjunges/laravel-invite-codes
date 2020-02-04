@@ -8,15 +8,14 @@ use Junges\Watchdog\Events\InviteRedeemedEvent;
 
 class WatchdogEventServiceProvider extends ServiceProvider
 {
-
-    public array $listen = array(
+    public array $listen = [
         InviteCreatedEvent::class => [
 
         ],
         InviteRedeemedEvent::class => [
 
-        ]
-    );
+        ],
+    ];
 
     /**
      * Bootstrap services.
