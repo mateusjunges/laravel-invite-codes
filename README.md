@@ -3,8 +3,8 @@
 This package allows you to easily manage invite codes for your Laravel application.
 
 <p align="center">
-    <a href="https://packagist.org/packages/mateusjunges/laravel-watchdog" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-acl/d/total.svg" alt="Total Downloads"></a>
-    <a href="https://packagist.org/packages/mateusjunges/laravel-watchdog" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-acl/v/stable.svg" alt="Latest Stable Version"></a>
+    <a href="https://packagist.org/packages/mateusjunges/laravel-watchdog" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-watchdog/d/total.svg" alt="Total Downloads"></a>
+    <a href="https://packagist.org/packages/mateusjunges/laravel-watchdog" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-watchdog/v/stable.svg" alt="Latest Stable Version"></a>
     <a href="https://packagist.org/packages/mateusjunges/laravel-watchdog" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-acl/license.svg" alt="License"></a>
     <a href="https://github.styleci.io/repos/175907190" target="_blank"><img src="https://github.styleci.io/repos/175907190/shield?style=flat"></a>
     <a href="https://travis-ci.org/mateusjunges/laravel-watchdog"><img src="https://img.shields.io/travis/mateusjunges/laravel-watchdog/master.svg?style=flat" alt="Build Status"></a>
