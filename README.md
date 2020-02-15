@@ -6,7 +6,7 @@ This package allows you to easily manage invite codes for your Laravel applicati
     <a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/d/total.svg" alt="Total Downloads"></a>
     <a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/v/stable.svg" alt="Latest Stable Version"></a>
     <a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/license.svg" alt="License"></a>
-    <a href="https://github.styleci.io/repos/175907190" target="_blank"><img src="https://github.styleci.io/repos/175907190/shield?style=flat"></a>
+    <a href="https://github.styleci.io/repos/236969945" target="_blank"><img src="https://github.styleci.io/repos/236969945/shield?style=flat"></a>
     <a href="https://travis-ci.org/mateusjunges/laravel-invite-codes"><img src="https://img.shields.io/travis/mateusjunges/laravel-invite-codes/master.svg?style=flat" alt="Build Status"></a>
 </p>
 
