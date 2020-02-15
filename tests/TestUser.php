@@ -1,6 +1,6 @@
 <?php
 
-namespace Junges\Watchdog\Tests;
+namespace Junges\InviteCodes\Tests;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -8,6 +8,8 @@ use Illuminate\Notifications\Notifiable;
 class TestUser extends Authenticatable
 {
     use Notifiable;
+
+    protected $table = 'test_users';
 
     /**
      * The attributes that are mass assignable.

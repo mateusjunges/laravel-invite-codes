@@ -1,11 +1,11 @@
 <?php
 
-namespace Junges\Watchdog\Tests;
+namespace Junges\InviteCodes\Tests;
 
 use Illuminate\Database\Schema\Blueprint;
-use Junges\Watchdog\Http\Models\Invite;
-use Junges\Watchdog\WatchdogEventServiceProvider;
-use Junges\Watchdog\WatchdogServiceProvider;
+use Junges\InviteCodes\Http\Models\Invite;
+use Junges\InviteCodes\InviteCodesEventServiceProvider;
+use Junges\InviteCodes\InviteCodesServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -16,14 +16,14 @@ class TestCase extends Orchestra
 
         $this->setUpDatabase($this->app);
 
-        (new WatchdogServiceProvider($this->app))->boot();
+        (new InviteCodesServiceProvider($this->app))->boot();
     }
 
     public function getPackageProviders($app)
     {
         return [
-            WatchdogServiceProvider::class,
-            WatchdogEventServiceProvider::class,
+            InviteCodesServiceProvider::class,
+            InviteCodesEventServiceProvider::class,
         ];
     }
 
@@ -35,7 +35,7 @@ class TestCase extends Orchestra
             'database' => ':memory:',
             'prefix'   => '',
         ]);
-        $app['config']->set('watchdog.user.email_column', 'email');
+        $app['config']->set('invite-codes.user.email_column', 'email');
 
         $app['config']->set('views.path', [__DIR__.'/resources/views']);
 
@@ -45,10 +45,10 @@ class TestCase extends Orchestra
 
     private function setUpDatabase($app)
     {
-        $app['config']->set('watchdog.tables.invites_table', 'test_invites_table');
+        $app['config']->set('invite-codes.tables.invites_table', 'test_invites_table');
 
         // Set up models for tests
-        $app['config']->set('watchdog.models.invite_model', Invite::class);
+        $app['config']->set('invite-codes.models.invite_model', Invite::class);
 
         // Include migration files
         include_once __DIR__.'/../database/migrations/2020_01_29_162459_create_invites_table.php';

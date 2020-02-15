@@ -1,6 +1,6 @@
 <?php
 
-namespace Junges\Watchdog\Contracts;
+namespace Junges\InviteCodes\Contracts;
 
 use Illuminate\Database\Eloquent\Builder;
 

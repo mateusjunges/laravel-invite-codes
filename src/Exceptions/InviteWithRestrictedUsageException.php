@@ -1,7 +1,7 @@
 <?php
 
-namespace Junges\Watchdog\Exceptions;
+namespace Junges\InviteCodes\Exceptions;
 
-class InviteWithRestrictedUsageException extends WatchdogException
+class InviteWithRestrictedUsageException extends InviteCodesException
 {
 }

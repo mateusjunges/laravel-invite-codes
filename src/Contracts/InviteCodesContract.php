@@ -1,25 +1,25 @@
 <?php
 
-namespace Junges\Watchdog\Contracts;
+namespace Junges\InviteCodes\Contracts;
 
 use Illuminate\Support\Collection;
-use Junges\Watchdog\Exceptions\DuplicateInviteCodeException;
-use Junges\Watchdog\Exceptions\ExpiredInviteCodeException;
-use Junges\Watchdog\Exceptions\InvalidInviteCodeException;
-use Junges\Watchdog\Exceptions\InviteMustBeAbleToBeRedeemedException;
-use Junges\Watchdog\Exceptions\InviteWithRestrictedUsageException;
-use Junges\Watchdog\Exceptions\SoldOutException;
-use Junges\Watchdog\Exceptions\UserLoggedOutException;
-use Junges\Watchdog\Http\Models\Invite;
-use Junges\Watchdog\Watchdog;
+use Junges\InviteCodes\Exceptions\DuplicateInviteCodeException;
+use Junges\InviteCodes\Exceptions\ExpiredInviteCodeException;
+use Junges\InviteCodes\Exceptions\InvalidInviteCodeException;
+use Junges\InviteCodes\Exceptions\InviteMustBeAbleToBeRedeemedException;
+use Junges\InviteCodes\Exceptions\InviteWithRestrictedUsageException;
+use Junges\InviteCodes\Exceptions\SoldOutException;
+use Junges\InviteCodes\Exceptions\UserLoggedOutException;
+use Junges\InviteCodes\Http\Models\Invite;
+use Junges\InviteCodes\InviteCodes;
 
-interface WatchdogContract
+interface InviteCodesContract
 {
     /**
      * If used, no events will be dispatched.
-     * @return Watchdog
+     * @return InviteCodes
      */
-    public function withoutEvents(): Watchdog;
+    public function withoutEvents(): InviteCodes;
 
     /**
      * @param string $code
@@ -34,30 +34,30 @@ interface WatchdogContract
 
     /**
      * Create a new invite.
-     * @return Watchdog
+     * @return InviteCodes
      */
-    public function create(): Watchdog;
+    public function create(): InviteCodes;
 
     /**
      * Set the number of allowed redemptions.
      * @param int $usages
-     * @return Watchdog
+     * @return InviteCodes
      * @throws InviteMustBeAbleToBeRedeemedException
      */
-    public function maxUsages(int $usages = 1): Watchdog;
+    public function maxUsages(int $usages = 1): InviteCodes;
 
     /**
      * Set the max usages amount to one.
      * @throws InviteMustBeAbleToBeRedeemedException
      */
-    public function canBeUsedOnce(): Watchdog;
+    public function canBeUsedOnce(): InviteCodes;
 
     /**
      * Set the user who can use this invite.
      * @param string $email
-     * @return Watchdog
+     * @return InviteCodes
      */
-    public function restrictUsageTo(string $email): Watchdog;
+    public function restrictUsageTo(string $email): InviteCodes;
 
     /**
      * Save the created invite.

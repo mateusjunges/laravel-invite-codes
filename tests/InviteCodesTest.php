@@ -1,20 +1,20 @@
 <?php
 
-namespace Junges\Watchdog\Tests;
+namespace Junges\InviteCodes\Tests;
 
 use Illuminate\Support\Facades\Event;
-use Junges\Watchdog\Events\InviteRedeemedEvent;
-use Junges\Watchdog\Facades\Watchdog;
+use Junges\InviteCodes\Events\InviteRedeemedEvent;
+use Junges\InviteCodes\Facades\InviteCodes;
 
-class WatchdogTest extends TestCase
+class InviteCodesTest extends TestCase
 {
     public function test_an_event_is_dispatched_when_invite_has_been_redeemed()
     {
         Event::fake();
 
-        $invite = Watchdog::create()->save();
+        $invite = InviteCodes::create()->save();
 
-        Watchdog::redeem($invite->code);
+        InviteCodes::redeem($invite->code);
 
         Event::assertDispatched(InviteRedeemedEvent::class, fn ($event) => $event->invite->code === $invite->code);
     }
@@ -23,9 +23,9 @@ class WatchdogTest extends TestCase
     {
         Event::fake();
 
-        $invite = Watchdog::create()->save();
+        $invite = InviteCodes::create()->save();
 
-        Watchdog::withoutEvents()->redeem($invite->code);
+        InviteCodes::withoutEvents()->redeem($invite->code);
 
         Event::assertNotDispatched(InviteRedeemedEvent::class);
     }

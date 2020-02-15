@@ -1,7 +1,7 @@
 <?php
 
-namespace Junges\Watchdog\Exceptions;
+namespace Junges\InviteCodes\Exceptions;
 
-class ExpiredInviteCodeException extends WatchdogException
+class ExpiredInviteCodeException extends InviteCodesException
 {
 }

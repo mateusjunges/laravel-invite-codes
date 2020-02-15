@@ -1,8 +1,8 @@
 <?php
 
-namespace Junges\Watchdog\Exceptions;
+namespace Junges\InviteCodes\Exceptions;
 
-class DuplicateInviteCodeException extends WatchdogException
+class DuplicateInviteCodeException extends InviteCodesException
 {
     public static function forEmail(string $email = null)
     {

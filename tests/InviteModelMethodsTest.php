@@ -1,27 +1,27 @@
 <?php
 
-namespace Junges\Watchdog\Tests;
+namespace Junges\InviteCodes\Tests;
 
 use Carbon\Carbon;
-use Junges\Watchdog\Facades\Watchdog;
-use Junges\Watchdog\Http\Models\Invite;
+use Junges\InviteCodes\Facades\InviteCodes;
+use Junges\InviteCodes\Http\Models\Invite;
 
 class InviteModelMethodsTest extends TestCase
 {
     public function test_is_sold_out_method()
     {
-        $invite = Watchdog::create()
+        $invite = InviteCodes::create()
             ->canBeUsedOnce()
             ->save();
 
-        $invite = Watchdog::redeem($invite->code);
+        $invite = InviteCodes::redeem($invite->code);
 
         $this->assertTrue($invite->isSoldOut());
     }
 
     public function test_usage_restricted_to_email_method()
     {
-        $invite = Watchdog::create()
+        $invite = InviteCodes::create()
             ->restrictUsageTo('contato@mateusjunges.com')
             ->save();
 
@@ -32,7 +32,7 @@ class InviteModelMethodsTest extends TestCase
 
     public function test_has_restrict_usage_method()
     {
-        $invite = Watchdog::create()
+        $invite = InviteCodes::create()
             ->restrictUsageTo('contato@mateusjunges.com')
             ->save();
 
@@ -41,7 +41,7 @@ class InviteModelMethodsTest extends TestCase
 
     public function test_is_expired_method()
     {
-        $invite = Watchdog::create()
+        $invite = InviteCodes::create()
             ->expiresAt(Carbon::now()->subDay())
             ->canBeUsedOnce()
             ->save();
@@ -51,31 +51,31 @@ class InviteModelMethodsTest extends TestCase
 
     public function test_used_once_scope()
     {
-        $invites = Watchdog::create()
+        $invites = InviteCodes::create()
             ->make(10);
 
-        $invite = Watchdog::redeem($invites->first()->code);
+        $invite = InviteCodes::redeem($invites->first()->code);
 
         $this->assertCount(1, Invite::usedOnce()->get());
     }
 
     public function test_expired_scope()
     {
-        Watchdog::create()->make(10);
-        Watchdog::create()->expiresAt(Carbon::now()->subDay())->make(10);
+        InviteCodes::create()->make(10);
+        InviteCodes::create()->expiresAt(Carbon::now()->subDay())->make(10);
 
         $this->assertCount(10, Invite::expired()->get());
     }
 
     public function test_sold_out_scope()
     {
-        Watchdog::make(10);
+        InviteCodes::make(10);
 
-        $invite = Watchdog::create()
+        $invite = InviteCodes::create()
             ->canBeUsedOnce()
             ->save();
 
-        Watchdog::redeem($invite->code);
+        InviteCodes::redeem($invite->code);
 
         $this->assertCount(1, Invite::soldOut()->get());
     }

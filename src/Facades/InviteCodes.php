@@ -1,13 +1,13 @@
 <?php
 
-namespace Junges\Watchdog\Facades;
+namespace Junges\InviteCodes\Facades;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
-use Junges\Watchdog\Http\Models\Invite;
+use Junges\InviteCodes\Http\Models\Invite;
 
 /**
- * Class Watchdog.
+ * Class InviteCodes.
  * @method static $this withoutEvents() Will dispatch no events.
  * @method static $this redeem(string $code) Redeem an invite code.
  * @method static $this create() Create a invite code.
@@ -19,10 +19,10 @@ use Junges\Watchdog\Http\Models\Invite;
  * @method static Collection make(int $quantity) Save $quantity invite codes.
  * @method static $this canBeUsedOnce()
  */
-class Watchdog extends Facade
+class InviteCodes extends Facade
 {
     public static function getFacadeAccessor(): string
     {
-        return 'watchdog';
+        return 'invite_codes';
     }
 }

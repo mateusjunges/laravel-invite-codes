@@ -1,5 +1,5 @@
 {
-    "name": "mateusjunges/laravel-watchdog",
+    "name": "mateusjunges/laravel-invite-codes",
     "description": "This package allows you to easily manage invite codes for your Laravel application.",
     "type": "library",
     "license": "MIT",
@@ -25,18 +25,19 @@
     },
     "autoload": {
         "psr-4": {
-            "Junges\\Watchdog\\": "src/"
+            "Junges\\InviteCodes\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Junges\\Watchdog\\Tests\\": "tests/"
+            "Junges\\InviteCodes\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Junges\\Watchdog\\WatchdogServiceProvider"
+                "Junges\\InviteCodes\\InviteCodesServiceProvider",
+                "Junges\\InviteCodes\\InviteCodesEventServiceProvider"
             ]
         }
     },
