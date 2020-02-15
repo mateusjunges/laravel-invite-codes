@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Auth;
 use Junges\InviteCodes\Facades\InviteCodes;
 use Junges\InviteCodes\Tests\TestUser;
 
-class WatchdogMiddlewareTest extends MiddlewareTestCase
+class InviteCodesMiddlewareTest extends MiddlewareTestCase
 {
     public function test_if_a_user_without_invite_codes_can_access_protected_routes()
     {
         $this->assertEquals(
             $this->execMiddleware($this->protected_by_invite_codes, null),
-            Response::HTTP_FORBIDDEN,
+            Response::HTTP_FORBIDDEN
         );
     }
 
@@ -25,7 +25,7 @@ class WatchdogMiddlewareTest extends MiddlewareTestCase
             $this->execMiddleware($this->protected_by_invite_codes, [
                 'invite_code' => 'INVALID-INVITE-CODE',
             ]),
-            Response::HTTP_FORBIDDEN,
+            Response::HTTP_FORBIDDEN
         );
     }
 

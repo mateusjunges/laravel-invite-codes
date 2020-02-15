@@ -30,7 +30,7 @@ class ProtectedByInviteCodeMiddleware
     {
         if ($request->has('invite_code')) {
             $invite_code = $request->input('invite_code');
-            $invite_model = app(config('watchdog.models.invite_model'));
+            $invite_model = app(config('invite-codes.models.invite_model'));
 
             try {
                 /*** @var Invite $invite */
@@ -43,7 +43,7 @@ class ProtectedByInviteCodeMiddleware
                 if (! Auth::check()) {
                     throw new UserLoggedOutException('You must be logged in to use this invite code', Response::HTTP_FORBIDDEN);
                 }
-                if ($invite->usageRestrictedToEmail(Auth::user()->{config('watchdog.user.email_column')})) {
+                if ($invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column')})) {
                     InviteCodes::redeem($invite_code);
 
                     return $next($request);
