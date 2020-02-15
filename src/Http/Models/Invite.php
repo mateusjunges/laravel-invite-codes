@@ -1,12 +1,12 @@
 <?php
 
-namespace Junges\Watchdog\Http\Models;
+namespace Junges\InviteCodes\Http\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Junges\Watchdog\Contracts\InviteContract;
-use Junges\Watchdog\Events\InviteCreatedEvent;
+use Junges\InviteCodes\Contracts\InviteContract;
+use Junges\InviteCodes\Events\InviteCreatedEvent;
 
 /**
  * Class Invite.
@@ -37,7 +37,7 @@ class Invite extends Model implements InviteContract
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->setTable(config('watchdog.tables.invites_table'));
+        $this->setTable(config('invite-codes.tables.invites_table'));
     }
 
     /**

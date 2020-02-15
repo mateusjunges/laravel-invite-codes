@@ -1,7 +1,7 @@
 <?php
 
-namespace Junges\Watchdog\Exceptions;
+namespace Junges\InviteCodes\Exceptions;
 
-class SoldOutException extends WatchdogException
+class SoldOutException extends InviteCodesException
 {
 }

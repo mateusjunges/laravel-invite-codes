@@ -51,8 +51,8 @@ After installing the laravel watchdog package, register the service provider in 
 
 ```php
 'providers' => [
-    Junges\Watchdog\WatchdogEventServiceProvider::class,
-    Junges\Watchdog\WatchdogEventServiceProvider::class,
+    Junges\Watchdog\InviteCodesEventServiceProvider::class,
+    Junges\Watchdog\InviteCodesEventServiceProvider::class,
 ];
 ```
 

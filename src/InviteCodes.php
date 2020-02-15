@@ -1,26 +1,26 @@
 <?php
 
-namespace Junges\Watchdog;
+namespace Junges\InviteCodes;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Junges\Watchdog\Contracts\WatchdogContract;
-use Junges\Watchdog\Events\InviteRedeemedEvent;
-use Junges\Watchdog\Exceptions\DuplicateInviteCodeException;
-use Junges\Watchdog\Exceptions\ExpiredInviteCodeException;
-use Junges\Watchdog\Exceptions\InvalidInviteCodeException;
-use Junges\Watchdog\Exceptions\InviteAlreadyRedeemedException;
-use Junges\Watchdog\Exceptions\InviteMustBeAbleToBeRedeemedException;
-use Junges\Watchdog\Exceptions\InviteWithRestrictedUsageException;
-use Junges\Watchdog\Exceptions\SoldOutException;
-use Junges\Watchdog\Exceptions\UserLoggedOutException;
-use Junges\Watchdog\Http\Models\Invite;
+use Junges\InviteCodes\Contracts\InviteCodesContract;
+use Junges\InviteCodes\Events\InviteRedeemedEvent;
+use Junges\InviteCodes\Exceptions\DuplicateInviteCodeException;
+use Junges\InviteCodes\Exceptions\ExpiredInviteCodeException;
+use Junges\InviteCodes\Exceptions\InvalidInviteCodeException;
+use Junges\InviteCodes\Exceptions\InviteAlreadyRedeemedException;
+use Junges\InviteCodes\Exceptions\InviteMustBeAbleToBeRedeemedException;
+use Junges\InviteCodes\Exceptions\InviteWithRestrictedUsageException;
+use Junges\InviteCodes\Exceptions\SoldOutException;
+use Junges\InviteCodes\Exceptions\UserLoggedOutException;
+use Junges\InviteCodes\Http\Models\Invite;
 use Symfony\Component\HttpFoundation\Response;
 
-class Watchdog implements WatchdogContract
+class InviteCodes implements InviteCodesContract
 {
     protected int $max_usages;
     protected $to = null;
@@ -30,7 +30,7 @@ class Watchdog implements WatchdogContract
     /**
      * @param $name
      * @param $arguments
-     * @return Watchdog
+     * @return InviteCodes
      * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function __call($name, $arguments): self
@@ -48,7 +48,7 @@ class Watchdog implements WatchdogContract
 
     /**
      * If used, no events will be dispatched.
-     * @return Watchdog
+     * @return InviteCodes
      */
     public function withoutEvents(): self
     {
@@ -70,7 +70,7 @@ class Watchdog implements WatchdogContract
     public function redeem(string $code): Invite
     {
         try {
-            $model = app(config('watchdog.models.invite_model'));
+            $model = app(config('invite-codes.models.invite_model'));
             $invite = $model->where('code', Str::upper($code))->firstOrFail();
         } catch (ModelNotFoundException $exception) {
             throw new InvalidInviteCodeException('Your invite code is invalid');
@@ -91,7 +91,7 @@ class Watchdog implements WatchdogContract
 
     /**
      * Create a new invite.
-     * @return Watchdog
+     * @return InviteCodes
      */
     public function create(): self
     {
@@ -101,7 +101,7 @@ class Watchdog implements WatchdogContract
     /**
      * Set the number of allowed redemptions.
      * @param int $usages
-     * @return Watchdog
+     * @return InviteCodes
      * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function maxUsages(int $usages = 1): self
@@ -141,7 +141,7 @@ class Watchdog implements WatchdogContract
     /**
      * Set the invite expiration date.
      * @param $date
-     * @return Watchdog
+     * @return InviteCodes
      */
     public function expiresAt($date): self
     {
@@ -174,7 +174,7 @@ class Watchdog implements WatchdogContract
      */
     public function save(): Invite
     {
-        $model = app(config('watchdog.models.invite_model'));
+        $model = app(config('invite-codes.models.invite_model'));
 
         return $model->create([
             'code' => Str::upper(Str::random(16)),
@@ -223,13 +223,13 @@ class Watchdog implements WatchdogContract
             throw new UserLoggedOutException('You must be logged in to use this invite code.', Response::HTTP_FORBIDDEN);
         }
 
-        if ($invite->hasRestrictedUsage() and ! $invite->usageRestrictedToEmail(Auth::user()->{config('watchdog.user.email_column')})) {
+        if ($invite->hasRestrictedUsage() and ! $invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column')})) {
             throw new InviteWithRestrictedUsageException('This invite is not for you.', Response::HTTP_FORBIDDEN);
         }
 
         if ($invite->hasRestrictedUsage()
             and Auth::check()
-            and $invite->usageRestrictedToEmail(Auth::user()->{config('watchdog.user.email_column')})
+            and $invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column')})
             and $invite->isSoldOut()) {
             throw new InviteAlreadyRedeemedException('This invite has already been redeemed', Response::HTTP_FORBIDDEN);
         }

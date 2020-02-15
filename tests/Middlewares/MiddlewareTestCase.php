@@ -1,12 +1,12 @@
 <?php
 
-namespace Junges\Watchdog\Tests\Middlewares;
+namespace Junges\InviteCodes\Tests\Middlewares;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Junges\Watchdog\Exceptions\WatchdogException;
-use Junges\Watchdog\Http\Middlewares\ProtectedByInviteCodeMiddleware;
-use Junges\Watchdog\Tests\TestCase;
+use Junges\InviteCodes\Exceptions\InviteCodesException;
+use Junges\InviteCodes\Http\Middlewares\ProtectedByInviteCodeMiddleware;
+use Junges\InviteCodes\Tests\TestCase;
 
 class MiddlewareTestCase extends TestCase
 {
@@ -27,7 +27,7 @@ class MiddlewareTestCase extends TestCase
             return $middleware->handle($request, function () {
                 return (new Response())->setContent('<html></html>');
             }, $params)->status();
-        } catch (WatchdogException $exception) {
+        } catch (InviteCodesException $exception) {
             return $exception->getCode();
         }
     }

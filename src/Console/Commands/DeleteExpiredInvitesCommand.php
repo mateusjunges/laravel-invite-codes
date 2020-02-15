@@ -1,10 +1,10 @@
 <?php
 
-namespace Junges\Watchdog\Console\Commands;
+namespace Junges\InviteCodes\Console\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Junges\Watchdog\Events\DeletedExpiredInvitesEvent;
+use Junges\InviteCodes\Events\DeletedExpiredInvitesEvent;
 
 class DeleteExpiredInvitesCommand extends Command
 {
@@ -13,7 +13,7 @@ class DeleteExpiredInvitesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'watchdog:clear';
+    protected $signature = 'invite-codes:clear';
 
     /**
      * The console command description.
@@ -39,7 +39,7 @@ class DeleteExpiredInvitesCommand extends Command
      */
     public function handle()
     {
-        $model = app(config('watchdog.models.invite_model'));
+        $model = app(config('invite-codes.models.invite_model'));
 
         $model->where('expires_at', '<=', Carbon::now(config('app.timezone')))->delete();
 

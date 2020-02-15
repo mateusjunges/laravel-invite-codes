@@ -1,11 +1,11 @@
 <?php
 
-namespace Junges\Watchdog;
+namespace Junges\InviteCodes;
 
 use Illuminate\Support\ServiceProvider;
-use Junges\Watchdog\Console\Commands\DeleteExpiredInvitesCommand;
+use Junges\InviteCodes\Console\Commands\DeleteExpiredInvitesCommand;
 
-class WatchdogServiceProvider extends ServiceProvider
+class InviteCodesServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
@@ -25,8 +25,8 @@ class WatchdogServiceProvider extends ServiceProvider
     private function publishesConfig(): void
     {
         $this->publishes([
-            __DIR__.'/../config/watchdog.php' => config_path('watchdog.php'),
-        ], 'watchdog-config');
+            __DIR__.'/../config/invite-codes.php' => config_path('invite-codes.php'),
+        ], 'invite-codes-config');
     }
 
     /**
@@ -34,16 +34,16 @@ class WatchdogServiceProvider extends ServiceProvider
      */
     private function loadMigrations(): void
     {
-        $custom_migrations = config('watchdog.custom_migrations') ?? false;
+        $custom_migrations = config('invite-codes.custom_migrations') ?? false;
 
         if ($custom_migrations) {
-            $this->loadMigrationsFrom(database_path('migrations/vendor/junges/watchdog'));
+            $this->loadMigrationsFrom(database_path('migrations/vendor/junges/invite-codes'));
         } else {
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
         $this->publishes([
-            __DIR__.'/../database/migrations' => database_path('migrations/vendor/junges/watchdog'),
-        ], 'watchdog-migrations');
+            __DIR__.'/../database/migrations' => database_path('migrations/vendor/junges/invite-codes'),
+        ], 'invite-codes-migrations');
     }
 
     private function loadCommands()
@@ -60,6 +60,6 @@ class WatchdogServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind('watchdog', Watchdog::class);
+        $this->app->bind('invite_codes', InviteCodes::class);
     }
 }

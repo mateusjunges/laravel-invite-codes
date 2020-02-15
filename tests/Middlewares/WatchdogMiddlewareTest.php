@@ -1,13 +1,13 @@
 <?php
 
-namespace Junges\Watchdog\Tests\Middlewares;
+namespace Junges\InviteCodes\Tests\Middlewares;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Junges\Watchdog\Facades\Watchdog;
-use Junges\Watchdog\Tests\TestUser;
+use Junges\InviteCodes\Facades\InviteCodes;
+use Junges\InviteCodes\Tests\TestUser;
 
 class WatchdogMiddlewareTest extends MiddlewareTestCase
 {
@@ -31,7 +31,7 @@ class WatchdogMiddlewareTest extends MiddlewareTestCase
 
     public function test_if_valid_invite_code_grants_access_to_protected_routes()
     {
-        $invite = Watchdog::create()
+        $invite = InviteCodes::create()
             ->expiresAt(Carbon::now()->addDay(10))
             ->save();
 
@@ -49,7 +49,7 @@ class WatchdogMiddlewareTest extends MiddlewareTestCase
 
     public function test_if_not_logged_in_users_can_use_restricted_invite_codes()
     {
-        $invite = Watchdog::create()
+        $invite = InviteCodes::create()
             ->expiresAt(Carbon::now()->addDay(10))
             ->restrictUsageTo('contato@mateusjunges.com')
             ->save();
@@ -68,7 +68,7 @@ class WatchdogMiddlewareTest extends MiddlewareTestCase
 
     public function test_if_logged_in_users_can_use_restricted_invite_codes()
     {
-        $invite = Watchdog::create()
+        $invite = InviteCodes::create()
             ->expiresAt(Carbon::now()->addDay(10))
             ->restrictUsageTo('contato@mateusjunges.com')
             ->save();

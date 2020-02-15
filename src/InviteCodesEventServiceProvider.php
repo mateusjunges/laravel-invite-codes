@@ -1,12 +1,12 @@
 <?php
 
-namespace Junges\Watchdog;
+namespace Junges\InviteCodes;
 
 use Illuminate\Support\ServiceProvider;
-use Junges\Watchdog\Events\InviteCreatedEvent;
-use Junges\Watchdog\Events\InviteRedeemedEvent;
+use Junges\InviteCodes\Events\InviteCreatedEvent;
+use Junges\InviteCodes\Events\InviteRedeemedEvent;
 
-class WatchdogEventServiceProvider extends ServiceProvider
+class InviteCodesEventServiceProvider extends ServiceProvider
 {
     public array $listen = [
         InviteCreatedEvent::class => [

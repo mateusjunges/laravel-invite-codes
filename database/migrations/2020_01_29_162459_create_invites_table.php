@@ -13,16 +13,21 @@ class CreateInvitesTable extends Migration
      */
     public function up()
     {
-        $table_name = config('watchdog.tables.invites_table') ?? 'invites';
+        $table_name = config('invite-codes.tables.invites_table') ?? 'invites';
         Schema::create($table_name, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code')->unique();
+            $table->bigInteger('user_id')->unsigned();
             $table->integer('max_usages')->nullable();
             $table->string('to')->nullable();
             $table->integer('uses')->default(0);
             $table->timestamp('expires_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
         });
     }
 
@@ -33,7 +38,7 @@ class CreateInvitesTable extends Migration
      */
     public function down()
     {
-        $table_name = config('watchdog.tables.invites_table') ?? 'invites';
+        $table_name = config('invite-codes.tables.invites_table') ?? 'invites';
         Schema::dropIfExists($table_name);
     }
 }

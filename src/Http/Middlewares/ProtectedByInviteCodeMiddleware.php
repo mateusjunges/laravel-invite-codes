@@ -1,16 +1,16 @@
 <?php
 
-namespace Junges\Watchdog\Http\Middlewares;
+namespace Junges\InviteCodes\Http\Middlewares;
 
 use Closure;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
-use Junges\Watchdog\Exceptions\InvalidInviteCodeException;
-use Junges\Watchdog\Exceptions\InviteWithRestrictedUsageException;
-use Junges\Watchdog\Exceptions\RouteProtectedByInviteCodeException;
-use Junges\Watchdog\Exceptions\UserLoggedOutException;
-use Junges\Watchdog\Facades\Watchdog;
-use Junges\Watchdog\Http\Models\Invite;
+use Junges\InviteCodes\Exceptions\InvalidInviteCodeException;
+use Junges\InviteCodes\Exceptions\InviteWithRestrictedUsageException;
+use Junges\InviteCodes\Exceptions\RouteProtectedByInviteCodeException;
+use Junges\InviteCodes\Exceptions\UserLoggedOutException;
+use Junges\InviteCodes\Facades\InviteCodes;
+use Junges\InviteCodes\Http\Models\Invite;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProtectedByInviteCodeMiddleware
@@ -44,7 +44,7 @@ class ProtectedByInviteCodeMiddleware
                     throw new UserLoggedOutException('You must be logged in to use this invite code', Response::HTTP_FORBIDDEN);
                 }
                 if ($invite->usageRestrictedToEmail(Auth::user()->{config('watchdog.user.email_column')})) {
-                    Watchdog::redeem($invite_code);
+                    InviteCodes::redeem($invite_code);
 
                     return $next($request);
                 } else {
