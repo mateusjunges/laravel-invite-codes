@@ -1,13 +1,13 @@
-# Laravel Watchdog
+# Laravel Invite Codes
 
 This package allows you to easily manage invite codes for your Laravel application.
 
 <p align="center">
-    <a href="https://packagist.org/packages/mateusjunges/laravel-watchdog" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-watchdog/d/total.svg" alt="Total Downloads"></a>
-    <a href="https://packagist.org/packages/mateusjunges/laravel-watchdog" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-watchdog/v/stable.svg" alt="Latest Stable Version"></a>
-    <a href="https://packagist.org/packages/mateusjunges/laravel-watchdog" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-acl/license.svg" alt="License"></a>
+    <a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/d/total.svg" alt="Total Downloads"></a>
+    <a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/v/stable.svg" alt="Latest Stable Version"></a>
+    <a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/license.svg" alt="License"></a>
     <a href="https://github.styleci.io/repos/175907190" target="_blank"><img src="https://github.styleci.io/repos/175907190/shield?style=flat"></a>
-    <a href="https://travis-ci.org/mateusjunges/laravel-watchdog"><img src="https://img.shields.io/travis/mateusjunges/laravel-watchdog/master.svg?style=flat" alt="Build Status"></a>
+    <a href="https://travis-ci.org/mateusjunges/laravel-invite-codes"><img src="https://img.shields.io/travis/mateusjunges/laravel-invite-codes/master.svg?style=flat" alt="Build Status"></a>
 </p>
 
 # Documentation
@@ -21,7 +21,7 @@ This package allows you to easily manage invite codes for your Laravel applicati
     - [Create multiple invite codes](#create-multiple-invite-codes)
     - [Redeeming invite codes](#redeeming-invite-codes)
     - [Redeeming invite codes without dispatching events](#redeeming-invite-codes-without-dispatching-events)
-- [Handling watchdog exceptions](#handling-watchdog-exceptions)
+- [Handling invite codes exceptions](#handling-invite-codes-exceptions)
 - [Using artisan commands](#using-artisan-commands)
 - [Tests](#tests)
 - [Contributing](#contributing)
@@ -30,36 +30,36 @@ This package allows you to easily manage invite codes for your Laravel applicati
 
 ## Installation
 
-To get started with Laravel Watchdog, use Composer to add the package to your project's dependencies:
+To get started with Laravel Invite Codes, use Composer to add the package to your project's dependencies:
 
 ```bash
-composer require mateusjunges/laravel-watchdog
+composer require mateusjunges/laravel-invite-codes
 ```
 Or add this line in your composer.json, inside of the require section:
 ```bash
 {
     "require": {
-        "mateusjunges/laravel-watchdog": "^1.0",
+        "mateusjunges/laravel-invite-codes": "^1.0",
     }
 }
 ```
 then run `composer install`.
 
-After installing the laravel watchdog package, register the service provider in your `config/app.php` file:
+After installing the laravel Invite Codes package, register the service provider in your `config/app.php` file:
 
 > Optional in Laravel 5.5 or above
 
 ```php
 'providers' => [
-    Junges\Watchdog\InviteCodesEventServiceProvider::class,
-    Junges\Watchdog\InviteCodesEventServiceProvider::class,
+    Junges\InviteCodes\InviteCodesEventServiceProvider::class,
+    Junges\InviteCodes\InviteCodesEventServiceProvider::class,
 ];
 ```
 
 All migrations required for this package are already included. If you need to customize the tables, you can [publish them][migrations] with:
 
 ```bash
-php artisan vendor:publish --provider="Junges\Watchdog\WatchdogServiceProvider" --tag="watchdog-migrations"
+php artisan vendor:publish --provider="Junges\InviteCodes\InviteCodesServiceProvider" --tag="invite-codes-migrations"
 ```
 
 and set the config for `custom_migrations` to `true`, which is `false` by default.
@@ -77,9 +77,9 @@ php artisan migrate
 If you change the table names on migrations, please publish the config file and update the tables array. You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --provider="Junges\Watchdog\WatchdogServiceProvider" --tag="watchdog-config"
+php artisan vendor:publish --provider="Junges\InviteCodes\InviteCodesServiceProvider" --tag="invite-codes-config"
 ```
-When published, the `config/watchdog.php` config file contains:
+When published, the `config/invite-codes.php` config file contains:
 
 
 ```php
@@ -97,7 +97,7 @@ return [
     |
      */
     "models" => [
-        "invite_model" => \Junges\Watchdog\Http\Models\Invite::class,
+        "invite_model" => \Junges\InviteCodes\Http\Models\Invite::class,
     ],
 
     /*
@@ -160,10 +160,10 @@ public function __construct()
 ```
 
 ## Creating invite codes
-To create a new invite code, you must use the `Watchdog` facade. Here is a simple example:
+To create a new invite code, you must use the `InviteCodes` facade. Here is a simple example:
 
 ```php
-$invite_code = \Junges\Watchdog\Facades\Watchdog::create()
+$invite_code = \Junges\InviteCodes\Facades\InviteCodes::create()
     ->expiresAt('2020-02-01')
     ->maxUsages(10)
     ->restrictUsageTo('contato@mateusjunges.com')
@@ -172,7 +172,7 @@ $invite_code = \Junges\Watchdog\Facades\Watchdog::create()
 
 The code above will create a new invite code, which can be used 10 times only by a logged in user who has the specified email `contato@mateusjunges.com`.
 
-The methods you can use with the `Watchdog` facade are listed below:
+The methods you can use with the `InviteCodes` facade are listed below:
 
 ### Set the expiration date of your invite code
 
@@ -204,7 +204,7 @@ If you want to create more than one invite code with the same configs, you can u
 This method generate the specified amount of invite codes. For example:
 
 ```php
-\Junges\Watchdog\Facades\Watchdog::create()
+\Junges\InviteCodes\Facades\InviteCodes::create()
     ->maxUsages(10)
     ->expiresIn(30)
     ->make(10);
@@ -216,7 +216,7 @@ The code above will create 10 new invite codes which can be used 10 times each, 
 To redeem a invite code, you can use the `redeem` method:
 
 ```php
-\Junges\Watchdog\Facades\Watchdog::redeem('YOUR-INVITE-CODE');
+\Junges\InviteCodes\Facades\InviteCodes::redeem('YOUR-INVITE-CODE');
 ```
 When any invite is redeemed, the `InviteRedeemedEvent` will be dispatched.
 
@@ -225,38 +225,38 @@ If you want to redeem an invite codes without dispatch the `InviteRedeemedEvent`
 you can use the `withoutEvents()` method:
 
 ```php
-\Junges\Watchdog\Facades\Watchdog::withoutEvents()->redeem('YOUR-INVITE-CODE');
+\Junges\InviteCodes\Facades\InviteCodes::withoutEvents()->redeem('YOUR-INVITE-CODE');
 ```
 
-# Handling watchdog exceptions
+# Handling invite codes exceptions
 
 If you want to override the default `403` response, you can catch the exceptions using the laravel exception handler:
 
 ```php
 public function render($request, Exception $exception)
 {
-    if ($exception instanceof \Junges\Watchdog\Exceptions\InviteWithRestrictedUsageException) {
+    if ($exception instanceof \Junges\InviteCodes\Exceptions\InviteWithRestrictedUsageException) {
         //
     }
-    if ($exception instanceof \Junges\Watchdog\Exceptions\ExpiredInviteCodeException) {
+    if ($exception instanceof \Junges\InviteCodes\Exceptions\ExpiredInviteCodeException) {
             //
     }
-    if ($exception instanceof \Junges\Watchdog\Exceptions\DuplicateInviteCodeException) {
+    if ($exception instanceof \Junges\InviteCodes\Exceptions\DuplicateInviteCodeException) {
         //
     }
-    if ($exception instanceof \Junges\Watchdog\Exceptions\InvalidInviteCodeException) {
+    if ($exception instanceof \Junges\InviteCodes\Exceptions\InvalidInviteCodeException) {
             //
     }
-    if ($exception instanceof \Junges\Watchdog\Exceptions\UserLoggedOutException) {
+    if ($exception instanceof \Junges\InviteCodes\Exceptions\UserLoggedOutException) {
         //
     }
-    if ($exception instanceof \Junges\Watchdog\Exceptions\InviteMustBeAbleToBeRedeemedException) {
+    if ($exception instanceof \Junges\InviteCodes\Exceptions\InviteMustBeAbleToBeRedeemedException) {
         //
     }
-    if ($exception instanceof \Junges\Watchdog\Exceptions\SoldOutException) {
+    if ($exception instanceof \Junges\InviteCodes\Exceptions\SoldOutException) {
         //
     }
-    if ($exception instanceof \Junges\Watchdog\Exceptions\RouteProtectedByInviteCodeException) {
+    if ($exception instanceof \Junges\InviteCodes\Exceptions\RouteProtectedByInviteCodeException) {
         //
     }
     
@@ -269,7 +269,7 @@ public function render($request, Exception $exception)
 This package also provides a command to delete all expired invites from your database. You can use it like this:
 
 ```php
-\Illuminate\Support\Facades\Artisan::call('watchdog:clear');
+\Illuminate\Support\Facades\Artisan::call('invite-codes:clear');
 ```
 
 After all expired invites has been deleted, it will dispatch the `DeletedExpiredInvitesEvent`.
@@ -279,15 +279,15 @@ After all expired invites has been deleted, it will dispatch the `DeletedExpired
 Run `composer test` to test this package.
 
 # Contributing
-Thank you for considering contributing for the Laravel Watchdog package! The contribution guide can be found [here](https://github.com/mateusjunges/laravel-watchdog/blob/master/CONTRIBUTING.md).
+Thank you for considering contributing for the Laravel Invite Codes package! The contribution guide can be found [here](https://github.com/mateusjunges/laravel-invite-codes/blob/master/CONTRIBUTING.md).
 
 # Changelog
-Please see [changelog](https://github.com/mateusjunges/laravel-watchdog/blob/master/CHANGELOG.md) for more information about the changes on this package.
+Please see [changelog](https://github.com/mateusjunges/laravel-invite-codes/blob/master/CHANGELOG.md) for more information about the changes on this package.
 
 # License
-The Laravel Watchdog package is open-sourced software licenced under the [MIT License](https://opensource.org/licenses/MIT). 
-Please see the [License File](https://github.com/mateusjunges/laravel-watchdog/blob/master/LICENSE) for more information.
+The Laravel Invite Codes package is open-sourced software licenced under the [MIT License](https://opensource.org/licenses/MIT). 
+Please see the [License File](https://github.com/mateusjunges/laravel-invite-codes/blob/master/LICENSE) for more information.
 
 
 
-[migrations]: https://github.com/mateusjunges/laravel-watchdog/tree/master/database/migrations
+[migrations]: https://github.com/mateusjunges/laravel-invite-codes/tree/master/database/migrations
