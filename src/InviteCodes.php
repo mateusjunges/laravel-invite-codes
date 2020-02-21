@@ -70,7 +70,7 @@ class InviteCodes implements InviteCodesContract
     public function redeem(string $code): Invite
     {
         try {
-            $model = app(config('invite-codes.models.invite_model'));
+            $model = app(config('invite-codes.models.invite_model', '\Junges\InviteCodes\Http\Models\Invite'));
             $invite = $model->where('code', Str::upper($code))->firstOrFail();
         } catch (ModelNotFoundException $exception) {
             throw new InvalidInviteCodeException('Your invite code is invalid');
