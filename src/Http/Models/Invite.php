@@ -41,7 +41,7 @@ class Invite extends Model implements InviteContract
     }
     
     /**
-     * Sets 'code' as primary key for Route Model Bindings
+     * Sets 'code' as primary key for Route Model Bindings.
      */
     public function getRouteKeyName()
     {
