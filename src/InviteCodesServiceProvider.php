@@ -34,7 +34,7 @@ class InviteCodesServiceProvider extends ServiceProvider
      */
     private function loadMigrations(): void
     {
-        $custom_migrations = config('invite-codes.custom_migrations') ?? false;
+        $custom_migrations = config('invite-codes.custom_migrations', false);
 
         if ($custom_migrations) {
             $this->loadMigrationsFrom(database_path('migrations/vendor/junges/invite-codes'));

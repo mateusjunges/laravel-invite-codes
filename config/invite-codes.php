@@ -44,4 +44,12 @@ return [
     'user' => [
         'email_column' => 'email',
     ],
+
+    /*
+   |--------------------------------------------------------------------------
+   | Custom migrations
+   |--------------------------------------------------------------------------
+   | If you want to publish this package migrations and edit with new custom columns, change it to true.
+    */
+    'custom_migrations' => false,
 ];
