@@ -177,7 +177,7 @@ class InviteCodes implements InviteCodesContract
         $model = app(config('invite-codes.models.invite_model', '\Junges\InviteCodes\Http\Models\Invite'));
         
         do {
-            $code = Str::upper(Str::random(16))
+            $code = Str::upper(Str::random(16));
         } while ($model->where('code', $code)->first() instance of $model);
         
         return $model->create([
