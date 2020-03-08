@@ -175,9 +175,13 @@ class InviteCodes implements InviteCodesContract
     public function save(): Invite
     {
         $model = app(config('invite-codes.models.invite_model', '\Junges\InviteCodes\Http\Models\Invite'));
-
+        
+        do {
+            $code = Str::upper(Str::random(16))
+        } while ($model->where('code', $code)->first() instance of $model);
+        
         return $model->create([
-            'code' => Str::upper(Str::random(16)),
+            'code' => $code
             'to' => $this->to,
             'uses' => 0,
             'expires_at' => $this->expires_at ?? null,
