@@ -178,7 +178,7 @@ class InviteCodes implements InviteCodesContract
         
         do {
             $code = Str::upper(Str::random(16));
-        } while ($model->where('code', $code)->first() instance of $model);
+        } while ($model->where('code', $code)->first() instanceof $model);
         
         return $model->create([
             'code' => $code
