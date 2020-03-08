@@ -2,6 +2,9 @@
 
 All notable changes to `mateusjunges/laravel-invite-codes` will be documented in this file.
 
+## 1.2.1 2020-03-08
+- Ensure all generated codes are unique (#12)
+
 ## 1.2.0 2020-03-03
 - Add support for Laravel v7.x
 
