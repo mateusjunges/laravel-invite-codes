@@ -181,7 +181,7 @@ class InviteCodes implements InviteCodesContract
         } while ($model->where('code', $code)->first() instanceof $model);
         
         return $model->create([
-            'code' => $code
+            'code' => $code,
             'to' => $this->to,
             'uses' => 0,
             'expires_at' => $this->expires_at ?? null,
