@@ -2,6 +2,9 @@
 
 All notable changes to `mateusjunges/laravel-invite-codes` will be documented in this file.
 
+## 1.2.2 2020-11-03
+- Change test suite to run on github actions instead of TravisCi
+
 ## 1.2.1 2020-03-08
 - Ensure all generated codes are unique (#12)
 
