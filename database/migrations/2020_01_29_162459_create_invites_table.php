@@ -15,7 +15,7 @@ class CreateInvitesTable extends Migration
     {
         $table_name = config('invite-codes.tables.invites_table', 'invites');
 
-        Schema::create($table_name, function (Blueprint $table) {
+        Schema::create($table_name, static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code')->unique();
             $table->integer('max_usages')->nullable();
@@ -34,7 +34,6 @@ class CreateInvitesTable extends Migration
      */
     public function down()
     {
-        $table_name = config('invite-codes.tables.invites_table', 'invites');
-        Schema::dropIfExists($table_name);
+        Schema::dropIfExists(config('invite-codes.tables.invites_table', 'invites'));
     }
 }

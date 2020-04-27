@@ -33,7 +33,7 @@ class ProtectedByInviteCodeMiddleware
             $invite_model = app(config('invite-codes.models.invite_model'));
 
             try {
-                /*** @var Invite $invite */
+                /** @var Invite $invite */
                 $invite = $invite_model->where('code', $invite_code)->firstOrFail();
             } catch (ModelNotFoundException $exception) {
                 throw new InvalidInviteCodeException('Your invite code is invalid', Response::HTTP_FORBIDDEN);
@@ -47,9 +47,9 @@ class ProtectedByInviteCodeMiddleware
                     InviteCodes::redeem($invite_code);
 
                     return $next($request);
-                } else {
-                    throw new InviteWithRestrictedUsageException('This invite code is not for you.', Response::HTTP_FORBIDDEN);
                 }
+
+                throw new InviteWithRestrictedUsageException('This invite code is not for you.', Response::HTTP_FORBIDDEN);
             }
         } else {
             throw new RouteProtectedByInviteCodeException('This route is accessible only by using invite codes', Response::HTTP_FORBIDDEN);

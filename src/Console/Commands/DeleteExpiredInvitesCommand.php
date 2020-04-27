@@ -23,16 +23,6 @@ class DeleteExpiredInvitesCommand extends Command
     protected $description = 'Delete all expired invites from your database';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
@@ -40,13 +30,12 @@ class DeleteExpiredInvitesCommand extends Command
     public function handle()
     {
         $model = app(config('invite-codes.models.invite_model'));
-
         $model->where('expires_at', '<=', Carbon::now(config('app.timezone')))->delete();
 
         $this->info('Delete all expired invites.');
 
         event(new DeletedExpiredInvitesEvent());
 
-        return true;
+        return 0;
     }
 }

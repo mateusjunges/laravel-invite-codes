@@ -10,7 +10,7 @@ return [
     | to retrieve your invites. Of course, it is just the basics models
     | needed, but you can use whatever you like.
     |
-     */
+    */
     'models' => [
         'invite_model' => \Junges\InviteCodes\Http\Models\Invite::class,
     ],
@@ -27,29 +27,29 @@ return [
     |
     | If you want to change this tables, please keep the basic structure unchanged.
     |
-     */
+    */
     'tables' => [
         'invites_table' => 'invites',
     ],
 
     /*
-   |--------------------------------------------------------------------------
-   | User
-   |--------------------------------------------------------------------------
-   | To use the ProtectedByInviteCode middleware provided by this package, you need to
-   | specify the email column you use in the model you use for authentication.
-   | If not specified, only invite code with no use restrictions can be used in this middleware.
-   |
+    |--------------------------------------------------------------------------
+    | User
+    |--------------------------------------------------------------------------
+    | To use the ProtectedByInviteCode middleware provided by this package, you need to
+    | specify the email column you use in the model you use for authentication.
+    | If not specified, only invite code with no use restrictions can be used in this middleware.
+    |
     */
     'user' => [
         'email_column' => 'email',
     ],
 
     /*
-   |--------------------------------------------------------------------------
-   | Custom migrations
-   |--------------------------------------------------------------------------
-   | If you want to publish this package migrations and edit with new custom columns, change it to true.
+    |--------------------------------------------------------------------------
+    | Custom migrations
+    |--------------------------------------------------------------------------
+    | If you want to publish this package migrations and edit with new custom columns, change it to true.
     */
     'custom_migrations' => false,
 ];

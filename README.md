@@ -8,7 +8,7 @@ This package allows you to easily manage invite codes for your Laravel applicati
     <a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/license.svg" alt="License"></a>
     <a href="https://github.styleci.io/repos/236969945" target="_blank"><img src="https://github.styleci.io/repos/236969945/shield?style=flat"></a>
     <a href="https://github.com/mateusjunges/laravel-invite-codes/actions?query=workflow%3A%22Continuous+Integration%22">
-        <img src="https://github.com/mateusjunges/laravel-invite-codes/workflows/Continuous%20Integration/badge.svg" alt="Continuos integration"></a>
+        <img src="https://github.com/mateusjunges/laravel-invite-codes/workflows/Continuous%20Integration/badge.svg" alt="Continuous integration"></a>
 </p>
 
 # Documentation
@@ -36,6 +36,7 @@ To get started with Laravel Invite Codes, use Composer to add the package to you
 ```bash
 composer require mateusjunges/laravel-invite-codes
 ```
+
 Or add this line in your composer.json, inside of the require section:
 ```bash
 {
@@ -69,7 +70,7 @@ and set the config for `custom_migrations` to `true`, which is `false` by defaul
 'custom_migrations' => true,
 ```
 
-After the migrations has been published you can create the tables on your database by running the migrations:
+After the migrations have been published you can create the tables on your database by running the migrations:
 
 ```bash
 php artisan migrate
@@ -80,8 +81,8 @@ If you change the table names on migrations, please publish the config file and 
 ```bash
 php artisan vendor:publish --provider="Junges\InviteCodes\InviteCodesServiceProvider" --tag="invite-codes-config"
 ```
-When published, the `config/invite-codes.php` config file contains:
 
+When published, the `config/invite-codes.php` config file contains:
 
 ```php
 <?php
@@ -96,9 +97,9 @@ return [
     | to retrieve your invites. Of course, it is just the basics models
     | needed, but you can use whatever you like.
     |
-     */
-    "models" => [
-        "invite_model" => \Junges\InviteCodes\Http\Models\Invite::class,
+    */
+    'models' => [
+        'invite_model' => \Junges\InviteCodes\Http\Models\Invite::class,
     ],
 
     /*
@@ -113,37 +114,38 @@ return [
     |
     | If you want to change this tables, please keep the basic structure unchanged.
     |
-     */
-    "tables" => [
-        "invites_table" => "invites"
+    */
+    'tables' => [
+        'invites_table' => 'invites',
     ],
 
     /*
-   |--------------------------------------------------------------------------
-   | User
-   |--------------------------------------------------------------------------
-   | To use the ProtectedByInviteCode middleware provided by this package, you need to
-   | specify the email column you use in the model you use for authentication.
-   | If not specified, only invite code with no use restrictions can be used in this middleware.
-   |
+    |--------------------------------------------------------------------------
+    | User
+    |--------------------------------------------------------------------------
+    | To use the ProtectedByInviteCode middleware provided by this package, you need to
+    | specify the email column you use in the model you use for authentication.
+    | If not specified, only invite code with no use restrictions can be used in this middleware.
+    |
     */
-    "user" => [
-        "email_column" => "email"
-    ]
-    
+    'user' => [
+        'email_column' => 'email',
+    ],
+
     /*
-   |--------------------------------------------------------------------------
-   | Custom migrations
-   |--------------------------------------------------------------------------
-   | If you want to publish this package migrations and edit with new custom columns, change it to true.
+    |--------------------------------------------------------------------------
+    | Custom migrations
+    |--------------------------------------------------------------------------
+    | If you want to publish this package migrations and edit with new custom columns, change it to true.
     */
-    'custom_migrations' => false
+    'custom_migrations' => false,
 ];
 ```
 
 # Usage
-This package provides a middleware called `ProtectedByInviteCodeMiddleware`. If you want to use it to protect your routes, you need to register it in
-your `$routeMiddleware` array, into `app/Http/Kernel.php` file:
+
+This package provides a middleware called `ProtectedByInviteCodeMiddleware`. If you want to use it to protect your 
+routes, you need to register it in your `$routeMiddleware` array, into `app/Http/Kernel.php` file:
 
 
 ```php
@@ -159,6 +161,7 @@ Route::get('some-route', function() {
     //
 })->middleware('protected_by_invite_codes');
 ```
+
 You can also add it to the `__construct()`, in your controllers:
 
 ```php
@@ -169,6 +172,7 @@ public function __construct()
 ```
 
 ## Creating invite codes
+
 To create a new invite code, you must use the `InviteCodes` facade. Here is a simple example:
 
 ```php
@@ -210,7 +214,7 @@ For example:
 ## Create multiple invite codes
 
 If you want to create more than one invite code with the same configs, you can use the `make()` method.
-This method generate the specified amount of invite codes. For example:
+This method generates the specified amount of invite codes. For example:
 
 ```php
 \Junges\InviteCodes\Facades\InviteCodes::create()
@@ -222,14 +226,16 @@ This method generate the specified amount of invite codes. For example:
 The code above will create 10 new invite codes which can be used 10 times each, and will expire in 30 days from now.
 
 ## Redeeming invite codes
-To redeem a invite code, you can use the `redeem` method:
+To redeem an invite code, you can use the `redeem` method:
 
 ```php
 \Junges\InviteCodes\Facades\InviteCodes::redeem('YOUR-INVITE-CODE');
 ```
+
 When any invite is redeemed, the `InviteRedeemedEvent` will be dispatched.
 
 ## Redeeming invite codes without dispatching events
+
 If you want to redeem an invite codes without dispatch the `InviteRedeemedEvent`, 
 you can use the `withoutEvents()` method:
 
@@ -248,13 +254,13 @@ public function render($request, Exception $exception)
         //
     }
     if ($exception instanceof \Junges\InviteCodes\Exceptions\ExpiredInviteCodeException) {
-            //
+        //
     }
     if ($exception instanceof \Junges\InviteCodes\Exceptions\DuplicateInviteCodeException) {
         //
     }
     if ($exception instanceof \Junges\InviteCodes\Exceptions\InvalidInviteCodeException) {
-            //
+        //
     }
     if ($exception instanceof \Junges\InviteCodes\Exceptions\UserLoggedOutException) {
         //
@@ -283,20 +289,21 @@ This package also provides a command to delete all expired invites from your dat
 
 After all expired invites has been deleted, it will dispatch the `DeletedExpiredInvitesEvent`.
 
-
 # Tests
+
 Run `composer test` to test this package.
 
 # Contributing
+
 Thank you for considering contributing for the Laravel Invite Codes package! The contribution guide can be found [here](https://github.com/mateusjunges/laravel-invite-codes/blob/master/CONTRIBUTING.md).
 
 # Changelog
+
 Please see [changelog](https://github.com/mateusjunges/laravel-invite-codes/blob/master/CHANGELOG.md) for more information about the changes on this package.
 
 # License
+
 The Laravel Invite Codes package is open-sourced software licenced under the [MIT License](https://opensource.org/licenses/MIT). 
 Please see the [License File](https://github.com/mateusjunges/laravel-invite-codes/blob/master/LICENSE) for more information.
-
-
 
 [migrations]: https://github.com/mateusjunges/laravel-invite-codes/tree/master/database/migrations

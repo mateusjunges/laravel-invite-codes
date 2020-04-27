@@ -54,7 +54,7 @@ class Invite extends Model implements InviteContract
      */
     public function canBeRedeemed(): bool
     {
-        return ! $this->isExpired() and ! $this->isSoldOut() and ! $this->hasRestrictedUsage();
+        return ! $this->isExpired() && ! $this->isSoldOut() && ! $this->hasRestrictedUsage();
     }
 
     /**
@@ -73,7 +73,7 @@ class Invite extends Model implements InviteContract
      */
     public function hasRestrictedUsage(): bool
     {
-        return ! is_null($this->to);
+        return $this->to !== null;
     }
 
     /**
@@ -95,7 +95,7 @@ class Invite extends Model implements InviteContract
      */
     public function isSoldOut(): bool
     {
-        if (is_null($this->max_usages)) {
+        if ($this->max_usages === null) {
             return false;
         }
 
