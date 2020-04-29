@@ -23,8 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
 class InviteCodes implements InviteCodesContract
 {
     protected int $max_usages;
-    protected $to = null;
-    protected $expires_at = null;
+    protected $to;
+    protected $expires_at;
     protected $dispatch_events = true;
 
     /**
@@ -37,12 +37,10 @@ class InviteCodes implements InviteCodesContract
     {
         if (method_exists($this, $name)) {
             $this->{$name}($arguments);
-        } else {
-            if (preg_match('/canBeUsed[0-9]*Times/', $name)) {
-                preg_match("/\d+/", $name, $max_usages);
+        } elseif (preg_match('/canBeUsed[0-9]*Times/', $name)) {
+            preg_match("/\d+/", $name, $max_usages);
 
-                return $this->maxUsages($max_usages[0]);
-            }
+            return $this->maxUsages($max_usages[0]);
         }
     }
 
@@ -70,14 +68,14 @@ class InviteCodes implements InviteCodesContract
     public function redeem(string $code): Invite
     {
         try {
-            $model = app(config('invite-codes.models.invite_model', '\Junges\InviteCodes\Http\Models\Invite'));
+            $model = app(config('invite-codes.models.invite_model', Invite::class));
             $invite = $model->where('code', Str::upper($code))->firstOrFail();
         } catch (ModelNotFoundException $exception) {
             throw new InvalidInviteCodeException('Your invite code is invalid');
         }
 
         if ($this->inviteCanBeRedeemed($invite)) {
-            /*** @var Invite $invite */
+            /** @var Invite $invite */
             $invite->increment('uses', 1);
             $invite->save();
 
@@ -108,9 +106,9 @@ class InviteCodes implements InviteCodesContract
     {
         if ($usages < 1) {
             throw new InviteMustBeAbleToBeRedeemedException();
-        } else {
-            $this->max_usages = $usages;
         }
+
+        $this->max_usages = $usages;
 
         return $this;
     }
@@ -174,7 +172,7 @@ class InviteCodes implements InviteCodesContract
      */
     public function save(): Invite
     {
-        $model = app(config('invite-codes.models.invite_model', '\Junges\InviteCodes\Http\Models\Invite'));
+        $model = app(config('invite-codes.models.invite_model', Invite::class));
 
         do {
             $code = Str::upper(Str::random(16));
@@ -191,14 +189,14 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * @param int $quantity
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      * @throws DuplicateInviteCodeException
      */
     public function make(int $quantity): Collection
     {
         $invites = collect();
 
-        if (! empty($this->to) and $quantity > 1) {
+        if (! empty($this->to) && $quantity > 1) {
             throw DuplicateInviteCodeException::forEmail();
         }
 
@@ -223,18 +221,19 @@ class InviteCodes implements InviteCodesContract
      */
     private function inviteCanBeRedeemed(Invite $invite, string $email = null): bool
     {
-        if ($invite->hasRestrictedUsage() and ! Auth::check()) {
+        if ($invite->hasRestrictedUsage() && ! Auth::check()) {
             throw new UserLoggedOutException('You must be logged in to use this invite code.', Response::HTTP_FORBIDDEN);
         }
 
-        if ($invite->hasRestrictedUsage() and ! $invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column')})) {
+        if ($invite->hasRestrictedUsage() && ! $invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column')})) {
             throw new InviteWithRestrictedUsageException('This invite is not for you.', Response::HTTP_FORBIDDEN);
         }
 
         if ($invite->hasRestrictedUsage()
-            and Auth::check()
-            and $invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column')})
-            and $invite->isSoldOut()) {
+            && Auth::check()
+            && $invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column')})
+            && $invite->isSoldOut()
+        ) {
             throw new InviteAlreadyRedeemedException('This invite has already been redeemed', Response::HTTP_FORBIDDEN);
         }
 
