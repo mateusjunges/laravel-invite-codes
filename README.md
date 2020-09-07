@@ -53,6 +53,7 @@ After installing the laravel Invite Codes package, register the service provider
 
 ```php
 'providers' => [
+    Junges\InviteCodes\InviteCodesServiceProvider::class,
     Junges\InviteCodes\InviteCodesEventServiceProvider::class,
 ];
 ```
