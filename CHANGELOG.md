@@ -2,6 +2,10 @@
 
 All notable changes to `mateusjunges/laravel-invite-codes` will be documented in this file.
 
+## 1.3.0 2020-09-08
+- Add support for laravel v8.x
+- Drop support for Larvel v5.6 and v5.7
+
 ## 1.2.2 2020-11-03
 - Change test suite to run on github actions instead of TravisCi
 
