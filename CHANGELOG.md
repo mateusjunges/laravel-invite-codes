@@ -2,6 +2,10 @@
 
 All notable changes to `mateusjunges/laravel-invite-codes` will be documented in this file.
 
+## 1.4.0 2020-01-20
+- Add support for PHP v8
+- Drop support for Laravel 5.8
+
 ## 1.3.0 2020-09-08
 - Add support for laravel v8.x
 - Drop support for Larvel v5.6 and v5.7
