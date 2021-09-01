@@ -1,15 +1,13 @@
 # Laravel Invite Codes
-
+![Readme banner](https://banners.beyondco.de/Laravel%20Invite%20Codes.png?theme=dark&packageManager=composer+require&packageName=mateusjunges%2Flaravel-invite-codes&pattern=architect&style=style_1&description=This+package+allows+you+to+easily+manage+invite+codes+for+your+Laravel+application.&md=1&showWatermark=1&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
 This package allows you to easily manage invite codes for your Laravel application.
 
-<p align="center">
-    <a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/d/total.svg" alt="Total Downloads"></a>
-    <a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/v/stable.svg" alt="Latest Stable Version"></a>
-    <a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/license.svg" alt="License"></a>
-    <a href="https://github.styleci.io/repos/236969945" target="_blank"><img src="https://github.styleci.io/repos/236969945/shield?style=flat"></a>
-    <a href="https://github.com/mateusjunges/laravel-invite-codes/actions?query=workflow%3A%22Continuous+Integration%22">
-        <img src="https://github.com/mateusjunges/laravel-invite-codes/workflows/Continuous%20Integration/badge.svg" alt="Continuous integration"></a>
-</p>
+<a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/d/total.svg" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/license.svg" alt="License"></a>
+<a href="https://github.styleci.io/repos/236969945" target="_blank"><img src="https://github.styleci.io/repos/236969945/shield?style=flat"></a>
+<a href="https://github.com/mateusjunges/laravel-invite-codes/actions?query=workflow%3A%22Continuous+Integration%22"><img src="https://github.com/mateusjunges/laravel-invite-codes/workflows/Continuous%20Integration/badge.svg" alt="Continuous integration"></a>
+
 
 # Documentation
 
