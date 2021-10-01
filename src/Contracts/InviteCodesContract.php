@@ -17,13 +17,15 @@ interface InviteCodesContract
 {
     /**
      * If used, no events will be dispatched.
+     *
      * @return InviteCodes
      */
     public function withoutEvents(): InviteCodes;
 
     /**
-     * @param string $code
+     * @param  string  $code
      * @return Invite
+     *
      * @throws ExpiredInviteCodeException
      * @throws InvalidInviteCodeException
      * @throws InviteWithRestrictedUsageException
@@ -34,40 +36,47 @@ interface InviteCodesContract
 
     /**
      * Create a new invite.
+     *
      * @return InviteCodes
      */
     public function create(): InviteCodes;
 
     /**
      * Set the number of allowed redemptions.
-     * @param int $usages
+     *
+     * @param  int  $usages
      * @return InviteCodes
+     *
      * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function maxUsages(int $usages = 1): InviteCodes;
 
     /**
      * Set the max usages amount to one.
+     *
      * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function canBeUsedOnce(): InviteCodes;
 
     /**
      * Set the user who can use this invite.
-     * @param string $email
+     *
+     * @param  string  $email
      * @return InviteCodes
      */
     public function restrictUsageTo(string $email): InviteCodes;
 
     /**
      * Save the created invite.
+     *
      * @return Invite
      */
     public function save(): Invite;
 
     /**
-     * @param int $quantity
+     * @param  int  $quantity
      * @return \Illuminate\Support\Collection
+     *
      * @throws DuplicateInviteCodeException
      */
     public function make(int $quantity): Collection;

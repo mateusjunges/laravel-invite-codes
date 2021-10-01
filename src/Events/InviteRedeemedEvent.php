@@ -16,7 +16,7 @@ class InviteRedeemedEvent
     /**
      * Create a new event instance.
      *
-     * @param Invite $invite
+     * @param  Invite  $invite
      */
     public function __construct(Invite $invite)
     {
