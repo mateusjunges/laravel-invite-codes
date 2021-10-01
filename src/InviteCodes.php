@@ -31,6 +31,7 @@ class InviteCodes implements InviteCodesContract
      * @param $name
      * @param $arguments
      * @return InviteCodes
+     *
      * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function __call($name, $arguments): self
@@ -46,6 +47,7 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * If used, no events will be dispatched.
+     *
      * @return InviteCodes
      */
     public function withoutEvents(): self
@@ -56,8 +58,9 @@ class InviteCodes implements InviteCodesContract
     }
 
     /**
-     * @param string $code
+     * @param  string  $code
      * @return Invite
+     *
      * @throws ExpiredInviteCodeException
      * @throws InvalidInviteCodeException
      * @throws InviteWithRestrictedUsageException
@@ -89,6 +92,7 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * Create a new invite.
+     *
      * @return InviteCodes
      */
     public function create(): self
@@ -98,8 +102,10 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * Set the number of allowed redemptions.
-     * @param int $usages
+     *
+     * @param  int  $usages
      * @return InviteCodes
+     *
      * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function maxUsages(int $usages = 1): self
@@ -115,6 +121,7 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * Set the max usages amount to one.
+     *
      * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function canBeUsedOnce(): self
@@ -126,7 +133,8 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * Set the user who can use this invite.
-     * @param string $email
+     *
+     * @param  string  $email
      * @return $this
      */
     public function restrictUsageTo(string $email): self
@@ -138,6 +146,7 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * Set the invite expiration date.
+     *
      * @param $date
      * @return InviteCodes
      */
@@ -154,7 +163,8 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * Set the expiration date to $days from now.
-     * @param int $days
+     *
+     * @param  int  $days
      * @return $this
      */
     public function expiresIn(int $days): self
@@ -168,6 +178,7 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * Save the created invite.
+     *
      * @return Invite
      */
     public function save(): Invite
@@ -188,8 +199,9 @@ class InviteCodes implements InviteCodesContract
     }
 
     /**
-     * @param int $quantity
+     * @param  int  $quantity
      * @return Collection
+     *
      * @throws DuplicateInviteCodeException
      */
     public function make(int $quantity): Collection
@@ -210,9 +222,10 @@ class InviteCodes implements InviteCodesContract
     }
 
     /**
-     * @param Invite $invite
-     * @param string|null $email
+     * @param  Invite  $invite
+     * @param  string|null  $email
      * @return bool
+     *
      * @throws ExpiredInviteCodeException
      * @throws InviteWithRestrictedUsageException
      * @throws SoldOutException
