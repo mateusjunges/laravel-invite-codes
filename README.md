@@ -39,7 +39,7 @@ Or add this line in your composer.json, inside of the require section:
 ```bash
 {
     "require": {
-        "mateusjunges/laravel-invite-codes": "^1.3",
+        "mateusjunges/laravel-invite-codes": "^1.4",
     }
 }
 ```

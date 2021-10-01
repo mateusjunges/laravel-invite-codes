@@ -10,6 +10,7 @@ use Junges\InviteCodes\Events\InviteCreatedEvent;
 
 /**
  * Class Invite.
+ *
  * @method static Builder usedOnce() All invites used once.
  * @method static Builder neverUsed() All never used invites.
  * @method static Builder mostUsed() The most used invite.
@@ -50,6 +51,7 @@ class Invite extends Model implements InviteContract
 
     /**
      * Check if an invite code can be used redeemed.
+     *
      * @return bool
      */
     public function canBeRedeemed(): bool
@@ -59,6 +61,7 @@ class Invite extends Model implements InviteContract
 
     /**
      * Check if an invite is to the user who has the specified email.
+     *
      * @param $email
      * @return bool
      */
@@ -69,6 +72,7 @@ class Invite extends Model implements InviteContract
 
     /**
      * Check if an invite is usable for only one person.
+     *
      * @return bool
      */
     public function hasRestrictedUsage(): bool
@@ -78,6 +82,7 @@ class Invite extends Model implements InviteContract
 
     /**
      * Checks if the invite code is expired.
+     *
      * @return bool
      */
     public function isExpired(): bool
@@ -91,6 +96,7 @@ class Invite extends Model implements InviteContract
 
     /**
      * Check if the invite code has been sold out.
+     *
      * @return bool
      */
     public function isSoldOut(): bool
@@ -104,7 +110,8 @@ class Invite extends Model implements InviteContract
 
     /**
      * Invites used once.
-     * @param Builder $query
+     *
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeUsedOnce(Builder $query): Builder
@@ -114,7 +121,8 @@ class Invite extends Model implements InviteContract
 
     /**
      * Invites never used.
-     * @param Builder $query
+     *
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeNeverUsed(Builder $query): Builder
@@ -124,7 +132,8 @@ class Invite extends Model implements InviteContract
 
     /**
      * Most used invite code.
-     * @param Builder $query
+     *
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeMostUsed(Builder $query): Builder
@@ -134,7 +143,8 @@ class Invite extends Model implements InviteContract
 
     /**
      * Expired invites.
-     * @param Builder $query
+     *
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeExpired(Builder $query): Builder
@@ -143,7 +153,7 @@ class Invite extends Model implements InviteContract
     }
 
     /**
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeSoldOut(Builder $query): Builder

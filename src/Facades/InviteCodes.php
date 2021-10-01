@@ -8,6 +8,7 @@ use Junges\InviteCodes\Http\Models\Invite;
 
 /**
  * Class InviteCodes.
+ *
  * @method static $this withoutEvents() Will dispatch no events.
  * @method static $this redeem(string $code) Redeem an invite code.
  * @method static $this create() Create a invite code.
