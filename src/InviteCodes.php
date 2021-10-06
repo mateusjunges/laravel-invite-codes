@@ -208,8 +208,8 @@ class InviteCodes implements InviteCodesContract
     {
         $invites = collect();
 
-        if (! empty($this->to) && $quantity > 1) {
-           DuplicateInviteCodeException::forEmail();
+        if (!empty($this->to) && $quantity > 1) {
+            DuplicateInviteCodeException::forEmail();
         }
 
         while ($quantity > 0) {

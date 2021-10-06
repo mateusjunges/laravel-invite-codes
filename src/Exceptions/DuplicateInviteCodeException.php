@@ -6,6 +6,7 @@ class DuplicateInviteCodeException extends InviteCodesException
 {
     /**
      * @return no-return
+     *
      * @throws DuplicateInviteCodeException
      */
     public static function forEmail(): void
