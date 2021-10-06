@@ -2,6 +2,10 @@
 
 All notable changes to `mateusjunges/laravel-invite-codes` will be documented in this file.
 
+## 1.4.1 2021-10-06
+### Fixed 
+- Removed void type hint `DuplicateInviteCodeException::forEmail` method ([#33](https://github.com/mateusjunges/laravel-invite-codes/pull/33))
+
 ## 1.4.0 2020-01-20
 - Add support for PHP v8
 - Drop support for Laravel 5.8
