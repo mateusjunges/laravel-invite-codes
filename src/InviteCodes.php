@@ -209,7 +209,7 @@ class InviteCodes implements InviteCodesContract
         $invites = collect();
 
         if (! empty($this->to) && $quantity > 1) {
-            throw DuplicateInviteCodeException::forEmail();
+           DuplicateInviteCodeException::forEmail();
         }
 
         while ($quantity > 0) {
