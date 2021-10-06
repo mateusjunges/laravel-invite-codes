@@ -3,6 +3,7 @@
 namespace Junges\InviteCodes\Tests;
 
 use Carbon\Carbon;
+use Junges\InviteCodes\Exceptions\DuplicateInviteCodeException;
 use Junges\InviteCodes\Facades\InviteCodes;
 use Junges\InviteCodes\Http\Models\Invite;
 
@@ -37,6 +38,12 @@ class InviteModelMethodsTest extends TestCase
             ->save();
 
         $this->assertTrue($invite->hasRestrictedUsage());
+    }
+
+    public function test_duplicate_invite_code_exception()
+    {
+        $this->expectException(DuplicateInviteCodeException::class);
+        InviteCodes::restrictUsageTo('contato@mateusjunges.com')->make(2);
     }
 
     public function test_is_expired_method()
