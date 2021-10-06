@@ -42,7 +42,7 @@ class InviteModelMethodsTest extends TestCase
 
     public function test_duplicate_invite_code_exception()
     {
-        self::expectException(DuplicateInviteCodeException::class);
+        $this->expectException(DuplicateInviteCodeException::class);
         InviteCodes::restrictUsageTo('contato@mateusjunges.com')->make(2);
     }
 
