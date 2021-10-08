@@ -3,7 +3,7 @@
 namespace Junges\InviteCodes;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -23,9 +23,9 @@ use Symfony\Component\HttpFoundation\Response;
 class InviteCodes implements InviteCodesContract
 {
     protected int $max_usages;
-    protected $to;
-    protected $expires_at;
-    protected $dispatch_events = true;
+    protected ?string $to = null;
+    protected ?CarbonInterface $expires_at;
+    protected bool $dispatch_events = true;
 
     /**
      * @param $name
@@ -70,24 +70,23 @@ class InviteCodes implements InviteCodesContract
      */
     public function redeem(string $code): Invite
     {
-        try {
-            $model = app(config('invite-codes.models.invite_model', Invite::class));
-            $invite = $model->where('code', Str::upper($code))->firstOrFail();
-        } catch (ModelNotFoundException $exception) {
+        $model = app(config('invite-codes.models.invite_model', Invite::class));
+
+        /** @var Invite|null $invite */
+        $invite = $model->where('code', Str::upper($code))->first();
+
+        if ($invite === null || !$this->inviteCanBeRedeemed($invite)) {
             throw new InvalidInviteCodeException('Your invite code is invalid');
         }
 
-        if ($this->inviteCanBeRedeemed($invite)) {
-            /** @var Invite $invite */
-            $invite->increment('uses', 1);
-            $invite->save();
+        $invite->increment('uses', 1);
+        $invite->save();
 
-            if ($this->shouldDispatchEvents()) {
-                event(new InviteRedeemedEvent($invite));
-            }
-
-            return $invite;
+        if ($this->shouldDispatchEvents()) {
+            event(new InviteRedeemedEvent($invite));
         }
+
+        return $invite;
     }
 
     /**
@@ -223,7 +222,6 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * @param  Invite  $invite
-     * @param  string|null  $email
      * @return bool
      *
      * @throws ExpiredInviteCodeException
@@ -232,7 +230,7 @@ class InviteCodes implements InviteCodesContract
      * @throws UserLoggedOutException
      * @throws InviteAlreadyRedeemedException
      */
-    private function inviteCanBeRedeemed(Invite $invite, string $email = null): bool
+    private function inviteCanBeRedeemed(Invite $invite): bool
     {
         if ($invite->hasRestrictedUsage() && ! Auth::check()) {
             throw new UserLoggedOutException('You must be logged in to use this invite code.', Response::HTTP_FORBIDDEN);
