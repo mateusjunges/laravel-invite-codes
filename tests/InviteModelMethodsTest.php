@@ -4,6 +4,8 @@ namespace Junges\InviteCodes\Tests;
 
 use Carbon\Carbon;
 use Junges\InviteCodes\Exceptions\DuplicateInviteCodeException;
+use Junges\InviteCodes\Exceptions\InviteMustBeAbleToBeRedeemedException;
+use Junges\InviteCodes\Exceptions\SoldOutException;
 use Junges\InviteCodes\Facades\InviteCodes;
 use Junges\InviteCodes\Http\Models\Invite;
 
@@ -85,5 +87,36 @@ class InviteModelMethodsTest extends TestCase
         InviteCodes::redeem($invite->code);
 
         $this->assertCount(1, Invite::soldOut()->get());
+    }
+
+    public function test_can_be_used_n_times()
+    {
+        $invite = InviteCodes::create()
+            ->canBeUsed2Times()
+            ->save();
+
+        InviteCodes::redeem($invite->code);
+        InviteCodes::redeem($invite->code);
+        $this->assertTrue(true);
+    }
+
+    public function test_cant_be_used_more_than_n_times()
+    {
+        $invite = InviteCodes::create()
+            ->canBeUsed2Times()
+            ->save();
+
+        $this->expectException(SoldOutException::class);
+        InviteCodes::redeem($invite->code);
+        InviteCodes::redeem($invite->code);
+        InviteCodes::redeem($invite->code);
+    }
+
+   public function test_can_be_used_0_times_is_invalid()
+    {
+        $this->expectException(InviteMustBeAbleToBeRedeemedException::class);
+        InviteCodes::create()
+            ->canBeUsed0Times()
+            ->save();
     }
 }
