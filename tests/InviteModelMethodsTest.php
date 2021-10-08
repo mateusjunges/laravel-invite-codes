@@ -112,7 +112,7 @@ class InviteModelMethodsTest extends TestCase
         InviteCodes::redeem($invite->code);
     }
 
-   public function test_can_be_used_0_times_is_invalid()
+    public function test_can_be_used_0_times_is_invalid()
     {
         $this->expectException(InviteMustBeAbleToBeRedeemedException::class);
         InviteCodes::create()
