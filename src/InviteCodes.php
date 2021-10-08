@@ -75,7 +75,7 @@ class InviteCodes implements InviteCodesContract
         /** @var Invite|null $invite */
         $invite = $model->where('code', Str::upper($code))->first();
 
-        if ($invite === null || !$this->inviteCanBeRedeemed($invite)) {
+        if ($invite === null || ! $this->inviteCanBeRedeemed($invite)) {
             throw new InvalidInviteCodeException('Your invite code is invalid');
         }
 
