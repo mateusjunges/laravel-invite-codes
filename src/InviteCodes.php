@@ -2,6 +2,7 @@
 
 namespace Junges\InviteCodes;
 
+use BadMethodCallException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
@@ -32,7 +33,7 @@ class InviteCodes implements InviteCodesContract
      * @param $arguments
      * @return InviteCodes
      *
-     * @throws \BadMethodCallException
+     * @throws BadMethodCallException
      * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function __call($name, $arguments): self
@@ -42,7 +43,7 @@ class InviteCodes implements InviteCodesContract
         } elseif (preg_match('/^canBeUsed(\d+)Times$/', $name, $max_usages)) {
             return $this->maxUsages($max_usages[1]);
         }
-        throw new \BadMethodCallException('Invalid method called');
+        throw new BadMethodCallException('Invalid method called');
     }
 
     /**
