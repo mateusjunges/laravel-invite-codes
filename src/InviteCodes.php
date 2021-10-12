@@ -2,6 +2,7 @@
 
 namespace Junges\InviteCodes;
 
+use BadMethodCallException;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
@@ -32,17 +33,17 @@ class InviteCodes implements InviteCodesContract
      * @param $arguments
      * @return InviteCodes
      *
+     * @throws BadMethodCallException
      * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function __call($name, $arguments): self
     {
         if (method_exists($this, $name)) {
             $this->{$name}($arguments);
-        } elseif (preg_match('/canBeUsed[0-9]*Times/', $name)) {
-            preg_match("/\d+/", $name, $max_usages);
-
-            return $this->maxUsages($max_usages[0]);
+        } elseif (preg_match('/^canBeUsed(\d+)Times$/', $name, $max_usages)) {
+            return $this->maxUsages($max_usages[1]);
         }
+        throw new BadMethodCallException('Invalid method called');
     }
 
     /**
