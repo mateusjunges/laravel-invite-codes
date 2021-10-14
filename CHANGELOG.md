@@ -2,6 +2,16 @@
 
 All notable changes to `mateusjunges/laravel-invite-codes` will be documented in this file.
 
+## 1.4.2 2021-10-14
+### Fixed
+- Refactored redeem method to use happy path ([#37](https://github.com/mateusjunges/laravel-invite-codes/pull/37))
+- Removed unused method parameter for private method `inviteCanBeRedeemed` ([#37](https://github.com/mateusjunges/laravel-invite-codes/pull/37))
+- Optimezed `canBeUsedXTimes` regex ([#36](https://github.com/mateusjunges/laravel-invite-codes/pull/36))
+
+### Added
+- Added `canBeUsedXTimes` tests ([#36](https://github.com/mateusjunges/laravel-invite-codes/pull/36))
+- Added missing return type in magic `__call` method ([#36](https://github.com/mateusjunges/laravel-invite-codes/pull/36))
+
 ## 1.4.1 2021-10-06
 ### Fixed 
 - Removed void type hint `DuplicateInviteCodeException::forEmail` method ([#33](https://github.com/mateusjunges/laravel-invite-codes/pull/33))
