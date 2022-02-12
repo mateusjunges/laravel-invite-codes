@@ -2,6 +2,10 @@
 
 All notable changes to `mateusjunges/laravel-invite-codes` will be documented in this file.
 
+## 1.5.0 2022-02-12
+### Added
+- Add support for Laravel v9.x (by @jbrooksuk)
+
 ## 1.4.2 2021-10-14
 ### Fixed
 - Refactored redeem method to use happy path ([#37](https://github.com/mateusjunges/laravel-invite-codes/pull/37))
