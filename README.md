@@ -8,9 +8,12 @@ This package allows you to easily manage invite codes for your Laravel applicati
 <a href="https://github.styleci.io/repos/236969945" target="_blank"><img src="https://github.styleci.io/repos/236969945/shield?style=flat"></a>
 <a href="https://github.com/mateusjunges/laravel-invite-codes/actions?query=workflow%3A%22Continuous+Integration%22"><img src="https://github.com/mateusjunges/laravel-invite-codes/workflows/Continuous%20Integration/badge.svg" alt="Continuous integration"></a>
 
+# Buy me a coffee!
+If you think this package helped you in any way, you can <a href="https://www.paypal.com/donate/?hosted_button_id=ECFBTKP2NVKEW" target="_blank">buy me a coffee!</a>
+
+![art/donation-qr-code.png](art/donation-qr-code.png)
 
 # Documentation
-
 - [Installation](#installation)
 - [Usage](#usage)
     - [Creating invite codes](#creating-invite-codes)
