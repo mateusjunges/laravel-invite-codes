@@ -18,7 +18,7 @@ class ProtectedByInviteCodeMiddleware
 {
     /**
      * Handle an incoming request.
-	 *
+     *
      * @throws RouteProtectedByInviteCodeException
      * @throws InvalidInviteCodeException
      * @throws UserLoggedOutException
@@ -26,34 +26,34 @@ class ProtectedByInviteCodeMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-		if (! $request->has('invite_code')) {
-			throw new RouteProtectedByInviteCodeException('This route is accessible only by using invite codes', Response::HTTP_FORBIDDEN);
-		}
+        if (! $request->has('invite_code')) {
+            throw new RouteProtectedByInviteCodeException('This route is accessible only by using invite codes', Response::HTTP_FORBIDDEN);
+        }
 
-		$invite_code = $request->input('invite_code');
-		$invite_model = app(config('invite-codes.models.invite_model'));
+        $invite_code = $request->input('invite_code');
+        $invite_model = app(config('invite-codes.models.invite_model'));
 
-		try {
-			$invite = $invite_model->where('code', $invite_code)->firstOrFail();
-			assert($invite instanceof InviteContract);
-		} catch (ModelNotFoundException) {
-			throw new InvalidInviteCodeException('Your invite code is invalid', Response::HTTP_FORBIDDEN);
-		}
+        try {
+            $invite = $invite_model->where('code', $invite_code)->firstOrFail();
+            assert($invite instanceof InviteContract);
+        } catch (ModelNotFoundException) {
+            throw new InvalidInviteCodeException('Your invite code is invalid', Response::HTTP_FORBIDDEN);
+        }
 
-		if (! $invite->hasRestrictedUsage()) {
-			return $next($request);
-		}
+        if (! $invite->hasRestrictedUsage()) {
+            return $next($request);
+        }
 
-		if (! Auth::check()) {
-			throw new UserLoggedOutException('You must be logged in to use this invite code', Response::HTTP_FORBIDDEN);
-		}
+        if (! Auth::check()) {
+            throw new UserLoggedOutException('You must be logged in to use this invite code', Response::HTTP_FORBIDDEN);
+        }
 
-		if ($invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column')})) {
-			InviteCodes::redeem($invite_code);
+        if ($invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column')})) {
+            InviteCodes::redeem($invite_code);
 
-			return $next($request);
-		}
+            return $next($request);
+        }
 
-		throw new InviteWithRestrictedUsageException('This invite code is not for you.', Response::HTTP_FORBIDDEN);
+        throw new InviteWithRestrictedUsageException('This invite code is not for you.', Response::HTTP_FORBIDDEN);
     }
 }

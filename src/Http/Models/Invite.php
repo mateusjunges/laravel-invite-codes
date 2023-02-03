@@ -22,9 +22,9 @@ class Invite extends Model implements InviteContract
     protected $table;
 
     protected $casts = [
-		'deleted_at' => 'datetime',
-		'expires_at' => 'datetime'
-	];
+        'deleted_at' => 'datetime',
+        'expires_at' => 'datetime',
+    ];
 
     protected $fillable = [
         'code',

@@ -87,7 +87,7 @@ class InviteCodesMiddlewareTest extends MiddlewareTestCase
         Auth::login($user);
 
         $this->assertEquals(
-			Response::HTTP_OK,
+            Response::HTTP_OK,
             $this->execMiddleware($this->protected_by_invite_codes, null, $request),
         );
     }

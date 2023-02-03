@@ -32,8 +32,8 @@ interface InviteCodesContract
 
     /**
      * Set the number of allowed redemptions.
-	 *
-	 * @throws InviteMustBeAbleToBeRedeemedException
+     *
+     * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function maxUsages(int $usages = 1): InviteCodes;
 

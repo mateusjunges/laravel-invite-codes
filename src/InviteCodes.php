@@ -30,6 +30,7 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * @param $arguments
+     *
      * @throws BadMethodCallException
      * @throws InviteMustBeAbleToBeRedeemedException
      */
@@ -88,7 +89,8 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * Set the number of allowed redemptions.
-	 * @throws InviteMustBeAbleToBeRedeemedException
+     *
+     * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function maxUsages(int $usages = 1): self
     {
@@ -103,6 +105,7 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * @inheritdoc
+     *
      * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function canBeUsedOnce(): self
