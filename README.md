@@ -12,8 +12,6 @@ This package allows you to easily manage invite codes for your Laravel applicati
 If you think this package helped you in any way, you can sponsor me on GitHub!
 [![Sponsor Me](art/sponsor.png)](https://github.com/sponsors/mateusjunges)
 
-![art/donation-qr-code.png](art/donation-qr-code.png)
-
 # Documentation
 - [Installation](#installation)
 - [Usage](#usage)
