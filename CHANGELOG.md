@@ -2,6 +2,11 @@
 
 All notable changes to `mateusjunges/laravel-invite-codes` will be documented in this file.
 
+## [v1.6.0 - 2023-02-03](https://github.com/mateusjunges/laravel-invite-codes/compare/v1.5.0...v1.6.0)
+- Drop support for Laravel versions 6, 7 and 8
+- Add support for Laravel v10.x
+- Drop support for php 7.4
+
 ## 1.5.0 2022-02-12
 ### Added
 - Add support for Laravel v9.x (by @jbrooksuk)
