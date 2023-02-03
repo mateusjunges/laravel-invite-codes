@@ -12,14 +12,13 @@ jobs:
         laravel: [10.*, 9.*]
         dependency-version: [prefer-stable]
         include:
-          - php: 8.0
-            laravel: 9.x
-            testbench: 7.*
-            dependency-version: prefer-stable
           - laravel: 9.*
             testbench: 7.*
           - laravel: 10.x
             testbench: 8.*
+        exclude:
+          - laravel: 10.*
+            php: 8.0
 
     name: CI - PHP ${{ matrix.php }}  - Laravel ${{ matrix.laravel }} - Testbench ${{ matrix.testbench }} (${{ matrix.dependency-version }})
 
