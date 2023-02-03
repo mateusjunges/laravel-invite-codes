@@ -18,15 +18,13 @@ class ProtectedByInviteCodeMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @return mixed
-     *
+	 *
      * @throws RouteProtectedByInviteCodeException
      * @throws InvalidInviteCodeException
      * @throws UserLoggedOutException
      * @throws InviteWithRestrictedUsageException
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
 		if (! $request->has('invite_code')) {
 			throw new RouteProtectedByInviteCodeException('This route is accessible only by using invite codes', Response::HTTP_FORBIDDEN);

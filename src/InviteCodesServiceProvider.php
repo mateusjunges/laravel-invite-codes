@@ -13,15 +13,11 @@ class InviteCodesServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishesConfig();
-
         $this->loadMigrations();
-
         $this->loadCommands();
     }
 
-    /**
-     * Load and publishes the package configuration file.
-     */
+    /** Load and publishes the package configuration file. */
     private function publishesConfig(): void
     {
         $this->publishes([
@@ -29,9 +25,7 @@ class InviteCodesServiceProvider extends ServiceProvider
         ], 'invite-codes-config');
     }
 
-    /**
-     * Load the package migrations.
-     */
+    /** Load the package migrations. */
     private function loadMigrations(): void
     {
         $custom_migrations = config('invite-codes.custom_migrations', false);
@@ -55,9 +49,7 @@ class InviteCodesServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * Register any application services.
-     */
+    /** Register any application services. */
     public function register(): void
     {
         $this->app->bind('invite_codes', InviteCodes::class);

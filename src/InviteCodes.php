@@ -29,14 +29,11 @@ class InviteCodes implements InviteCodesContract
     protected bool $dispatch_events = true;
 
     /**
-     * @param $name
      * @param $arguments
-     * @return InviteCodes
-     *
      * @throws BadMethodCallException
      * @throws InviteMustBeAbleToBeRedeemedException
      */
-    public function __call($name, $arguments): self
+    public function __call(string $name, $arguments): self
     {
         if (method_exists($this, $name)) {
             $this->{$name}($arguments);
@@ -46,11 +43,7 @@ class InviteCodes implements InviteCodesContract
         throw new BadMethodCallException('Invalid method called');
     }
 
-    /**
-     * If used, no events will be dispatched.
-     *
-     * @return InviteCodes
-     */
+    /** If used, no events will be dispatched. */
     public function withoutEvents(): self
     {
         $this->dispatch_events = false;
@@ -59,9 +52,6 @@ class InviteCodes implements InviteCodesContract
     }
 
     /**
-     * @param  string  $code
-     * @return Invite
-     *
      * @throws ExpiredInviteCodeException
      * @throws InvalidInviteCodeException
      * @throws InviteWithRestrictedUsageException
@@ -90,11 +80,7 @@ class InviteCodes implements InviteCodesContract
         return $invite;
     }
 
-    /**
-     * Create a new invite.
-     *
-     * @return InviteCodes
-     */
+    /** Create a new invite. */
     public function create(): self
     {
         return $this;
@@ -102,11 +88,7 @@ class InviteCodes implements InviteCodesContract
 
     /**
      * Set the number of allowed redemptions.
-     *
-     * @param  int  $usages
-     * @return InviteCodes
-     *
-     * @throws InviteMustBeAbleToBeRedeemedException
+	 * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function maxUsages(int $usages = 1): self
     {
@@ -120,8 +102,7 @@ class InviteCodes implements InviteCodesContract
     }
 
     /**
-     * Set the max usages amount to one.
-     *
+     * @inheritdoc
      * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function canBeUsedOnce(): self
@@ -131,12 +112,7 @@ class InviteCodes implements InviteCodesContract
         return $this;
     }
 
-    /**
-     * Set the user who can use this invite.
-     *
-     * @param  string  $email
-     * @return $this
-     */
+    /** @inheritdoc . */
     public function restrictUsageTo(string $email): self
     {
         $this->to = $email;
@@ -144,12 +120,7 @@ class InviteCodes implements InviteCodesContract
         return $this;
     }
 
-    /**
-     * Set the invite expiration date.
-     *
-     * @param $date
-     * @return InviteCodes
-     */
+    /** Set the invite expiration date. */
     public function expiresAt($date): self
     {
         if (is_string($date)) {
@@ -161,12 +132,7 @@ class InviteCodes implements InviteCodesContract
         return $this;
     }
 
-    /**
-     * Set the expiration date to $days from now.
-     *
-     * @param  int  $days
-     * @return $this
-     */
+    /** Set the expiration date to $days from now. */
     public function expiresIn(int $days): self
     {
         $expires_at = Carbon::now(config('app.timezone'))->addDays($days)->endOfDay();
@@ -176,11 +142,7 @@ class InviteCodes implements InviteCodesContract
         return $this;
     }
 
-    /**
-     * Save the created invite.
-     *
-     * @return Invite
-     */
+    /** @inheritdoc */
     public function save(): Invite
     {
         $model = app(config('invite-codes.models.invite_model', Invite::class));
@@ -198,12 +160,7 @@ class InviteCodes implements InviteCodesContract
         ]);
     }
 
-    /**
-     * @param  int  $quantity
-     * @return Collection
-     *
-     * @throws DuplicateInviteCodeException
-     */
+    /** @throws DuplicateInviteCodeException */
     public function make(int $quantity): Collection
     {
         $invites = collect();
@@ -222,9 +179,6 @@ class InviteCodes implements InviteCodesContract
     }
 
     /**
-     * @param  Invite  $invite
-     * @return bool
-     *
      * @throws ExpiredInviteCodeException
      * @throws InviteWithRestrictedUsageException
      * @throws SoldOutException
@@ -260,9 +214,6 @@ class InviteCodes implements InviteCodesContract
         return true;
     }
 
-    /**
-     * @return bool
-     */
     private function shouldDispatchEvents(): bool
     {
         return $this->dispatch_events;

@@ -9,21 +9,7 @@ use Junges\InviteCodes\Events\InviteRedeemedEvent;
 class InviteCodesEventServiceProvider extends ServiceProvider
 {
     public array $listen = [
-        InviteCreatedEvent::class => [
-
-        ],
-        InviteRedeemedEvent::class => [
-
-        ],
+        InviteCreatedEvent::class => [],
+        InviteRedeemedEvent::class => [],
     ];
-
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-    }
 }
