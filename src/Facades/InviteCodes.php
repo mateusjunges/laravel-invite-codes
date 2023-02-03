@@ -11,7 +11,7 @@ use Junges\InviteCodes\Http\Models\Invite;
  *
  * @method static $this withoutEvents() Will dispatch no events.
  * @method static $this redeem(string $code) Redeem an invite code.
- * @method static $this create() Create a invite code.
+ * @method static $this create() Create an invite code.
  * @method static $this maxUsages(int $usages = null) Set the max allowed usages for invite codes.
  * @method static $this restrictUsageTo(string $email) Set the user who can use the invite code.
  * @method static $this expiresAt($date) Set the invite code expiration date.

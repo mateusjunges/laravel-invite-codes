@@ -11,15 +11,7 @@ class InviteRedeemedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public Invite $invite;
-
-    /**
-     * Create a new event instance.
-     *
-     * @param  Invite  $invite
-     */
-    public function __construct(Invite $invite)
+    public function __construct(public Invite $invite)
     {
-        $this->invite = $invite;
     }
 }

@@ -19,7 +19,7 @@ class TestCase extends Orchestra
         (new InviteCodesServiceProvider($this->app))->boot();
     }
 
-    public function getPackageProviders($app)
+    public function getPackageProviders($app): array
     {
         return [
             InviteCodesServiceProvider::class,

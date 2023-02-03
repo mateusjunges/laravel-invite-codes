@@ -15,17 +15,10 @@ use Junges\InviteCodes\InviteCodes;
 
 interface InviteCodesContract
 {
-    /**
-     * If used, no events will be dispatched.
-     *
-     * @return InviteCodes
-     */
+    /** If used, no events will be dispatched.  */
     public function withoutEvents(): InviteCodes;
 
     /**
-     * @param  string  $code
-     * @return Invite
-     *
      * @throws ExpiredInviteCodeException
      * @throws InvalidInviteCodeException
      * @throws InviteWithRestrictedUsageException
@@ -34,50 +27,25 @@ interface InviteCodesContract
      */
     public function redeem(string $code): Invite;
 
-    /**
-     * Create a new invite.
-     *
-     * @return InviteCodes
-     */
+    /** Create a new invite */
     public function create(): InviteCodes;
 
     /**
      * Set the number of allowed redemptions.
-     *
-     * @param  int  $usages
-     * @return InviteCodes
-     *
-     * @throws InviteMustBeAbleToBeRedeemedException
+	 *
+	 * @throws InviteMustBeAbleToBeRedeemedException
      */
     public function maxUsages(int $usages = 1): InviteCodes;
 
-    /**
-     * Set the max usages amount to one.
-     *
-     * @throws InviteMustBeAbleToBeRedeemedException
-     */
+    /** Set the max usages amount to one. */
     public function canBeUsedOnce(): InviteCodes;
 
-    /**
-     * Set the user who can use this invite.
-     *
-     * @param  string  $email
-     * @return InviteCodes
-     */
+    /** Set the user who can use this invite. */
     public function restrictUsageTo(string $email): InviteCodes;
 
-    /**
-     * Save the created invite.
-     *
-     * @return Invite
-     */
+    /** Save the created invite.*/
     public function save(): Invite;
 
-    /**
-     * @param  int  $quantity
-     * @return \Illuminate\Support\Collection
-     *
-     * @throws DuplicateInviteCodeException
-     */
+    /** @throws DuplicateInviteCodeException */
     public function make(int $quantity): Collection;
 }
