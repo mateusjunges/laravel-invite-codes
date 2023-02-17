@@ -41,22 +41,12 @@ Or add this line in your composer.json, inside of the require section:
 ```bash
 {
     "require": {
-        "mateusjunges/laravel-invite-codes": "^1.4",
+        "mateusjunges/laravel-invite-codes": "^1.6",
     }
 }
 ```
 then run `composer install`.
 
-After installing the laravel Invite Codes package, register the service provider in your `config/app.php` file:
-
-> Optional in Laravel 5.5 or above
-
-```php
-'providers' => [
-    Junges\InviteCodes\InviteCodesServiceProvider::class,
-    Junges\InviteCodes\InviteCodesEventServiceProvider::class,
-];
-```
 
 All migrations required for this package are already included. If you need to customize the tables, you can [publish them][migrations] with:
 
