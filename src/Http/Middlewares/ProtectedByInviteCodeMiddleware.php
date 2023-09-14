@@ -3,6 +3,7 @@
 namespace Junges\InviteCodes\Http\Middlewares;
 
 use Closure;
+use Junges\InviteCodes\Http\Models\Invite;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,7 @@ class ProtectedByInviteCodeMiddleware
         }
 
         $invite_code = $request->input('invite_code');
-        $invite_model = app(config('invite-codes.models.invite_model'));
+        $invite_model = app(config('invite-codes.models.invite_model') ?? Invite::class);
 
         try {
             $invite = $invite_model->where('code', $invite_code)->firstOrFail();
