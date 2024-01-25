@@ -3,7 +3,6 @@
 namespace Junges\InviteCodes\Http\Middlewares;
 
 use Closure;
-use Junges\InviteCodes\Http\Models\Invite;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +12,7 @@ use Junges\InviteCodes\Exceptions\InviteWithRestrictedUsageException;
 use Junges\InviteCodes\Exceptions\RouteProtectedByInviteCodeException;
 use Junges\InviteCodes\Exceptions\UserLoggedOutException;
 use Junges\InviteCodes\Facades\InviteCodes;
+use Junges\InviteCodes\Http\Models\Invite;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProtectedByInviteCodeMiddleware
