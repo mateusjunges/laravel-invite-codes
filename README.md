@@ -160,6 +160,8 @@ public function __construct()
     $this->middleware('protected_by_invite_codes');
 }
 ```
+> **Note**
+This middleware expects to find an invitation code within the `invite_code` key of your request. 
 
 ## Creating invite codes
 

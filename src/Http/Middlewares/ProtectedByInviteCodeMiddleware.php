@@ -12,6 +12,7 @@ use Junges\InviteCodes\Exceptions\InviteWithRestrictedUsageException;
 use Junges\InviteCodes\Exceptions\RouteProtectedByInviteCodeException;
 use Junges\InviteCodes\Exceptions\UserLoggedOutException;
 use Junges\InviteCodes\Facades\InviteCodes;
+use Junges\InviteCodes\Http\Models\Invite;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProtectedByInviteCodeMiddleware
@@ -31,7 +32,7 @@ class ProtectedByInviteCodeMiddleware
         }
 
         $invite_code = $request->input('invite_code');
-        $invite_model = app(config('invite-codes.models.invite_model'));
+        $invite_model = app(config('invite-codes.models.invite_model', Invite::class));
 
         try {
             $invite = $invite_model->where('code', $invite_code)->firstOrFail();
