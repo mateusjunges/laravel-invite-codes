@@ -11,7 +11,7 @@ class InviteCreatedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(public Invite $invite)
+    public function __construct(public readonly Invite $invite)
     {
     }
 }

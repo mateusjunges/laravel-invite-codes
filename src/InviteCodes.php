@@ -67,12 +67,11 @@ class InviteCodes implements InviteCodesContract
         /** @var Invite|null $invite */
         $invite = $model->where('code', Str::upper($code))->first();
 
-        if ($invite === null || ! $this->inviteCanBeRedeemed($invite)) {
+        if (! $invite instanceof InviteCodesContract  || ! $this->inviteCanBeRedeemed($invite)) {
             throw new InvalidInviteCodeException('Your invite code is invalid');
         }
 
-        $invite->increment('uses', 1);
-        $invite->save();
+        $invite->update(['uses' => $invite->uses + 1]);
 
         if ($this->shouldDispatchEvents()) {
             event(new InviteRedeemedEvent($invite));
@@ -194,13 +193,13 @@ class InviteCodes implements InviteCodesContract
             throw new UserLoggedOutException('You must be logged in to use this invite code.', Response::HTTP_FORBIDDEN);
         }
 
-        if ($invite->hasRestrictedUsage() && ! $invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column')})) {
+        if ($invite->hasRestrictedUsage() && ! $invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column', 'email')})) {
             throw new InviteWithRestrictedUsageException('This invite is not for you.', Response::HTTP_FORBIDDEN);
         }
 
         if ($invite->hasRestrictedUsage()
             && Auth::check()
-            && $invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column')})
+            && $invite->usageRestrictedToEmail(Auth::user()->{config('invite-codes.user.email_column', 'email')})
             && $invite->isSoldOut()
         ) {
             throw new InviteAlreadyRedeemedException('This invite has already been redeemed', Response::HTTP_FORBIDDEN);

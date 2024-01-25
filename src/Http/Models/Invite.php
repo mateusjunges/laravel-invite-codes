@@ -11,6 +11,15 @@ use Junges\InviteCodes\Events\InviteCreatedEvent;
 /**
  * Class Invite.
  *
+ * @property int $id The model primary key
+ * @property string $code The unique code for this invite
+ * @property int|null $max_usages The maximum number of times this invite code can be used
+ * @property string|null $to The email of the person who can use this invite code
+ * @property int $uses The number of times this invite code have been used
+ * @property \Illuminate\Support\Carbon $expires_at The date this invite code expires
+ * @property \Illuminate\Support\Carbon $updated_at The date this invite code was last updated
+ * @property \Illuminate\Support\Carbon $created_at The date this invite code was created
+ * @property \Illuminate\Support\Carbon $deleted_at The date this invite code has been deleted
  * @method static Builder usedOnce() All invites used once.
  * @method static Builder neverUsed() All never used invites.
  * @method static Builder mostUsed() The most used invite.
