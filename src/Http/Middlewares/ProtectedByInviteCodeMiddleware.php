@@ -32,7 +32,7 @@ class ProtectedByInviteCodeMiddleware
         }
 
         $invite_code = $request->input('invite_code');
-        $invite_model = app(config('invite-codes.models.invite_model') ?? Invite::class);
+        $invite_model = app(config('invite-codes.models.invite_model', Invite::class));
 
         try {
             $invite = $invite_model->where('code', $invite_code)->firstOrFail();
