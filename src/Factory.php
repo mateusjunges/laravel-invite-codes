@@ -7,6 +7,8 @@ use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Conditionable;
+use Illuminate\Support\Traits\Macroable;
 use Junges\InviteCodes\Contracts\InviteCodesFactory;
 use Junges\InviteCodes\Contracts\InviteContract;
 use Junges\InviteCodes\Events\InviteRedeemedEvent;
@@ -23,6 +25,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Factory implements InviteCodesFactory
 {
+    use Macroable;
+    use Conditionable;
+
     protected int $max_usages;
     protected ?string $to = null;
     protected ?CarbonInterface $expires_at;

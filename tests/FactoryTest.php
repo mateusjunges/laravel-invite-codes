@@ -3,10 +3,11 @@
 namespace Junges\InviteCodes\Tests;
 
 use Illuminate\Support\Facades\Event;
+use Junges\InviteCodes\Contracts\InviteContract;
 use Junges\InviteCodes\Events\InviteRedeemedEvent;
 use Junges\InviteCodes\Facades\InviteCodes;
 
-class InviteCodesTest extends TestCase
+class FactoryTest extends TestCase
 {
     public function test_an_event_is_dispatched_when_invite_has_been_redeemed()
     {
@@ -28,5 +29,17 @@ class InviteCodesTest extends TestCase
         InviteCodes::withoutEvents()->redeem($invite->code);
 
         Event::assertNotDispatched(InviteRedeemedEvent::class);
+    }
+
+    public function test_macro(): void
+    {
+        InviteCodes::macro('restrictedTo', function (string $email) {
+            return $this->restrictUsageTo($email)->save();
+        });
+
+        $invite = InviteCodes::restrictedTo('test@example.com');
+
+        $this->assertInstanceOf(InviteContract::class, $invite);
+        $this->assertTrue($invite->usageRestrictedToEmail('test@example.com'));
     }
 }

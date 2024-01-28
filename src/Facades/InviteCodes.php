@@ -19,6 +19,8 @@ use Junges\InviteCodes\Models\Invite;
  * @method static $this expiresIn(int $days) Set the invite code expiration date to $days from now.
  * @method static Invite save() Save the invite code.
  * @method static Collection make(int $quantity) Save $quantity invite codes.
+ * @method static void macro($name, $macro)
+ * @method static bool hasMacro($name)
  * @method static $this canBeUsedOnce()
  */
 class InviteCodes extends Facade
