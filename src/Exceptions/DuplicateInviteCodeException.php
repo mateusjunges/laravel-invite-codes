@@ -4,9 +4,8 @@ namespace Junges\InviteCodes\Exceptions;
 
 class DuplicateInviteCodeException extends InviteCodesException
 {
-    /** @throws DuplicateInviteCodeException */
-    public static function forEmail(): void
+    public static function forEmail(): self
     {
-        throw new static("You can't create more than one invite for each email");
+        return new static("You can't create more than one invite for each email");
     }
 }

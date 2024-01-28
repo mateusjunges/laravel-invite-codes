@@ -8,9 +8,6 @@ use Junges\InviteCodes\Contracts\InviteCodesContract;
 
 final class InviteCodesServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap services.
-     */
     public function boot(): void
     {
         $this->publishesConfig();
