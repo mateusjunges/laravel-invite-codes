@@ -11,7 +11,7 @@ return new class extends Migration
         $table_name = config('invite-codes.tables.invites_table', 'invites');
 
         Schema::create($table_name, static function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('code')->unique();
             $table->integer('max_usages')->nullable();
             $table->string('to')->nullable();
