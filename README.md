@@ -228,6 +228,12 @@ you can use the `withoutEvents()` method:
 \Junges\InviteCodes\Facades\InviteCodes::withoutEvents()->redeem('YOUR-INVITE-CODE');
 ```
 
+# Extending the `Invite` model
+The `\Junges\InviteCodes\Models\Invite` is fully extendable and replaceable. You can extend or create a new model to be used instead of the default one,
+and the only thing you need to do is implement the `\Junges\InviteCodes\Contracts\InviteContract` interface, which contains some required methods for this package to work.
+
+After implementing the contract, you need to change the `models.invite_model` configuration value in `config/invite-codes.php`.
+
 # Handling invite codes exceptions
 
 If you want to override the default `403` response, you can catch the exceptions using the laravel exception handler:
