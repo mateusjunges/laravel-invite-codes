@@ -12,10 +12,10 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "illuminate/auth": "^9.0|^10.0",
-        "illuminate/support": "^9.0|^10.0",
-        "illuminate/database": "^9.0|^10.0"
+        "php": "^8.2|^8.3",
+        "illuminate/auth": "^10.0|^11.0",
+        "illuminate/support": "^10.0|^11.0",
+        "illuminate/database": "^10.0|^11.0"
     },
     "require-dev": {
         "orchestra/testbench": "^7.0|^8.0",
