@@ -1,5 +1,5 @@
 # Laravel Invite Codes
-![Readme banner](https://banners.beyondco.de/Laravel%20Invite%20Codes.png?theme=dark&packageManager=composer+require&packageName=mateusjunges%2Flaravel-invite-codes&pattern=architect&style=style_1&description=This+package+allows+you+to+easily+manage+invite+codes+for+your+Laravel+application.&md=1&showWatermark=1&fontSize=100px&images=https%3A%2F%2Flaravel.com%2Fimg%2Flogomark.min.svg)
+![Readme banner](art/banner.png)
 This package allows you to easily manage invite codes for your Laravel application.
 
 <a href="https://packagist.org/packages/mateusjunges/laravel-invite-codes" target="_blank"><img src="https://poser.pugx.org/mateusjunges/laravel-invite-codes/d/total.svg" alt="Total Downloads"></a>
