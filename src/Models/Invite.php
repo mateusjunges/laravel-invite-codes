@@ -33,6 +33,8 @@ class Invite extends Model implements InviteContract
     protected $casts = [
         'deleted_at' => 'datetime',
         'expires_at' => 'datetime',
+        'max_usages' => 'integer',
+        'uses' => 'integer',
     ];
 
     protected $fillable = [
