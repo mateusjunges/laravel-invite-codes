@@ -3,9 +3,11 @@
 namespace Junges\InviteCodes\Tests;
 
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Str;
 use Junges\InviteCodes\Contracts\InviteContract;
 use Junges\InviteCodes\Events\InviteRedeemedEvent;
 use Junges\InviteCodes\Facades\InviteCodes;
+use Junges\InviteCodes\Models\Invite;
 
 class FactoryTest extends TestCase
 {
@@ -41,5 +43,18 @@ class FactoryTest extends TestCase
 
         $this->assertInstanceOf(InviteContract::class, $invite);
         $this->assertTrue($invite->usageRestrictedToEmail('test@example.com'));
+    }
+
+    public function test_it_can_customize_how_invite_code_is_created(): void
+    {
+        InviteCodes::createInviteCodeUsing(static function () {
+            return 'PREFIX-12345';
+        });
+
+        $invite = InviteCodes::create()->save();
+
+        $this->assertSame('PREFIX-12345', $invite->code);
+
+        InviteCodes::createInviteCodeUsing(null);
     }
 }

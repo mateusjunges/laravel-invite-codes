@@ -32,6 +32,12 @@ class Factory implements InviteCodesFactory
     protected ?string $to = null;
     protected ?CarbonInterface $expires_at;
     protected bool $dispatch_events = true;
+    protected static ?\Closure $createInviteCodeUsing = null;
+
+    public static function createInviteCodeUsing(callable $callable = null): void
+    {
+        self::$createInviteCodeUsing = $callable !== null ? $callable(...) : null;
+    }
 
     /** If used, no events will be dispatched. */
     public function withoutEvents(): self
@@ -54,7 +60,7 @@ class Factory implements InviteCodesFactory
         $model = app(config('invite-codes.models.invite_model', Invite::class));
 
         /** @var Invite|null $invite */
-        $invite = $model->where('code', Str::upper($code))->first();
+        $invite = $model->where('code', $code)->first();
 
         if (! $invite instanceof InviteContract || ! $this->inviteCanBeRedeemed($invite)) {
             throw new InvalidInviteCodeException('Your invite code is invalid');
@@ -139,7 +145,7 @@ class Factory implements InviteCodesFactory
         $model = app(config('invite-codes.models.invite_model', Invite::class));
 
         do {
-            $code = Str::upper(Str::random(16));
+            $code = $this->createInvitationCode();
         } while ($model->where('code', $code)->first() instanceof $model);
 
         return $model->create([
@@ -208,5 +214,14 @@ class Factory implements InviteCodesFactory
     private function shouldDispatchEvents(): bool
     {
         return $this->dispatch_events;
+    }
+
+    private function createInvitationCode(): string
+    {
+        if (self::$createInviteCodeUsing instanceof \Closure) {
+            return call_user_func(self::$createInviteCodeUsing);
+        }
+
+        return Str::upper(Str::random(16));
     }
 }
