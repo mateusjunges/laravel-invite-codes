@@ -2,7 +2,6 @@
 
 namespace Junges\InviteCodes\Tests;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Schema\Blueprint;
 use Junges\InviteCodes\InviteCodesEventServiceProvider;
 use Junges\InviteCodes\InviteCodesServiceProvider;
