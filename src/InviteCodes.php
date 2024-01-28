@@ -2,7 +2,6 @@
 
 namespace Junges\InviteCodes;
 
-use BadMethodCallException;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;

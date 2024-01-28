@@ -4,8 +4,6 @@ namespace Junges\InviteCodes\Tests;
 
 use Carbon\Carbon;
 use Junges\InviteCodes\Exceptions\DuplicateInviteCodeException;
-use Junges\InviteCodes\Exceptions\InviteMustBeAbleToBeRedeemedException;
-use Junges\InviteCodes\Exceptions\SoldOutException;
 use Junges\InviteCodes\Facades\InviteCodes;
 use Junges\InviteCodes\Models\Invite;
 
