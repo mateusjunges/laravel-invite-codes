@@ -23,6 +23,8 @@ If you think this package helped you in any way, you can sponsor me on GitHub!
     - [Create multiple invite codes](#create-multiple-invite-codes)
     - [Redeeming invite codes](#redeeming-invite-codes)
     - [Redeeming invite codes without dispatching events](#redeeming-invite-codes-without-dispatching-events)
+- [Customizing how invite codes are generated](#customizing-how-invite-codes-are-generated)
+- [Extending the `Invite` model](#extending-the-invite-model)
 - [Handling invite codes exceptions](#handling-invite-codes-exceptions)
 - [Using artisan commands](#using-artisan-commands)
 - [Tests](#tests)
@@ -227,6 +229,22 @@ you can use the `withoutEvents()` method:
 ```php
 \Junges\InviteCodes\Facades\InviteCodes::withoutEvents()->redeem('YOUR-INVITE-CODE');
 ```
+
+# Customizing how invite codes are generated
+By default, this package generates a random 16 characters string that. Sometimes, you may want to customize how your invitation code is generated,
+for adding a prefix to the invitation code or anything you need.
+
+If you need to customize how your invite codes are generated, you can add a call to the InviteCodes facade `createInviteCodesusing` method, in your service provider:
+
+```php
+\Junges\InviteCodes\Facades\InviteCodes::createInviteCodeUsing(static function () {
+    return 'THIS-IS-MY-INVITE-'.\Illuminate\Support\Str::random(); 
+});
+```
+
+From now on, all of your invites will have the `THIS-IS-MY-INVITE-` prefix.
+
+Also, the package itself will handle duplicate invites, so you don't need to take care of that yourself.
 
 # Extending the `Invite` model
 The `\Junges\InviteCodes\Models\Invite` is fully extendable and replaceable. You can extend or create a new model to be used instead of the default one,
