@@ -5,7 +5,7 @@ namespace Junges\InviteCodes\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Junges\InviteCodes\Events\DeletedExpiredInvitesEvent;
-use Junges\InviteCodes\Http\Models\Invite;
+use Junges\InviteCodes\Models\Invite;
 
 class DeleteExpiredInvitesCommand extends Command
 {

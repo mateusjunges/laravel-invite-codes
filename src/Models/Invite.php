@@ -1,6 +1,6 @@
 <?php
 
-namespace Junges\InviteCodes\Http\Models;
+namespace Junges\InviteCodes\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -53,50 +53,31 @@ class Invite extends Model implements InviteContract
         $this->setTable(config('invite-codes.tables.invites_table'));
     }
 
-    /**
-     * Sets 'code' as primary key for Route Model Bindings.
-     */
-    public function getRouteKeyName()
+    /** Sets 'code' as primary key for Route Model Bindings. */
+    public function getRouteKeyName(): string
     {
         return 'code';
     }
 
-    /**
-     * Check if an invite code can be used redeemed.
-     *
-     * @return bool
-     */
+    /** Check if an invite code can be used redeemed. */
     public function canBeRedeemed(): bool
     {
         return ! $this->isExpired() && ! $this->isSoldOut() && ! $this->hasRestrictedUsage();
     }
 
-    /**
-     * Check if an invite is to the user who has the specified email.
-     *
-     * @param $email
-     * @return bool
-     */
-    public function usageRestrictedToEmail($email): bool
+    /** Check if an invite is restricted to the user who has the specified email. */
+    public function usageRestrictedToEmail(string $email): bool
     {
         return $this->to === $email;
     }
 
-    /**
-     * Check if an invite is usable for only one person.
-     *
-     * @return bool
-     */
+    /** Check if an invite is usable for only one person. */
     public function hasRestrictedUsage(): bool
     {
         return $this->to !== null;
     }
 
-    /**
-     * Checks if the invite code is expired.
-     *
-     * @return bool
-     */
+    /** Checks if the invite code is expired. */
     public function isExpired(): bool
     {
         if (empty($this->expires_at)) {
@@ -106,68 +87,36 @@ class Invite extends Model implements InviteContract
         return $this->expires_at->isPast();
     }
 
-    /**
-     * Check if the invite code has been sold out.
-     *
-     * @return bool
-     */
+    /** Check if the invite code has been sold out. */
     public function isSoldOut(): bool
     {
         if ($this->max_usages === null) {
             return false;
         }
 
-        return (int) $this->uses >= $this->max_usages;
+        return $this->uses >= $this->max_usages;
     }
 
-    /**
-     * Invites used once.
-     *
-     * @param  Builder  $query
-     * @return Builder
-     */
     public function scopeUsedOnce(Builder $query): Builder
     {
         return $query->where('uses', '=', 1);
     }
 
-    /**
-     * Invites never used.
-     *
-     * @param  Builder  $query
-     * @return Builder
-     */
     public function scopeNeverUsed(Builder $query): Builder
     {
         return $query->where('uses', '=', 0);
     }
 
-    /**
-     * Most used invite code.
-     *
-     * @param  Builder  $query
-     * @return Builder
-     */
     public function scopeMostUsed(Builder $query): Builder
     {
         return $query->orderBy('uses', 'desc')->limit(1);
     }
 
-    /**
-     * Expired invites.
-     *
-     * @param  Builder  $query
-     * @return Builder
-     */
     public function scopeExpired(Builder $query): Builder
     {
         return $query->where('expires_at', '<', Carbon::now(config('app.timezone')));
     }
 
-    /**
-     * @param  Builder  $query
-     * @return Builder
-     */
     public function scopeSoldOut(Builder $query): Builder
     {
         return $query->whereNotNull('max_usages')

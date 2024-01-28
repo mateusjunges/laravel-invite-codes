@@ -5,7 +5,7 @@ namespace Junges\InviteCodes\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Junges\InviteCodes\Http\Models\Invite;
+use Junges\InviteCodes\Models\Invite;
 
 class InviteRedeemedEvent
 {

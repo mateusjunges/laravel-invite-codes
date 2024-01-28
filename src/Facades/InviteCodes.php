@@ -5,7 +5,7 @@ namespace Junges\InviteCodes\Facades;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
 use Junges\InviteCodes\Contracts\InviteCodesContract;
-use Junges\InviteCodes\Http\Models\Invite;
+use Junges\InviteCodes\Models\Invite;
 
 /**
  * Class InviteCodes.

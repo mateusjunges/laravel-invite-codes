@@ -89,7 +89,7 @@ return [
     |
     */
     'models' => [
-        'invite_model' => \Junges\InviteCodes\Http\Models\Invite::class,
+        'invite_model' => \Junges\InviteCodes\Models\Invite::class,
     ],
 
     /*

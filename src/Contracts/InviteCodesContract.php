@@ -10,8 +10,8 @@ use Junges\InviteCodes\Exceptions\InviteMustBeAbleToBeRedeemedException;
 use Junges\InviteCodes\Exceptions\InviteWithRestrictedUsageException;
 use Junges\InviteCodes\Exceptions\SoldOutException;
 use Junges\InviteCodes\Exceptions\UserLoggedOutException;
-use Junges\InviteCodes\Http\Models\Invite;
 use Junges\InviteCodes\InviteCodes;
+use Junges\InviteCodes\Models\Invite;
 
 interface InviteCodesContract
 {

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Event;
 use Junges\InviteCodes\Events\DeletedExpiredInvitesEvent;
 use Junges\InviteCodes\Facades\InviteCodes;
-use Junges\InviteCodes\Http\Models\Invite;
+use Junges\InviteCodes\Models\Invite;
 use Junges\InviteCodes\Tests\TestCase;
 
 class DeleteExpiredInvitesCommandTest extends TestCase

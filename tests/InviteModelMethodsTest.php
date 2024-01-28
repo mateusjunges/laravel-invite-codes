@@ -7,7 +7,7 @@ use Junges\InviteCodes\Exceptions\DuplicateInviteCodeException;
 use Junges\InviteCodes\Exceptions\InviteMustBeAbleToBeRedeemedException;
 use Junges\InviteCodes\Exceptions\SoldOutException;
 use Junges\InviteCodes\Facades\InviteCodes;
-use Junges\InviteCodes\Http\Models\Invite;
+use Junges\InviteCodes\Models\Invite;
 
 class InviteModelMethodsTest extends TestCase
 {

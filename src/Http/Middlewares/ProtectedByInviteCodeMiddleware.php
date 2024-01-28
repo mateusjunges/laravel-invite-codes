@@ -12,7 +12,7 @@ use Junges\InviteCodes\Exceptions\InviteWithRestrictedUsageException;
 use Junges\InviteCodes\Exceptions\RouteProtectedByInviteCodeException;
 use Junges\InviteCodes\Exceptions\UserLoggedOutException;
 use Junges\InviteCodes\Facades\InviteCodes;
-use Junges\InviteCodes\Http\Models\Invite;
+use Junges\InviteCodes\Models\Invite;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProtectedByInviteCodeMiddleware
