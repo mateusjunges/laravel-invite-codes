@@ -21,8 +21,7 @@ use Junges\InviteCodes\Models\Invite;
  * @method static Collection make(int $quantity) Save $quantity invite codes.
  * @method static void macro($name, $macro)
  * @method static bool hasMacro($name)
- * @method static void quietly(callable $callback) Run the given callback without dispatching events
- * @method static void createInviteCodeUsing(?callable $callable)
+ * @method static void createInviteCodeUsing(?callable $callable = null)
  * @method static $this canBeUsedOnce()
  */
 class InviteCodes extends Facade

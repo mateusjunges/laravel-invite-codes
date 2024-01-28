@@ -45,21 +45,6 @@ class FactoryTest extends TestCase
         $this->assertTrue($invite->usageRestrictedToEmail('test@example.com'));
     }
 
-    public function test_it_can_run_quietly(): void
-    {
-        Event::fake();
-
-        Invite::query()->create([
-            'code' => $code = Str::random(),
-        ]);
-
-        InviteCodes::quietly(static function () use ($code) {
-            InviteCodes::redeem($code);
-        });
-
-        Event::assertNotDispatched(InviteRedeemedEvent::class);
-    }
-
     public function test_it_can_customize_how_invite_code_is_created(): void
     {
         InviteCodes::createInviteCodeUsing(static function () {
@@ -69,5 +54,7 @@ class FactoryTest extends TestCase
         $invite = InviteCodes::create()->save();
 
         $this->assertSame('PREFIX-12345', $invite->code);
+
+        InviteCodes::createInviteCodeUsing(null);
     }
 }

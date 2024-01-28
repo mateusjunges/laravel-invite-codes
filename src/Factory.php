@@ -31,31 +31,20 @@ class Factory implements InviteCodesFactory
     protected int $max_usages;
     protected ?string $to = null;
     protected ?CarbonInterface $expires_at;
-    protected static bool $dispatch_events = true;
+    protected bool $dispatch_events = true;
     protected static ?\Closure $createInviteCodeUsing = null;
 
-    public static function createInviteCodeUsing(callable $callable): void
+    public static function createInviteCodeUsing(callable $callable = null): void
     {
-        self::$createInviteCodeUsing = $callable(...);
+        self::$createInviteCodeUsing = $callable !== null ? $callable(...) : null;
     }
 
     /** If used, no events will be dispatched. */
     public function withoutEvents(): self
     {
-        self::$dispatch_events = false;
+        $this->dispatch_events = false;
 
         return $this;
-    }
-
-    public function quietly(callable $callback): void
-    {
-        self::$dispatch_events = false;
-
-        $closure = $callback(...);
-
-        $closure();
-
-        self::$dispatch_events = true;
     }
 
     /**
@@ -224,7 +213,7 @@ class Factory implements InviteCodesFactory
 
     private function shouldDispatchEvents(): bool
     {
-        return self::$dispatch_events;
+        return $this->dispatch_events;
     }
 
     private function createInvitationCode(): string
