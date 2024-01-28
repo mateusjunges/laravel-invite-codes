@@ -4,8 +4,9 @@ namespace Junges\InviteCodes;
 
 use Illuminate\Support\ServiceProvider;
 use Junges\InviteCodes\Console\Commands\DeleteExpiredInvitesCommand;
+use Junges\InviteCodes\Contracts\InviteCodesContract;
 
-class InviteCodesServiceProvider extends ServiceProvider
+final class InviteCodesServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap services.
@@ -40,7 +41,7 @@ class InviteCodesServiceProvider extends ServiceProvider
         ], 'invite-codes-migrations');
     }
 
-    private function loadCommands()
+    private function loadCommands(): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -52,6 +53,6 @@ class InviteCodesServiceProvider extends ServiceProvider
     /** Register any application services. */
     public function register(): void
     {
-        $this->app->bind('invite_codes', InviteCodes::class);
+        $this->app->bind(InviteCodesContract::class, InviteCodes::class);
     }
 }

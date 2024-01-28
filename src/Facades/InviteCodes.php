@@ -4,6 +4,7 @@ namespace Junges\InviteCodes\Facades;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
+use Junges\InviteCodes\Contracts\InviteCodesContract;
 use Junges\InviteCodes\Http\Models\Invite;
 
 /**
@@ -24,6 +25,6 @@ class InviteCodes extends Facade
 {
     public static function getFacadeAccessor(): string
     {
-        return 'invite_codes';
+        return InviteCodesContract::class;
     }
 }

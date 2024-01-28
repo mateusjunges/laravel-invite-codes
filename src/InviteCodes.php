@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Junges\InviteCodes\Contracts\InviteCodesContract;
+use Junges\InviteCodes\Contracts\InviteContract;
 use Junges\InviteCodes\Events\InviteRedeemedEvent;
 use Junges\InviteCodes\Exceptions\DuplicateInviteCodeException;
 use Junges\InviteCodes\Exceptions\ExpiredInviteCodeException;
@@ -67,7 +68,7 @@ class InviteCodes implements InviteCodesContract
         /** @var Invite|null $invite */
         $invite = $model->where('code', Str::upper($code))->first();
 
-        if (! $invite instanceof InviteCodesContract  || ! $this->inviteCanBeRedeemed($invite)) {
+        if (! $invite instanceof InviteContract  || ! $this->inviteCanBeRedeemed($invite)) {
             throw new InvalidInviteCodeException('Your invite code is invalid');
         }
 
