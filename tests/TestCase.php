@@ -2,6 +2,7 @@
 
 namespace Junges\InviteCodes\Tests;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Schema\Blueprint;
 use Junges\InviteCodes\InviteCodesEventServiceProvider;
 use Junges\InviteCodes\InviteCodesServiceProvider;
@@ -27,7 +28,7 @@ class TestCase extends Orchestra
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app): void
     {
         $app['config']->set('database.default', 'sqlite');
         $app['config']->set('database.connections.sqlite', [
@@ -43,17 +44,22 @@ class TestCase extends Orchestra
         $app['config']->set('auth.providers.users.model', TestUser::class);
     }
 
-    private function setUpDatabase($app)
+    private function setUpDatabase($app): void
     {
         $app['config']->set('invite-codes.tables.invites_table', 'test_invites_table');
 
         // Set up models for tests
         $app['config']->set('invite-codes.models.invite_model', Invite::class);
 
-        // Include migration files
-        include_once __DIR__.'/../database/migrations/2020_01_29_162459_create_invites_table.php';
+        $this->runMigrations($app);
+    }
 
-        (new \CreateInvitesTable())->up();
+    private function runMigrations($app): void
+    {
+        // Include migration files
+        $migration = require __DIR__.'/../database/migrations/2020_01_29_162459_create_invites_table.php';
+
+        $migration->up();
 
         $app['db']->connection()->getSchemaBuilder()->create('test_users', function (Blueprint $table) {
             $table->bigIncrements('id');

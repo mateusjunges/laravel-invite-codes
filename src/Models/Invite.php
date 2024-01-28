@@ -82,7 +82,7 @@ class Invite extends Model implements InviteContract
     /** Checks if the invite code is expired. */
     public function isExpired(): bool
     {
-        if (empty($this->expires_at)) {
+        if ($this->expires_at === null) {
             return false;
         }
 
