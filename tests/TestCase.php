@@ -55,7 +55,6 @@ class TestCase extends Orchestra
 
     private function runMigrations($app): void
     {
-        // Include migration files
         $migration = require __DIR__.'/../database/migrations/2020_01_29_162459_create_invites_table.php';
 
         $migration->up();
