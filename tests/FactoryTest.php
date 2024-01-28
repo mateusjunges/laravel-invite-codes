@@ -3,11 +3,9 @@
 namespace Junges\InviteCodes\Tests;
 
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Str;
 use Junges\InviteCodes\Contracts\InviteContract;
 use Junges\InviteCodes\Events\InviteRedeemedEvent;
 use Junges\InviteCodes\Facades\InviteCodes;
-use Junges\InviteCodes\Models\Invite;
 
 class FactoryTest extends TestCase
 {
