@@ -9,8 +9,6 @@ use Junges\InviteCodes\Contracts\InviteContract;
 use Junges\InviteCodes\Models\Invite;
 
 /**
- * Class Factory.
- *
  * @method static InviteCodesFactory withoutEvents() Will dispatch no events.
  * @method static InviteContract redeem(string $code) Redeem an invite code.
  * @method static InviteCodesFactory create() Create an invite code.
