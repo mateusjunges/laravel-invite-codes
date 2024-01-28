@@ -38,11 +38,11 @@ To get started with Laravel Invite Codes, use Composer to add the package to you
 composer require mateusjunges/laravel-invite-codes
 ```
 
-Or add this line in your composer.json, inside of the require section:
+Or add this line in your composer.json, inside the `require` section:
 ```bash
 {
     "require": {
-        "mateusjunges/laravel-invite-codes": "^1.6",
+        "mateusjunges/laravel-invite-codes": "^2.0",
     }
 }
 ```
@@ -195,14 +195,6 @@ To restrict the usage of an invite code you can use the `restrictUsageTo()` meth
 
 If you want that your invite code be used a limited amount of times, you can set the max usages limit with the `maxUsages()` method, and pass an integer with the amount
 of allowed usages.
-
-Also, you can use the declarative syntax, and use the `canBeUsedXTimes()` method, where `X` is the amount of times your invite code will be usable.
-For example:
-
-- `->canBeUsed10Times()`: This invite code can be used 10 times.
-- `->canBeUsed50Times()`: This invite code can be used 50 times.
-
-> You can use any integer number you want with this method.
 
 ## Create multiple invite codes
 
