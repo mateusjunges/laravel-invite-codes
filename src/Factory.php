@@ -7,7 +7,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Junges\InviteCodes\Contracts\InviteCodesContract;
+use Junges\InviteCodes\Contracts\InviteCodesFactory;
 use Junges\InviteCodes\Contracts\InviteContract;
 use Junges\InviteCodes\Events\InviteRedeemedEvent;
 use Junges\InviteCodes\Exceptions\DuplicateInviteCodeException;
@@ -21,7 +21,7 @@ use Junges\InviteCodes\Exceptions\UserLoggedOutException;
 use Junges\InviteCodes\Models\Invite;
 use Symfony\Component\HttpFoundation\Response;
 
-class InviteCodes implements InviteCodesContract
+class Factory implements InviteCodesFactory
 {
     protected int $max_usages;
     protected ?string $to = null;

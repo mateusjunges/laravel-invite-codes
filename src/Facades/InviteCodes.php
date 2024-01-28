@@ -4,11 +4,11 @@ namespace Junges\InviteCodes\Facades;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
-use Junges\InviteCodes\Contracts\InviteCodesContract;
+use Junges\InviteCodes\Contracts\InviteCodesFactory;
 use Junges\InviteCodes\Models\Invite;
 
 /**
- * Class InviteCodes.
+ * Class Factory.
  *
  * @method static $this withoutEvents() Will dispatch no events.
  * @method static $this redeem(string $code) Redeem an invite code.
@@ -25,6 +25,6 @@ class InviteCodes extends Facade
 {
     public static function getFacadeAccessor(): string
     {
-        return InviteCodesContract::class;
+        return InviteCodesFactory::class;
     }
 }

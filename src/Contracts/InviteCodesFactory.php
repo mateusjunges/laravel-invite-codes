@@ -10,13 +10,13 @@ use Junges\InviteCodes\Exceptions\InviteMustBeAbleToBeRedeemedException;
 use Junges\InviteCodes\Exceptions\InviteWithRestrictedUsageException;
 use Junges\InviteCodes\Exceptions\SoldOutException;
 use Junges\InviteCodes\Exceptions\UserLoggedOutException;
-use Junges\InviteCodes\InviteCodes;
+use Junges\InviteCodes\Factory;
 use Junges\InviteCodes\Models\Invite;
 
-interface InviteCodesContract
+interface InviteCodesFactory
 {
     /** If used, no events will be dispatched.  */
-    public function withoutEvents(): InviteCodes;
+    public function withoutEvents(): Factory;
 
     /**
      * @throws ExpiredInviteCodeException
@@ -28,20 +28,20 @@ interface InviteCodesContract
     public function redeem(string $code): Invite;
 
     /** Create a new invite */
-    public function create(): InviteCodes;
+    public function create(): Factory;
 
     /**
      * Set the number of allowed redemptions.
      *
      * @throws InviteMustBeAbleToBeRedeemedException
      */
-    public function maxUsages(int $usages = 1): InviteCodes;
+    public function maxUsages(int $usages = 1): Factory;
 
     /** Set the max usages amount to one. */
-    public function canBeUsedOnce(): InviteCodes;
+    public function canBeUsedOnce(): Factory;
 
     /** Set the user who can use this invite. */
-    public function restrictUsageTo(string $email): InviteCodes;
+    public function restrictUsageTo(string $email): Factory;
 
     /** Save the created invite.*/
     public function save(): Invite;
