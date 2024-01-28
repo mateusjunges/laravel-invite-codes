@@ -29,7 +29,7 @@ class Factory implements InviteCodesFactory
     use Conditionable;
 
     protected int $max_usages;
-    protected ?string $to = null;
+    protected ?string $restrictedTo = null;
     protected ?CarbonInterface $expires_at;
     protected bool $dispatch_events = true;
     protected static ?\Closure $createInviteCodeUsing = null;
@@ -112,19 +112,18 @@ class Factory implements InviteCodesFactory
     /** @inheritdoc . */
     public function restrictUsageTo(string $email): self
     {
-        $this->to = $email;
+        $this->restrictedTo = $email;
 
         return $this;
     }
 
     /** Set the invite expiration date. */
-    public function expiresAt($date): self
+    public function expiresAt(CarbonInterface|string $date): self
     {
-        if (is_string($date)) {
-            $this->expires_at = Carbon::parse($date);
-        } elseif ($date instanceof Carbon) {
-            $this->expires_at = $date;
-        }
+        $this->expires_at = match(true) {
+            is_string($date) => Carbon::parse($date),
+            $date instanceof CarbonInterface => $date,
+        };
 
         return $this;
     }
@@ -150,7 +149,7 @@ class Factory implements InviteCodesFactory
 
         return $model->create([
             'code' => $code,
-            'to' => $this->to,
+            'to' => $this->restrictedTo,
             'uses' => 0,
             'expires_at' => $this->expires_at ?? null,
             'max_usages' => $this->max_usages ?? null,
@@ -162,7 +161,7 @@ class Factory implements InviteCodesFactory
     {
         $invites = collect();
 
-        if (! empty($this->to) && $quantity > 1) {
+        if (! empty($this->restrictedTo) && $quantity > 1) {
             throw DuplicateInviteCodeException::forEmail();
         }
 
