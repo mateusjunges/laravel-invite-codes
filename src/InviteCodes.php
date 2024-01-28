@@ -29,23 +29,6 @@ class InviteCodes implements InviteCodesContract
     protected ?CarbonInterface $expires_at;
     protected bool $dispatch_events = true;
 
-    /**
-     * @param $arguments
-     *
-     * @throws BadMethodCallException
-     * @throws InviteMustBeAbleToBeRedeemedException
-     */
-    public function __call(string $name, $arguments): self
-    {
-        if (method_exists($this, $name)) {
-            $this->{$name}($arguments);
-        } elseif (preg_match('/^canBeUsed(\d+)Times$/', $name, $max_usages)) {
-            return $this->maxUsages($max_usages[1]);
-        }
-
-        throw new BadMethodCallException('Invalid method called');
-    }
-
     /** If used, no events will be dispatched. */
     public function withoutEvents(): self
     {
