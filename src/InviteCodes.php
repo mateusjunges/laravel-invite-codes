@@ -42,6 +42,7 @@ class InviteCodes implements InviteCodesContract
         } elseif (preg_match('/^canBeUsed(\d+)Times$/', $name, $max_usages)) {
             return $this->maxUsages($max_usages[1]);
         }
+
         throw new BadMethodCallException('Invalid method called');
     }
 
@@ -68,7 +69,7 @@ class InviteCodes implements InviteCodesContract
         /** @var Invite|null $invite */
         $invite = $model->where('code', Str::upper($code))->first();
 
-        if (! $invite instanceof InviteContract  || ! $this->inviteCanBeRedeemed($invite)) {
+        if (! $invite instanceof InviteContract || ! $this->inviteCanBeRedeemed($invite)) {
             throw new InvalidInviteCodeException('Your invite code is invalid');
         }
 

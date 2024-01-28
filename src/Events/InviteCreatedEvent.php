@@ -9,7 +9,9 @@ use Junges\InviteCodes\Http\Models\Invite;
 
 class InviteCreatedEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public function __construct(public readonly Invite $invite)
     {
