@@ -8,7 +8,7 @@ use Junges\InviteCodes\InviteCodesServiceProvider;
 use Junges\InviteCodes\Models\Invite;
 use Orchestra\Testbench\TestCase as Orchestra;
 
-class TestCase extends Orchestra
+abstract class TestCase extends Orchestra
 {
     public function setUp(): void
     {
