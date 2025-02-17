@@ -1,6 +1,8 @@
 name: Continuous Integration
 
-on: ['push', 'pull_request']
+on:
+  - push
+  - pull_request
 
 jobs:
   ci:
@@ -9,11 +11,13 @@ jobs:
     strategy:
       matrix:
         php: [8.2, 8.3]
-        laravel: [10.*]
+        laravel: ['10.*', '12.*']
         dependency-version: [prefer-stable]
         include:
           - laravel: 10.*
             testbench: 8.*
+          - laravel: 12.*
+            testbench: 10.*
         exclude:
           - laravel: 10.*
             php: 8.0
@@ -21,27 +25,26 @@ jobs:
     name: CI - PHP ${{ matrix.php }}  - Laravel ${{ matrix.laravel }} - Testbench ${{ matrix.testbench }} (${{ matrix.dependency-version }})
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
-    - name: Cache dependencies
-      uses: actions/cache@v1
-      with:
-        path: ~/.composer/cache/files
-        key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, zip
+          coverage: pcov
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php }}
-        extensions: mbstring, zip
-        coverage: pcov
+      - name: Install Composer dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-suggest
 
-    - name: Install Composer dependencies
-      run: |
-        composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-        composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist --no-suggest
-
-    - name: PHPUnit Testing
-      run: vendor/bin/phpunit
+      - name: PHPUnit Testing
+        run: vendor/bin/phpunit
