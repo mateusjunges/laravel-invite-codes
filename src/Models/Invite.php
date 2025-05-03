@@ -46,7 +46,7 @@ class Invite extends Model implements InviteContract
     ];
 
     protected $dispatchesEvents = [
-        'creating' => InviteCreatedEvent::class,
+        'created' => InviteCreatedEvent::class,
     ];
 
     public function __construct(array $attributes = [])
