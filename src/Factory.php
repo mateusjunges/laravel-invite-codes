@@ -55,12 +55,14 @@ class Factory implements InviteCodesFactory
      * @throws UserLoggedOutException
      * @throws InviteAlreadyRedeemedException
      */
-    public function redeem(string $code): Invite
+    public function redeem(Invite|string $code): Invite
     {
         $model = app(config('invite-codes.models.invite_model', Invite::class));
 
-        /** @var Invite|null $invite */
-        $invite = $model->where('code', $code)->first();
+        $invite = match (true) {
+            $code instanceof Invite => $code,
+            default => $model->where('code', $code)->first()
+        };
 
         if (! $invite instanceof InviteContract || ! $this->inviteCanBeRedeemed($invite)) {
             throw new InvalidInviteCodeException('Your invite code is invalid');
@@ -181,7 +183,7 @@ class Factory implements InviteCodesFactory
      * @throws UserLoggedOutException
      * @throws InviteAlreadyRedeemedException
      */
-    private function inviteCanBeRedeemed(Invite $invite): bool
+    public function inviteCanBeRedeemed(Invite $invite): bool
     {
         if ($invite->hasRestrictedUsage() && ! Auth::check()) {
             throw new UserLoggedOutException('You must be logged in to use this invite code.', Response::HTTP_FORBIDDEN);
