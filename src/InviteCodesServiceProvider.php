@@ -34,7 +34,7 @@ final class InviteCodesServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
         $this->publishes([
-            __DIR__.'/../database/migrations' => database_path('migrations/vendor/junges/invite-codes'),
+            __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'invite-codes-migrations');
     }
 
