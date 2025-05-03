@@ -212,7 +212,7 @@ class Factory implements InviteCodesFactory
         return true;
     }
 
-    private function shouldDispatchEvents(): bool
+    public function shouldDispatchEvents(): bool
     {
         return $this->dispatch_events;
     }
