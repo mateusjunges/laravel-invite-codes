@@ -1,7 +1,5 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Junges\InviteCodes\Exceptions;
 
-class InviteWithRestrictedUsageException extends InviteCodesException
-{
-}
+class InviteWithRestrictedUsageException extends InviteCodesException {}

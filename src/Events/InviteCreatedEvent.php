@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Junges\InviteCodes\Events;
 
@@ -13,7 +13,5 @@ class InviteCreatedEvent
     use InteractsWithSockets;
     use SerializesModels;
 
-    public function __construct(public readonly Invite $invite)
-    {
-    }
+    public function __construct(public readonly Invite $invite) {}
 }

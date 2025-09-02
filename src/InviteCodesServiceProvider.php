@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Junges\InviteCodes;
 
@@ -13,6 +13,12 @@ final class InviteCodesServiceProvider extends ServiceProvider
         $this->publishesConfig();
         $this->loadMigrations();
         $this->loadCommands();
+    }
+
+    /** Register any application services. */
+    public function register(): void
+    {
+        $this->app->bind(InviteCodesFactory::class, Factory::class);
     }
 
     /** Load and publishes the package configuration file. */
@@ -45,11 +51,5 @@ final class InviteCodesServiceProvider extends ServiceProvider
                 DeleteExpiredInvitesCommand::class,
             ]);
         }
-    }
-
-    /** Register any application services. */
-    public function register(): void
-    {
-        $this->app->bind(InviteCodesFactory::class, Factory::class);
     }
 }

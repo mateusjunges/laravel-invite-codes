@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Junges\InviteCodes\Tests\Middlewares;
 
@@ -12,7 +12,7 @@ class MiddlewareTestCase extends TestCase
 {
     protected $protected_by_invite_codes;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
