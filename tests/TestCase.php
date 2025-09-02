@@ -10,15 +10,6 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->setUpDatabase($this->app);
-
-        (new InviteCodesServiceProvider($this->app))->boot();
-    }
-
     public function getPackageProviders($app): array
     {
         return [
@@ -43,7 +34,7 @@ abstract class TestCase extends Orchestra
         $app['config']->set('auth.providers.users.model', TestUser::class);
     }
 
-    private function setUpDatabase($app): void
+    public function setUpDatabase($app): void
     {
         $app['config']->set('invite-codes.tables.invites_table', 'test_invites_table');
 
@@ -53,7 +44,7 @@ abstract class TestCase extends Orchestra
         $this->runMigrations($app);
     }
 
-    private function runMigrations($app): void
+    public function runMigrations($app): void
     {
         $migration = require __DIR__.'/../database/migrations/2020_01_29_162459_create_invites_table.php';
 

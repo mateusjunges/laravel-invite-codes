@@ -1,9 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Junges\InviteCodes;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
+use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -25,16 +26,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Factory implements InviteCodesFactory
 {
-    use Macroable;
     use Conditionable;
+    use Macroable;
 
     protected int $max_usages;
-    protected ?string $restrictedTo = null;
-    protected ?CarbonInterface $expires_at;
-    protected bool $dispatch_events = true;
-    protected static ?\Closure $createInviteCodeUsing = null;
 
-    public static function createInviteCodeUsing(callable $callable = null): void
+    protected ?string $restrictedTo = null;
+
+    protected ?CarbonInterface $expires_at = null;
+
+    protected bool $dispatch_events = true;
+
+    protected static ?Closure $createInviteCodeUsing = null;
+
+    public static function createInviteCodeUsing(?callable $callable = null): void
     {
         self::$createInviteCodeUsing = $callable !== null ? $callable(...) : null;
     }
@@ -100,7 +105,7 @@ class Factory implements InviteCodesFactory
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws InviteMustBeAbleToBeRedeemedException
      */
@@ -111,7 +116,7 @@ class Factory implements InviteCodesFactory
         return $this;
     }
 
-    /** @inheritdoc . */
+    /** {@inheritdoc .} */
     public function restrictUsageTo(string $email): self
     {
         $this->restrictedTo = $email;
@@ -122,7 +127,7 @@ class Factory implements InviteCodesFactory
     /** Set the invite expiration date. */
     public function expiresAt(CarbonInterface|string $date): self
     {
-        $this->expires_at = match(true) {
+        $this->expires_at = match (true) {
             is_string($date) => Carbon::parse($date),
             $date instanceof CarbonInterface => $date,
         };
@@ -140,7 +145,7 @@ class Factory implements InviteCodesFactory
         return $this;
     }
 
-    /** @inheritdoc */
+    /** {@inheritdoc} */
     public function save(): Invite
     {
         $model = app(config('invite-codes.models.invite_model', Invite::class));
@@ -219,7 +224,7 @@ class Factory implements InviteCodesFactory
 
     private function createInvitationCode(): string
     {
-        if (self::$createInviteCodeUsing instanceof \Closure) {
+        if (self::$createInviteCodeUsing instanceof Closure) {
             return call_user_func(self::$createInviteCodeUsing);
         }
 

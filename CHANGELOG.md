@@ -2,6 +2,15 @@
 
 All notable changes to `mateusjunges/laravel-invite-codes` will be documented in this file.
 
+## [v2.3.0 - 2025-09-01](https://github.com/mateusjunges/laravel-invite-codes/compare/v2.2.1...v2.3.0)
+- Drop support for Laravel 10, PHP 8.2 and PHP 8.3 by [@mateusjunges](https://github.com/mateusjunges) in [#46](https://github.com/mateusjunges/laravel-invite-codes/pull/46)
+
+## [v2.2.1 - 2025-05-03](https://github.com/mateusjunges/laravel-invite-codes/compare/v2.2.0...v2.2.1)
+- Dispatch InviteCreatedEvent on created instead of creating by [@mateusjunges](https://github.com/mateusjunges)
+
+## [v2.2.0 - 2025-05-02](https://github.com/mateusjunges/laravel-invite-codes/compare/v2.1.0...v2.2.0)
+- Allow to redeem an invite model directly by [@mateusjunges](https://github.com/mateusjunges)
+- Make a inviteCanBeRedeemed and shouldDispatchEvents public by [@mateusjunges](https://github.com/mateusjunges)
 ## [v2.1.0 - 2025-02-26](https://github.com/mateusjunges/laravel-invite-codes/compare/v2.0.0...v2.1.0)
 * Add support for Laravel 12 by [@laravel-shift](https://github.com/laravel-shift) on [#45](https://github.com/mateusjunges/laravel-invite-codes/pull/45)
 

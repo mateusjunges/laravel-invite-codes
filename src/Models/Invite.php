@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Junges\InviteCodes\Models;
 
@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Junges\InviteCodes\Contracts\InviteContract;
 use Junges\InviteCodes\Events\InviteCreatedEvent;
+use Override;
 
 /**
  * Class Invite.
@@ -20,6 +21,7 @@ use Junges\InviteCodes\Events\InviteCreatedEvent;
  * @property \Illuminate\Support\Carbon $updated_at The date this invite code was last updated
  * @property \Illuminate\Support\Carbon $created_at The date this invite code was created
  * @property \Illuminate\Support\Carbon $deleted_at The date this invite code has been deleted
+ *
  * @method static Builder usedOnce() All invites used once.
  * @method static Builder neverUsed() All never used invites.
  * @method static Builder mostUsed() The most used invite.
@@ -56,6 +58,7 @@ class Invite extends Model implements InviteContract
     }
 
     /** Sets 'code' as primary key for Route Model Bindings. */
+    #[Override]
     public function getRouteKeyName(): string
     {
         return 'code';

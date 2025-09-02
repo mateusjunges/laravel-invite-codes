@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 return [
     /*
@@ -12,7 +12,7 @@ return [
     |
     */
     'models' => [
-        'invite_model' => \Junges\InviteCodes\Models\Invite::class,
+        'invite_model' => Junges\InviteCodes\Models\Invite::class,
     ],
 
     /*

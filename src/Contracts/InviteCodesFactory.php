@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Junges\InviteCodes\Contracts;
 
@@ -16,7 +16,7 @@ use Junges\InviteCodes\Models\Invite;
 interface InviteCodesFactory
 {
     /** If used, no events will be dispatched.  */
-    public function withoutEvents(): InviteCodesFactory;
+    public function withoutEvents(): self;
 
     /**
      * @throws ExpiredInviteCodeException
@@ -28,22 +28,22 @@ interface InviteCodesFactory
     public function redeem(string $code): Invite;
 
     /** Create a new invite */
-    public function create(): InviteCodesFactory;
+    public function create(): self;
 
     /**
      * Set the number of allowed redemptions.
      *
      * @throws InviteMustBeAbleToBeRedeemedException
      */
-    public function maxUsages(int $usages = 1): InviteCodesFactory;
+    public function maxUsages(int $usages = 1): self;
 
     /** Set the max usages amount to one. */
-    public function canBeUsedOnce(): InviteCodesFactory;
+    public function canBeUsedOnce(): self;
 
     /** Set the user who can use this invite. */
-    public function restrictUsageTo(string $email): InviteCodesFactory;
+    public function restrictUsageTo(string $email): self;
 
-    public function expiresAt(CarbonInterface|string $date): InviteCodesFactory;
+    public function expiresAt(CarbonInterface|string $date): self;
 
     /** Save the created invite.*/
     public function save(): Invite;
