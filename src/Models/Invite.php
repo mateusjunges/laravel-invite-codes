@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Junges\InviteCodes\Contracts\InviteContract;
 use Junges\InviteCodes\Events\InviteCreatedEvent;
+use Override;
 
 /**
  * Class Invite.
@@ -57,6 +58,7 @@ class Invite extends Model implements InviteContract
     }
 
     /** Sets 'code' as primary key for Route Model Bindings. */
+    #[Override]
     public function getRouteKeyName(): string
     {
         return 'code';

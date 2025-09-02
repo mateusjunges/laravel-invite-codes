@@ -5,6 +5,7 @@ namespace Junges\InviteCodes;
 use Illuminate\Support\ServiceProvider;
 use Junges\InviteCodes\Console\Commands\DeleteExpiredInvitesCommand;
 use Junges\InviteCodes\Contracts\InviteCodesFactory;
+use Override;
 
 final class InviteCodesServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,7 @@ final class InviteCodesServiceProvider extends ServiceProvider
     }
 
     /** Register any application services. */
+    #[Override]
     public function register(): void
     {
         $this->app->bind(InviteCodesFactory::class, Factory::class);
