@@ -14,8 +14,8 @@
     "require": {
         "php": "^8.4",
         "illuminate/auth": "^11.45|^12.0",
-        "illuminate/support": "11.45|^12.0",
-        "illuminate/database": "11.45|^12.0",
+        "illuminate/support": "^11.45|^12.0",
+        "illuminate/database": "^11.45|^12.0",
         "laravel/pint": "dev-main"
     },
     "require-dev": {
