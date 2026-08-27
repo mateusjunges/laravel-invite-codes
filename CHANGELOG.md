@@ -2,6 +2,11 @@
 
 All notable changes to `mateusjunges/laravel-invite-codes` will be documented in this file.
 
+## [Unreleased]
+
+- Add Laravel 13 support
+- Move `laravel/pint` from production dependencies to `require-dev` (`^1.13`)
+
 ## [v2.3.0 - 2025-09-01](https://github.com/mateusjunges/laravel-invite-codes/compare/v2.2.1...v2.3.0)
 - Drop support for Laravel 10, PHP 8.2 and PHP 8.3 by [@mateusjunges](https://github.com/mateusjunges) in [#46](https://github.com/mateusjunges/laravel-invite-codes/pull/46)
 
